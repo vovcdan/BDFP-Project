@@ -1,0 +1,53 @@
+//#boutons {
+//    display: inline;
+//    float: right;
+//}
+
+button {
+    margin: 30px;
+    display: inline;   
+}
+
+
+li {
+    display: inline;
+    list-style-type: none;
+    font-family: 'Goudy Old Style',monospace; 
+    font-size: 30px; 
+    font-weight: 100; 
+    line-height: 5px; 
+    padding: 30px;
+}
+
+#comp-liste {
+    background: rgb(39,39,39);
+    padding : 1em;
+    margin : 0px 100px 30px 100px;
+    border-radius: 10px;
+    box-shadow: -3px 3px 7px 0px orange,
+    0 0 2px orange,
+    0 0 6px rgb(208, 181, 131),
+    0 0 10px rgb(65, 61, 57);
+    color: white;
+ 
+}
+
+// #entier {
+    
+// }
+
+button {
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    border: solid 1px;
+    margin-left: 10px;
+    border-radius: 10px;
+    color: white;
+    padding: 1px 10px 1px 10px;
+    
+    &:hover {
+        border: solid 1px orange;
+        border-radius: 10px;
+    }
+}
+

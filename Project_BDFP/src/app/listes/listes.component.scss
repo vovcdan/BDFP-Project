@@ -1,0 +1,29 @@
+#butAjout {
+    transition: 0.4s;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: white;
+    background-color: rgb(39, 39, 39);
+    border: solid white;
+    &:hover {
+        
+        color: white;
+        border: solid orange;
+        
+    }
+}
+
+.add {
+    text-align: center;
+}
+
+.comp-laliste{
+    margin-bottom: 1em;
+    background-color: grey;
+    color: black;
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+

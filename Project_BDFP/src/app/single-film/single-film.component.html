@@ -1,0 +1,55 @@
+<div id="entete">
+    <button id="retour" mat-mini-fab (click)="back()"><mat-icon>arrow_back</mat-icon></button>
+    <h1> Film vu</h1>
+    <button id="supp" mat-flat-button (click)="deleteMovie()">Supprimer le film</button>
+</div>
+
+<div id="film" [ngStyle]="{'background-image': 'linear-gradient(
+    rgba(40, 40, 40, 0.9), 
+    rgba(40, 40, 40, 0.9)), url(' + currentFilm.Poster + ')','background-repeat': 'repeat'}">
+
+
+    <div id="leposter">
+        <img src={{currentFilm.Poster}} alt={{currentFilm.Title}} id="images">
+    </div>
+    <div id="infos" *ngIf="currentFilmInfos">
+        <div id="titre">{{currentFilm.Title}}</div>
+            <p id="soustitre">( {{currentFilm.Year}} ) - {{currentFilm.Genre}} - {{currentFilm.Runtime}}</p>
+        <div id="details">
+            <div class="wrapper">
+            <div class="one">
+                <mat-icon class="icone">star_border</mat-icon>
+                <p><span class="bold">Note :</span>  {{currentFilmInfos.note}}/5</p>
+            </div>
+            <div class="two">
+                <mat-icon class="icone">camera_roll</mat-icon>
+                <p><span class="bold">Date de visionnage :</span>  {{currentFilmInfos.dateVision}}</p>
+            </div>
+            <div class="three">
+		        <mat-icon class="icone"> place</mat-icon>
+                <p><span class="bold">Cinéma :</span>  {{currentFilmInfos.cinema}}</p>
+            </div>
+            <div class="four">
+                <mat-icon class="icone">supervisor_account</mat-icon>
+                <p><span class="bold">Accompagnateurs :</span>  {{currentFilmInfos.accompagnateurs}}</p>
+            </div>
+            <div class="five">
+                <mat-icon class="icone"> local_movies</mat-icon>
+                <p><span class="bold">Avis :</span> {{currentFilmInfos.avis}}</p>
+            </div>
+            </div>
+            <hr/>
+            <div id="wrapper2"> 
+                <div class="six">
+                    <mat-icon class="icone">movie_creation</mat-icon>
+                    <p><span class="bold">Acteurs :</span>  {{currentFilm.Actors}}</p>
+                </div>
+                <p> </p>
+                <div class="seven">
+                    <mat-icon class="icone">event_note</mat-icon>
+                    <p><span class="bold">Synopsys : </span> {{currentFilm.Plot}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

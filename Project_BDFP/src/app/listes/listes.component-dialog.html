@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Titre</h1>
+<div mat-dialog-content>
+  <p>Entrez un titre</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.title">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Retour</button>
+  <button mat-button [disabled]="onDisable" cdkFocusInitial (click)="ajoutListe()">Ok</button>
+</div>

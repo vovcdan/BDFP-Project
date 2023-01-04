@@ -1,0 +1,88 @@
+h2 {
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+.form-card {
+  box-sizing: border-box;
+    width: 30%;
+    min-width: 30%;
+    margin: 40px auto 40px auto;
+    padding: 10px 30px 30px;
+    //box-shadow: orange 4px 4px 15px;
+    border-radius: 30px;
+    background-color: rgba(212, 211, 211, 0.06)
+  }
+  
+  .form-group {
+    display: grid;
+    margin: 20px auto auto 50px;
+    width: 29%;
+    align-items: center;
+    justify-content: space-between;
+    font-size: small;
+  }
+  
+  input, textarea {
+    width: 50%;
+    color: white;
+  }
+  
+  .action-buttons {
+    width: 100%;
+  }
+  
+  button {
+    display: block;
+    margin: 0px auto;
+  }
+
+  #entier {
+    padding-bottom: 57.2vh;
+  }
+
+  ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: white !important;
+  }
+
+  .lab {
+    color: white;
+  }
+
+  .but {
+    display: inline-block;
+    margin: 20px auto auto 5px;
+    background-color: rgb(39,39,39);
+    border-radius: 8px;
+    transition: 0.4s;
+    color: white;
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+        
+    
+        &:hover {
+            color: orange;
+           
+        }
+  }
+  .mat-icon {
+    color : orange;
+  }
+
+  #icone {
+    transform: scale(3);
+    display: block;
+    margin : 30px auto 40px 48%;
+  }

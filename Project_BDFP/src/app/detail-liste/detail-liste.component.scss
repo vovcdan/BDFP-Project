@@ -1,0 +1,58 @@
+#entier {
+    margin-top: 80px;
+background-color: rgb(39, 39, 39);
+}
+
+#film {
+    display: flex;
+    
+} 
+
+#leposter {
+    text-align: left;
+}
+
+#img {
+    width: auto;
+    height: 300px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    
+}
+
+.infos {
+    font-style: italic;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    font-size: large;
+    color: white;
+    margin-top: 30px;
+    
+}
+
+#retour {
+    margin-left: 15px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+#supp {
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    border: solid 1px;
+    margin-left: 10px;
+    border-radius: 10px;
+    color: white;
+    padding: 1px 10px 1px 10px;
+    
+    &:hover {
+        border: solid 1px orange;
+        border-radius: 10px;
+    }
+}
+
+.bold {
+    font-style: normal;
+    color: orange;
+}

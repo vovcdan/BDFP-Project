@@ -1,0 +1,74 @@
+<div id="dialog">
+  <h1 mat-dialog-title>Détail du film</h1>
+  <div mat-dialog-content >
+
+    <div *ngIf="filmError" [ngStyle]="{'color': 'red', 'font-weight': 'bold'}">
+      Film non reconnu, veuillez essayer autre chose.
+    </div>
+    <div *ngIf="errorMsgFilmExists" [ngStyle]="{'color': 'blue', 'font-weight': 'bold'}">
+      Ce film existe déjà dans votre répertoire.
+    </div>
+
+    <mat-radio-group id="groupradio" aria-label="Select an option">
+      <mat-radio-button class="radio" value="OMDB" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
+      <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()" >API TMDB</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="title">Titre</mat-label>
+      <input matInput [(ngModel)]="selectedMovie" [matAutocomplete]="auto"
+        [formControl]="searchMoviesCtrl" placeholder="Titanic">
+      <button *ngIf="selectedMovie" matSuffix mat-icon-button aria-label="Clear" (click)="clearSelection()">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-autocomplete [panelWidth]="400" #auto="matAutocomplete" (optionSelected)="onSelected()"
+        [displayWith]="displayWith">
+        <mat-option *ngIf="isLoading" class="is-loading">Chargement...</mat-option>
+        <ng-container *ngIf="!isLoading">
+          <ng-container *ngIf="omdbSelected">
+            <mat-option *ngFor="let movie of filteredMovies" [value]="movie.Title">
+              <span><b>{{movie.Title}}</b> ({{movie.Year}})</span>
+            </mat-option> -->
+            <mat-option *ngFor="let movie of filteredMovies" [value]="movie">
+              <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
+            </mat-option>
+          </ng-container>
+
+        </ng-container>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="dat">Date de visionnage</mat-label>
+      <input matInput [(ngModel)]="data.dateVision" type="dat" placeholder="15/09">
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="cine">Cinéma</mat-label>
+      <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson">
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="accomp">Accompagnateurs</mat-label>
+      <input matInput [(ngModel)]="data.accompagnateurs" type="accomp" placeholder="Julien, Martine, Benjamin">
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="note">Note/5</mat-label>
+      <input matInput [(ngModel)]="data.note" type="note" placeholder="3">
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="avis">Avis</mat-label>
+      <textarea [(ngModel)]="data.avis" matInput type="avis" placeholder="Ce film était .....">
+      </textarea>
+    </mat-form-field>
+
+  </div>
+  <div mat-dialog-actions>
+
+    <button mat-button (click)="onNoClick()">Retour</button>
+    <button mat-button cdkFocusInitial [disabled]="boutonAjoutClicked" (click)="ajoutFilmFromTMDB()">Ok</button>
+
+  </div>
+</div>

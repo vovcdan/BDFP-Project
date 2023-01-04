@@ -1,0 +1,33 @@
+<div id="header">
+
+    <a *ngIf="isSign" class="minideco">
+        <div class="nav">
+            <a>{{userName}}</a>
+        </div>
+    </a>
+
+    <a *ngIf="isSign" routerLink="home" class="minideco">
+        <div class="nav">
+            <a>Accueil</a>
+        </div>
+    </a>
+
+    <a *ngIf="isSign" routerLink="favs" class="minideco">
+        <div class="nav">
+            <a>Mes Listes</a>
+        </div>
+    </a>
+
+    <a *ngIf="!isSign" routerLink="connect" class="minideco">
+        <div class="nav">
+            <a>Se connecter</a>
+        </div>
+    </a>
+
+    <a *ngIf="isSign" class="minideco" (click)="disconnect()">
+        <div class="nav">
+            <a>Déconnexion</a>
+        </div>
+    </a>
+
+</div>

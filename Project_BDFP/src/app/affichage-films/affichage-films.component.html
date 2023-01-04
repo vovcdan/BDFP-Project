@@ -1,0 +1,59 @@
+<a>
+    <button id="butAjout" mat-flat-button (click)="affichageForm()">Rechercher</button>
+    <button id="butAjout" mat-flat-button (click)="reloadFilms()">recharger tous les films</button>
+</a>
+<div *ngIf="showFormRecherche"  id="cherche" class="form-card">
+    <form [formGroup]="formRecherche">
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="field" color='white'>
+                <mat-label class="lab">Titre</mat-label>
+                <input matInput [formControl]="titreControl">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Realisateur</mat-label>
+                <input matInput [formControl]="realisatorControl">
+              </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Annee</mat-label>
+                <input matInput [formControl]="yearControl">
+              </mat-form-field>
+
+            <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Acteur</mat-label>
+                <input matInput [formControl]="actorsControl">
+              </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Lieu</mat-label>
+                <input matInput [formControl]="locationControl">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Accompagnateurs</mat-label>
+                <input matInput [formControl]="accompagnateursControl">
+              </mat-form-field>
+        </div>
+
+        <div class="action-buttons">
+            <button class="buttonR" mat-raised-button (click)="rechercherFilm()">Recherche</button>
+        </div>
+    </form>
+
+</div>
+<div id="images">
+    <div *ngFor="let infoMovies of filmsWithAPI" id="Poster">
+        <a id="description" *ngIf="infoMovies">
+            <h2 (click)="clickFilm(infoMovies)"> {{infoMovies.Title}}</h2>
+            <h3 > {{infoMovies.Year}}</h3>
+        </a>
+        <a (click)="clickFilm(infoMovies)">
+            <img *ngIf="infoMovies" src={{infoMovies.Poster}} alt={{infoMovies.Title}} id="poster">
+        </a>
+    </div>
+
+</div>

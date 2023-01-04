@@ -1,0 +1,25 @@
+<div id="entier">
+    <div id="titrelist">
+        {{currentListe.titrelist}}
+    </div>
+    <button id="back" mat-mini-fab color="grey" (click)="back()"><mat-icon>arrow_back</mat-icon></button>
+    <div id="bout">
+        <div>
+            <button class="bt" mat-raised-button color="grey" (click)="deleteListe()">Supprimer la liste</button>
+        </div>
+        
+        <div>
+            <button class="bt" mat-raised-button (click)="openDialog()">Ajouter un film</button>
+        </div>
+
+        <div>
+            <button class="bt" mat-raised-button (click)="dialogShare()">Partager la liste</button>
+        </div>
+
+        <div>
+            <button class="bt" mat-raised-button (click)="export()">Exporter la liste</button>
+        </div>
+    </div>
+
+    <app-detail-liste></app-detail-liste>
+</div>

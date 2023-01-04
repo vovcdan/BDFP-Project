@@ -1,0 +1,49 @@
+#back {
+    margin-left: 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    border: solid 1px white;
+    color: white;
+    &:hover {
+        color: orange;
+    }
+}
+
+#bout {
+justify-content: center;
+display: flex;
+}
+
+#titrelist {
+    text-align: center;
+    font-family: 'Goudy Old Style',monospace; 
+    font-size: 45px; 
+    font-weight: 100; 
+    line-height: 5px; 
+    padding: 30px;
+    color: orange;
+    margin-top: 50px;
+    text-transform : uppercase;
+}
+
+#entier {
+    height: 91.7vh;
+}
+
+#espace {
+    margin-bottom: 4em;
+}
+
+.bt {
+    margin-right: 10px;
+    transition: 0.4s;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    color: white;
+    background-color: rgb(39, 39, 39);
+    border: solid 2px white;
+    &:hover {
+        border: solid 2px orange;
+        
+    }
+}

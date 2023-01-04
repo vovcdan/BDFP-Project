@@ -1,0 +1,20 @@
+<div id="entier">
+    <div id="film" *ngFor="let infoMovies of filmsWithAPI">
+        <div id="leposter" *ngIf="infoMovies">
+
+            <img src={{infoMovies.Poster}} alt={{infoMovies.Title}} id="img">
+        </div>
+        <div>
+
+            <div class="infos" *ngIf="infoMovies">
+                <p><span class="bold">Titre: </span>  {{infoMovies.Title}}</p>
+                <p><span class="bold">Année de sortie:</span>  {{infoMovies.Year}}</p>
+                <p><span class="bold">Acteurs:</span>  {{infoMovies.Actors}}</p>
+                <p><span class="bold">Durée du film:</span> {{infoMovies.Runtime}}</p>
+                <p><span class="bold">Synopsys:</span> {{infoMovies.Plot}}</p>
+            </div>
+            <button id="supp" mat-raised-button (click)="deleteMovie(infoMovies.imdbID, infoMovies.Title)">Supprimer le film</button>
+        </div>
+    </div>
+</div>
+
