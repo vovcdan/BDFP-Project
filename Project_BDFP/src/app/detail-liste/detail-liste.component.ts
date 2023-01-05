@@ -55,7 +55,14 @@ export class DetailListeComponent implements OnInit {
       this.openSnackBar(titre + ' a été supprimé de la liste ' + res.titrelist)
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigateByUrl('/favs/' + res.titrelist);
+      })
     })
-  })
-}
+  }
+
+  afficherFilm(movie: string, titre: string) {
+    this.utilService.setMovie(movie);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl('/home/' + titre);
+    })
+  }
 }
