@@ -47,6 +47,10 @@ export class ApiServiceService {
     return this.http.get(`http://api.themoviedb.org/3/movie/${query}/casts?api_key=11d68f95601d6ec7858fe9a41e26fd86`);
   }
 
+  getCreditsTMDB(query: any) {
+    return this.http.get(`https://api.themoviedb.org/3/movie/${query}/credits?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US`);
+  }
+
 
 
 

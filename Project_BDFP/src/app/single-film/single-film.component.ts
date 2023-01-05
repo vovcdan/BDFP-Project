@@ -21,6 +21,8 @@ export class SingleFilmComponent implements OnInit {
 
   actors: Map<string, string> = new Map();
 
+  realisator!: string;
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
 
   ngOnInit(): void {
@@ -34,7 +36,7 @@ export class SingleFilmComponent implements OnInit {
         }
       }
     });
-    this.getReviews();
+    this.getRealisateur();
   }
 
   back() {
@@ -79,7 +81,6 @@ export class SingleFilmComponent implements OnInit {
   }
 
   getReviews() {
-    console.log(this.currentFilm)
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
       var id = film['movie_results'][0].id;
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
@@ -89,6 +90,26 @@ export class SingleFilmComponent implements OnInit {
           })
         })
       })
+    })
+  }
+
+  getRealisateur() {
+    //console.log(this.currentFilm)
+    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+      console.log(film)
+      if(film['movie_results'].length != 0) {
+        var id = film['movie_results'][0].id;
+        this.api.getMovieTMDbId(id).subscribe((film: any) => {
+          this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {
+            credits.crew.forEach((crew: any) => {
+              if(crew.job == "Director") {
+                this.realisator = crew.name;
+                console.log("getRealisateur : "+this.realisator)
+              }
+            })
+          })
+        })
+      }
     })
   }
 
