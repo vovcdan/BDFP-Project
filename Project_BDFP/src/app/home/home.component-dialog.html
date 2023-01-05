@@ -11,7 +11,7 @@
 
     <mat-radio-group id="groupradio" aria-label="Select an option">
       <mat-radio-button class="radio" value="OMDB" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
-      <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()" >API TMDB</mat-radio-button>
+      <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
     </mat-radio-group>
 
     <mat-form-field class="field" appearance="fill">
@@ -26,10 +26,13 @@
         <mat-option *ngIf="isLoading" class="is-loading">Chargement...</mat-option>
         <ng-container *ngIf="!isLoading">
           <ng-container *ngIf="omdbSelected">
-            <mat-option *ngFor="let movie of filteredMovies" [value]="movie.Title">
+            <mat-option *ngFor="let movie of filteredMoviesOMDB" [value]="movie">
               <span><b>{{movie.Title}}</b> ({{movie.Year}})</span>
-            </mat-option> -->
-            <mat-option *ngFor="let movie of filteredMovies" [value]="movie">
+            </mat-option>
+          </ng-container>
+
+          <ng-container *ngIf="!omdbSelected">
+            <mat-option *ngFor="let movie of filteredMoviesTMDB" [value]="movie">
               <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
@@ -68,7 +71,7 @@
   <div mat-dialog-actions>
 
     <button mat-button (click)="onNoClick()">Retour</button>
-    <button mat-button cdkFocusInitial [disabled]="boutonAjoutClicked" (click)="ajoutFilmFromTMDB()">Ok</button>
+    <button mat-button cdkFocusInitial [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
 
   </div>
 </div>
