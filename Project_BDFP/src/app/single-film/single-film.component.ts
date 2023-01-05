@@ -34,7 +34,7 @@ export class SingleFilmComponent implements OnInit {
         }
       }
     });
-    this.chercherActeurs();
+    this.getReviews();
   }
 
   back() {
@@ -76,6 +76,20 @@ export class SingleFilmComponent implements OnInit {
         })
       })
     }
+  }
+
+  getReviews() {
+    console.log(this.currentFilm)
+    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+      var id = film['movie_results'][0].id;
+      this.api.getMovieTMDbId(id).subscribe((film: any) => {
+        this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
+          reviews.results.forEach((review: any) => {
+            console.log(review)
+          })
+        })
+      })
+    })
   }
 
 }
