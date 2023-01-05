@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule} from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { ConnexionComponent } from './connexion/connexion.component';
-import { HomeComponent, ajouterFilm  } from './home/home.component';
+import { HomeComponent  } from './home/home.component';
 import { CarousselComponent } from './caroussel/caroussel.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { InscrireComponent } from './inscrire/inscrire.component';
@@ -28,6 +28,7 @@ import { DetailListeComponent } from './detail-liste/detail-liste.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
+import { ajouterFilm } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatRadioModule
   ],
   providers: [AuthService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ajouterFilm]
 })
 export class AppModule { }

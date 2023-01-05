@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.diag.open(ajouterFilm, {
-      width: '700px',
+      width: '800px',
       data: {
         title: this.title,
         dateVision: this.dateVision,
@@ -92,12 +92,13 @@ export class HomeComponent implements OnInit {
 export class ajouterFilm implements OnInit {
   filmError: boolean = false;
 
-  currentListAPI: any;
+ // currentListAPI: any;
 
   boutonAjoutClicked: boolean = false;
 
   searchMoviesCtrl = new FormControl();
-  filteredMovies: any;
+  filteredMoviesTMDB: any;
+  filteredMoviesOMDB: any;
   isLoading = false;
   errorMsgFilmExists = false;
   minLengthTerm = 3;
@@ -112,23 +113,31 @@ export class ajouterFilm implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogAjoutFilm) {}
 
     ngOnInit(): void {
-      if (this.omdbSelected) {
-        this.OMDBInit();
-        console.log("OMDB")
-      } else {
-        this.TMDBInit();
-        console.log("TMDB")
-      }
+      // if (this.omdbSelected) {
+      //   this.OMDBInit();
+      //   console.log("OMDB")
+      // } else if (!this.omdbSelected) {
+      //   this.TMDBInit();
+      //   console.log("TMDB")
+      // }
     }
 
     changeBoolTrue() {
       this.omdbSelected = true
-      this.ngOnInit()
+      this.OMDBInit();
     }
 
     changeBoolFalse(){
       this.omdbSelected = false
-      this.ngOnInit();
+      this.TMDBInit();
+    }
+
+    clickButtonChooseAPIINIT() {
+      if (this.omdbSelected) {
+        this.ajoutFilmFromOMDB();
+      } else {
+        this.ajoutFilmFromTMDB();
+      }
     }
 
 
@@ -136,7 +145,7 @@ export class ajouterFilm implements OnInit {
   OMDBInit() {
     this.omdbSelected = true;
     this.selectedMovie = '';
-    this.filteredMovies = null;
+    this.filteredMoviesOMDB = null;
     this.searchMoviesCtrl.valueChanges
     .pipe(
       filter(res => {
@@ -145,7 +154,7 @@ export class ajouterFilm implements OnInit {
       distinctUntilChanged(),
       debounceTime(1000),
       tap(() => {
-        this.filteredMovies = [];
+        this.filteredMoviesTMDB = [];
         this.isLoading = true;
       }),
       switchMap(value => this.api.getMoviesBySearchTerm(value)
@@ -158,11 +167,11 @@ export class ajouterFilm implements OnInit {
     )
     .subscribe((data: any) => {
       if (data['Search'] == undefined) {
-        this.filteredMovies = [];
+        this.filteredMoviesOMDB = [];
       } else {
-        this.filteredMovies = data['Search'];
+        this.filteredMoviesOMDB = data['Search'];
       }
-      console.log(this.filteredMovies);
+      console.log(this.filteredMoviesOMDB);
     });
   }
 
@@ -170,7 +179,7 @@ export class ajouterFilm implements OnInit {
   TMDBInit() {
     this.omdbSelected = false;
     this.selectedMovie = '';
-    this.filteredMovies = null;
+    this.filteredMoviesTMDB = null;
     this.searchMoviesCtrl.valueChanges
       .pipe(
         filter((res) => {
@@ -179,7 +188,7 @@ export class ajouterFilm implements OnInit {
         distinctUntilChanged(),
         debounceTime(1000),
         tap(() => {
-          this.filteredMovies = [];
+          this.filteredMoviesTMDB = [];
           this.isLoading = true;
         }),
         switchMap((value) =>
@@ -191,11 +200,11 @@ export class ajouterFilm implements OnInit {
         )
       ).subscribe((data: any) => {
       if (data['results'] == undefined) {
-        this.filteredMovies = [];
+        this.filteredMoviesTMDB = [];
       } else {
-        this.filteredMovies = data['results'];
+        this.filteredMoviesTMDB = data['results'];
       }
-      console.log(this.filteredMovies);
+      console.log(this.filteredMoviesTMDB);
     });
   }
 
@@ -209,7 +218,8 @@ export class ajouterFilm implements OnInit {
 
   clearSelection() {
     this.selectedMovie = '';
-    this.filteredMovies = [];
+    this.filteredMoviesOMDB = [];
+    this.filteredMoviesTMDB = [];
   }
 
   onNoClick(): void {
@@ -222,7 +232,7 @@ export class ajouterFilm implements OnInit {
     });
   }
 
-  ajoutFilmFromIMDB() {
+  ajoutFilmFromOMDB() {
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
@@ -259,6 +269,7 @@ export class ajouterFilm implements OnInit {
     } else {
       this.filmError = true;
     }
+    console.log("Added from OMDB")
   }
 
   ajoutFilmFromTMDB() {
@@ -271,6 +282,7 @@ export class ajouterFilm implements OnInit {
     var tmdbid = this.selectedMovie.id;
     console.log(tmdbid);
     this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
+      console.log(movieTMDB);
       var imdb_id = movieTMDB.imdb_id;
       if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(
@@ -302,6 +314,7 @@ export class ajouterFilm implements OnInit {
         this.filmError = true;
       }
     });
+    console.log("Added from TMDB")
   }
 
   checkIfFilmExistsInList(movieID: any): boolean {
