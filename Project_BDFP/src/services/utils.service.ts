@@ -17,7 +17,9 @@ export class UtilsService {
 
   currentListe!: any;
 
-  film: any[] = [];
+  films: any[] = [];
+
+  movie: any;
 
   estConnecte: boolean = false;
 
@@ -72,11 +74,19 @@ export class UtilsService {
   }
 
   setListOfFilms(films: any) {
-    this.film = films;
+    this.films = films;
   }
 
   getListOfFilms() {
-    return this.film;
+    return this.films;
+  }
+
+  setMovie(movie: any) {
+    this.movie = movie;
+  }
+
+  getMovie() {
+    return this.movie;
   }
 
   setListeRecherche(liste: Film[]) {

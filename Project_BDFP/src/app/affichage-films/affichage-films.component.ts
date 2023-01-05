@@ -74,7 +74,8 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   clickFilm(infoFilm: any) {
-    this.utilService.setListOfFilms(infoFilm);
+    console.log("Affichage films " + infoFilm.Title);
+    this.utilService.setMovie(infoFilm);
     if(infoFilm.Title != undefined){
       this.router.navigateByUrl('/home/' + infoFilm.Title);
     } else {

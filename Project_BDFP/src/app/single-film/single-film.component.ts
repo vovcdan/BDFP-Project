@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
@@ -20,10 +19,12 @@ export class SingleFilmComponent implements OnInit {
 
   currentFilmInfos: any;
 
+  actors: Map<string, string> = new Map();
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
 
   ngOnInit(): void {
-    this.currentFilm = this.utilService.getListOfFilms();
+    this.currentFilm = this.utilService.getMovie();
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
       this.listfilm = listeFilm[0].movies;
       for(let i = 0; i < this.listfilm.length; i++) {
@@ -33,6 +34,7 @@ export class SingleFilmComponent implements OnInit {
         }
       }
     });
+    this.chercherActeurs();
   }
 
   back() {
@@ -53,14 +55,24 @@ export class SingleFilmComponent implements OnInit {
   }
 
   chercherActeurs() {
-    if (this.currentFilmInfos.tmdbID) {
-      this.api.getCastTMDB(this.currentFilmInfos.tmdbID).subscribe((actors) => {
+    //TODO: Verifier que le premier if marche
+    if(this.currentFilm.tmdbID) {
+      this.api.getCastTMDB(this.currentFilm.tmdbID).subscribe((actors: any) => {
+        actors.cast.forEach((actor: any) => { 
+          this.actors.set(actor.name, actor.character)
+        })
         console.log(actors)
       })
     } else {
-      this.api.getMovieTMDBByIMDBID(this.currentFilmInfos.omdbID).subscribe((film: any) => {
-        this.api.getCastTMDB(film.id).subscribe((actors) => {
-          console.log(actors)
+      this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+        var id = film['movie_results'][0].id;
+        this.api.getMovieTMDbId(id).subscribe((film: any) => {
+          this.api.getCastTMDB(film.id).subscribe((actors: any) => {
+            actors.cast.forEach((actor: any) => { 
+              this.actors.set(actor.name, actor.character)
+            })
+            console.log(this.actors)
+          })
         })
       })
     }
