@@ -23,7 +23,10 @@
     </div>
     <p *ngIf="errorExist" style="color: white">Email déjà existante</p>
     <div class="action-buttons">
-      <button class="but" mat-flat-button (click)="addUser()">S'inscrire</button>
+      <div id="buttons">
+        <button class="but" mat-flat-button (click)="redirectSign()">Se connecter</button>
+        <button class="but" mat-flat-button (click)="addUser()">S'inscrire</button>
+      </div>
     </div>
     <div>
     </div>
