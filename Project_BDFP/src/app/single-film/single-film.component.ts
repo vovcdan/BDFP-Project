@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
+import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
@@ -19,7 +20,7 @@ export class SingleFilmComponent implements OnInit {
 
   currentFilmInfos: any;
 
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar) { }
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getListOfFilms();
@@ -49,6 +50,20 @@ export class SingleFilmComponent implements OnInit {
       this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
       this.back();
     })
+  }
+
+  chercherActeurs() {
+    if (this.currentFilmInfos.tmdbID) {
+      this.api.getCastTMDB(this.currentFilmInfos.tmdbID).subscribe((actors) => {
+        console.log(actors)
+      })
+    } else {
+      this.api.getMovieTMDBByIMDBID(this.currentFilmInfos.omdbID).subscribe((film: any) => {
+        this.api.getCastTMDB(film.id).subscribe((actors) => {
+          console.log(actors)
+        })
+      })
+    }
   }
 
 }
