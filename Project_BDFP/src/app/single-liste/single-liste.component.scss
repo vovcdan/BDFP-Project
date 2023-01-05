@@ -12,6 +12,7 @@
 #bout {
 justify-content: center;
 display: flex;
+margin-bottom: 50px;
 }
 
 #titrelist {
@@ -20,9 +21,9 @@ display: flex;
     font-size: 45px; 
     font-weight: 100; 
     line-height: 5px; 
-    padding: 30px;
+    padding-top: 100px;
     color: orange;
-    margin-top: 50px;
+    margin-top: 20px;
     text-transform : uppercase;
 }
 
@@ -37,7 +38,7 @@ display: flex;
 .bt {
     margin-right: 10px;
     transition: 0.4s;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 5px;
     color: white;
     background-color: rgb(39, 39, 39);
