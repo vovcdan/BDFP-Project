@@ -4,9 +4,9 @@ h2 {
   text-transform: uppercase;
 }
 .form-card {
-  box-sizing: border-box;
+  min-width: 350px;
+    box-sizing: border-box;
     width: 30%;
-    min-width: 350px;
     margin: 40px auto 40px auto;
     padding: 10px 30px 30px;
     //box-shadow: orange 4px 4px 15px;
@@ -33,12 +33,19 @@ h2 {
   }
   
   button {
-    display: block;
-    margin: 0px auto;
+    display: inline-block;
+    margin: 20px ;
   }
 
   #entier {
-    padding-bottom: 57.2vh;
+    padding-bottom: 47.7vh;
+  }
+
+  ::ng-deep .mat-form-field {
+    // forme de l'entree 
+    background-color: rgba(212, 211, 211, 0.06);
+    border-radius: 30px;
+    height: 50px;
   }
 
   ::ng-deep .mat-focused .mat-form-field-label {
@@ -58,6 +65,7 @@ h2 {
 
   .lab {
     color: white;
+    display: inline;
   }
 
   .but {
@@ -67,22 +75,28 @@ h2 {
     border-radius: 8px;
     transition: 0.4s;
     color: white;
-    display: block;
-    margin: 0 auto;
-    height: 100%;
         
     
         &:hover {
             color: orange;
            
         }
-  }
-  .mat-icon {
-    color : orange;
+    
   }
 
-  #icone {
-    transform: scale(3);
-    display: block;
-    margin : 30px auto 40px 48%;
-  }
+.mat-icon {
+  color : orange;
+}
+
+#buttons {
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+  margin: 20px auto auto 60px;
+}
+
+#icone {
+  transform: scale(3);
+  display: block;
+  margin : 30px auto 40px 48%;
+}

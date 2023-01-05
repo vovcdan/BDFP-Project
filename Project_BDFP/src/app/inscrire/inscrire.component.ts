@@ -29,7 +29,13 @@ export class InscrireComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
+
   }
+
+  redirectSign() {
+    this.router.navigateByUrl('connect');
+  }
+  
 
   /*
   * addUser() -> ajoute un utilisateur dans la base de données mongoDB via l'API express 
