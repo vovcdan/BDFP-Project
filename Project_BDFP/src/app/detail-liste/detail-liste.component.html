@@ -13,7 +13,9 @@
                 <p><span class="bold">Durée du film:</span> {{infoMovies.Runtime}}</p>
                 <p><span class="bold">Synopsys:</span> {{infoMovies.Plot}}</p>
             </div>
+            <button id="supp" mat-button (click)="afficherFilm(infoMovies, infoMovies.Title)">Details</button>
             <button id="supp" mat-raised-button (click)="deleteMovie(infoMovies.imdbID, infoMovies.Title)">Supprimer le film</button>
+
         </div>
     </div>
 </div>
