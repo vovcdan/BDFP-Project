@@ -27,6 +27,7 @@ export class AffichageFilmsComponent implements OnInit {
   locationControl = new FormControl();
   accompagnateursControl = new FormControl();
   resList: any[] = [];
+  movies: Map<any, string> = new Map();
 
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
@@ -34,43 +35,46 @@ export class AffichageFilmsComponent implements OnInit {
     this.films = this.utilService.getListeRecherche();
     if(this.films) {
       for(let i = 0; i < this.films.length; i++) {
-        this.api.getMovieById(this.films[i].omdbID).subscribe((filmAPI) => {
-          this.filmsWithAPI[i] = filmAPI;
+        this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
+          var id = filmAPI['movie_results'][0].id;
+          var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
+          this.movies.set(filmAPI, poster);
         })
       }
-
     } else {
       this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
         this.films = allfilms[0].movies;
         this.utilService.setListOfFilms(this.films);
         if(this.films.length >= 14) {
           for(let i = 0; i < 14; i++) {
-            this.api.getMovieById(this.films[i].omdbID).subscribe((filmAPI) => {
-                this.filmsWithAPI[i] = filmAPI;
-              })
+            this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
+              var id = filmAPI['movie_results'][0].id;
+              var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
+              this.movies.set(filmAPI, poster);
+            })
             }
         } else {
           for(let i = 0; i < this.films.length; i++) {
-            this.api.getMovieById(this.films[i].omdbID).subscribe((filmAPI) => {
-              this.filmsWithAPI[i] = filmAPI;
+            this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
+              var id = filmAPI['movie_results'][0].id;
+              var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
+              this.movies.set(filmAPI, poster);
             })
           }
         }
       });
-    }
-    
+    }    
   }
 
   reloadFilms() {
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
       this.films = allfilms[0].movies;
       this.utilService.setListOfFilms(this.films);      
-              this.utilService.setListeRecherche(this.films);
-              this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-                this.router.navigateByUrl('/home');
-              });
-      })
-    
+      this.utilService.setListeRecherche(this.films);
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigateByUrl('/home');
+      });
+    })
   }
 
   clickFilm(infoFilm: any) {

@@ -46,13 +46,13 @@
 
 </div>
 <div id="images">
-    <div *ngFor="let infoMovies of filmsWithAPI" id="Poster">
+    <div *ngFor="let infoMovies of movies | keyvalue" id="Poster">
         <a id="description" *ngIf="infoMovies">
-            <h2 (click)="clickFilm(infoMovies)"> {{infoMovies.Title}}</h2>
-            <h3 > {{infoMovies.Year}}</h3>
+            <h2 (click)="clickFilm(infoMovies)"> {{infoMovies.key['movie_results'][0].original_title}}</h2>
+            <h3 > {{infoMovies.key['movie_results'][0].release_date}}</h3>
         </a>
         <a (click)="clickFilm(infoMovies)">
-            <img *ngIf="infoMovies" src={{infoMovies.Poster}} alt={{infoMovies.Title}} id="poster">
+            <img *ngIf="infoMovies" src={{infoMovies.value}} alt="{{infoMovies.key['movie_results'][0].original_title}}" id="poster">
         </a>
     </div>
 
