@@ -27,10 +27,11 @@ export class SingleFilmComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
+    console.log(this.currentFilm)
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
       this.listfilm = listeFilm[0].movies;
       for(let i = 0; i < this.listfilm.length; i++) {
-        if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
+        if(this.listfilm[i].omdbID == this.currentFilm.imdb_id) {
           this.currentFilmInfos = this.listfilm[i];
           return;
         }

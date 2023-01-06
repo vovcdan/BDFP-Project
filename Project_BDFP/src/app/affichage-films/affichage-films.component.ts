@@ -78,13 +78,16 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   clickFilm(infoFilm: any) {
-    console.log("Affichage films " + infoFilm.Title);
-    this.utilService.setMovie(infoFilm);
-    if(infoFilm.Title != undefined){
-      this.router.navigateByUrl('/home/' + infoFilm.Title);
-    } else {
-      this.router.navigateByUrl('/home/' + infoFilm.original_title);
-    }
+    console.log(infoFilm)
+    this.api.getMovieTMDbId(infoFilm.id).subscribe((film: any) => {
+      console.log(film)
+      this.utilService.setMovie(film);
+      if(infoFilm.Title != undefined){
+        this.router.navigateByUrl('/home/' + infoFilm.Title);
+      } else {
+        this.router.navigateByUrl('/home/' + infoFilm.original_title);
+      }
+    })
   }
 
   affichageForm() {
