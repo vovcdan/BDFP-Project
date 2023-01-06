@@ -10,7 +10,7 @@
     </div>
 
     <mat-radio-group id="groupradio" aria-label="Select an option">
-      <mat-radio-button class="radio" value="OMDB" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
+      <mat-radio-button class="radio" value="OMDB" [checked]="true" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
       <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
     </mat-radio-group>
 

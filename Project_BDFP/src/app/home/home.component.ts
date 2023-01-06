@@ -106,20 +106,14 @@ export class ajouterFilm implements OnInit {
   movieValue!: string;
   films: Film[] = [];
   val: boolean = false;
-  omdbSelected!: boolean;
+  omdbSelected: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<ajouterFilm>, private filmService: FilmsService, private api: ApiServiceService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: DialogAjoutFilm) {}
 
     ngOnInit(): void {
-      // if (this.omdbSelected) {
-      //   this.OMDBInit();
-      //   console.log("OMDB")
-      // } else if (!this.omdbSelected) {
-      //   this.TMDBInit();
-      //   console.log("TMDB")
-      // }
+      this.OMDBInit();
     }
 
     changeBoolTrue() {
@@ -171,7 +165,7 @@ export class ajouterFilm implements OnInit {
       } else {
         this.filteredMoviesOMDB = data['Search'];
       }
-      console.log(this.filteredMoviesOMDB);
+      //console.log(this.filteredMoviesOMDB);
     });
   }
 
@@ -204,7 +198,7 @@ export class ajouterFilm implements OnInit {
       } else {
         this.filteredMoviesTMDB = data['results'];
       }
-      console.log(this.filteredMoviesTMDB);
+      //console.log(this.filteredMoviesTMDB);
     });
   }
 
@@ -269,7 +263,6 @@ export class ajouterFilm implements OnInit {
     } else {
       this.filmError = true;
     }
-    console.log("Added from OMDB")
   }
 
   ajoutFilmFromTMDB() {
@@ -314,7 +307,6 @@ export class ajouterFilm implements OnInit {
         this.filmError = true;
       }
     });
-    console.log("Added from TMDB")
   }
 
   checkIfFilmExistsInList(movieID: any): boolean {
