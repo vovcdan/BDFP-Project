@@ -40,11 +40,11 @@ export class DetailListeComponent implements OnInit {
         this.films = this.temp[0].movies;
         for (let i = 0; i < this.films.length; i++) {
           this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-            var id = filmAPI['movie_results'][0].id;
             var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
-            this.api.getMovieTMDbId(id).subscribe((film: any) => {
+            this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
+              console.log(film)
               this.movies.set(film, poster);
-            })
+            });
           })
         }
         console.log(this.movies)

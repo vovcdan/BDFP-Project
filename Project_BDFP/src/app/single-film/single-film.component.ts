@@ -31,7 +31,7 @@ export class SingleFilmComponent implements OnInit {
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
       this.listfilm = listeFilm[0].movies;
       for(let i = 0; i < this.listfilm.length; i++) {
-        if(this.listfilm[i].omdbID == this.currentFilm.imdb_id) {
+        if(this.listfilm[i].omdbID == this.currentFilm.imdb_id || this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
           return;
         }
