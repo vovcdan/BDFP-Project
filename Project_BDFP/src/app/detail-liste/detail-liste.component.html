@@ -1,20 +1,20 @@
 <div id="entier">
-    <div id="film" *ngFor="let infoMovies of filmsWithAPI">
+    <div id="film" *ngFor="let infoMovies of movies | keyvalue">
         <div id="leposter" *ngIf="infoMovies">
 
-            <img src={{infoMovies.Poster}} alt={{infoMovies.Title}} id="img">
+            <img src={{infoMovies.value}} id="img">
         </div>
         <div>
 
             <div class="infos" *ngIf="infoMovies">
-                <p><span class="bold">Titre: </span>  {{infoMovies.Title}}</p>
-                <p><span class="bold">Année de sortie:</span>  {{infoMovies.Year}}</p>
-                <p><span class="bold">Acteurs:</span>  {{infoMovies.Actors}}</p>
-                <p><span class="bold">Durée du film:</span> {{infoMovies.Runtime}}</p>
-                <p><span class="bold">Synopsys:</span> {{infoMovies.Plot}}</p>
+                <p><span class="bold">Titre: </span>  {{infoMovies.key.original_title}}</p>
+                <p><span class="bold">Année de sortie:</span>  {{infoMovies.key.release_date}}</p>
+                <p><span class="bold">Acteurs:</span>  {{infoMovies.key.original_title}}</p>
+                <p><span class="bold">Durée du film:</span> {{infoMovies.key.runtime}}</p>
+                <p><span class="bold">Synopsys:</span> {{infoMovies.key.overview}}</p>
             </div>
-            <button id="supp" mat-button (click)="afficherFilm(infoMovies, infoMovies.Title)">Details</button>
-            <button id="supp" mat-raised-button (click)="deleteMovie(infoMovies.imdbID, infoMovies.Title)">Supprimer le film</button>
+            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key['movie_results'][0], infoMovies.key['movie_results'][0].original_title)">Details</button>
+            <button id="supp" mat-raised-button (click)="deleteMovie(infoMovies.key['movie_results'][0].imdb_id, infoMovies.key['movie_results'][0].original_title)">Supprimer le film</button>
 
         </div>
     </div>
