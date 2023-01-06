@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+  import { Location } from '@angular/common';
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
