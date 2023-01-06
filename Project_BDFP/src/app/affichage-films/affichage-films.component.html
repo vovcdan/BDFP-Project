@@ -51,7 +51,7 @@
             <h2 (click)="clickFilm(infoMovies)"> {{infoMovies.key['movie_results'][0].original_title}}</h2>
             <h3 > {{infoMovies.key['movie_results'][0].release_date}}</h3>
         </a>
-        <a (click)="clickFilm(infoMovies)">
+        <a (click)="clickFilm(infoMovies.key['movie_results'][0])">
             <img *ngIf="infoMovies" src={{infoMovies.value}} alt="{{infoMovies.key['movie_results'][0].original_title}}" id="poster">
         </a>
     </div>
