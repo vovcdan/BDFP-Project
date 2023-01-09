@@ -117,7 +117,6 @@ export class SingleListeComponent implements OnInit {
 
 export class ajouterUnFilm implements OnInit {
 
-  showError: boolean = false;
 
   currentListAPI: any;
 
@@ -197,20 +196,31 @@ export class ajouterUnFilm implements OnInit {
 
   ajoutFilm() {
 
+    var imdbID: any;
+    if(this.filmChoisi != undefined) {
+      imdbID = this.filmChoisi.omdbID;
+    } else {
+      this.openSnackBar("Veuillez selectionner un film");
+    }
+
       this.film.getOneList(this.utilService.getUserId(), this.utilService.getCurrentListeName()).subscribe(laListe => {
         this.curListeRefreshed = laListe;
 
-        if(!this.checkIfFilmExistsInList(this.filmChoisi.omdbID, this.curListeRefreshed[0])) {
+        if(!this.checkIfFilmExistsInList(this.filmChoisi.omdbID, this.curListeRefreshed[0]) && imdbID) {
           this.film.addFilmToAllLists(this.curListeRefreshed[0].titrelist, this.filmChoisi.titre, this.filmChoisi.omdbID, this.utilService.getUserId(), this.filmChoisi.dateVision, this.filmChoisi.cinema, this.filmChoisi.accompagnateurs, this.filmChoisi.avis, this.filmChoisi.note).subscribe(thefilm => {
             this.openSnackBar(this.filmChoisi.titre + " a été ajouté à la liste " + this.curListeRefreshed[0].titrelist );
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigateByUrl('/favs/' + this.curListeRefreshed[0].titrelist);
+              this.dialogRef.close();
             })
           });
+        } else if (this.checkIfFilmExistsInList(this.filmChoisi.omdbID, this.curListeRefreshed[0])) {
+            this.openSnackBar(this.filmChoisi.titre + " appartient déjà à la liste " + this.utilService.getCurrentListeName() );
+
         } else {
-          this.openSnackBar(this.filmChoisi.titre + " appartient déjà à la liste " + this.utilService.getCurrentListeName() );
-          this.showError = true;
+            this.openSnackBar(this.filmChoisi + " n'appartient pas dans votre répertoire");
         }
+
       })
   }
 
@@ -226,6 +236,8 @@ export class ajouterUnFilm implements OnInit {
     }
     return this.val;
   }
+
+
 
 }
 
