@@ -5,7 +5,7 @@
 </div>
 
 <div id="film" [ngStyle]="{'background-image': 'linear-gradient(
-    rgba(40, 40, 40, 0.9), 
+    rgba(40, 40, 40, 0.9),
     rgba(40, 40, 40, 0.9)), url(' + currentFilm.Poster + ')','background-repeat': 'repeat'}">
 
 
@@ -39,7 +39,7 @@
             </div>
             </div>
             <hr/>
-            <div id="wrapper2"> 
+            <div id="wrapper2">
                 <div class="six">
                     <mat-icon class="icone">movie_creation</mat-icon>
                     <p><span class="bold">Acteurs :</span> {{currentFilm.Actors}}</p>
@@ -47,18 +47,18 @@
                         <summary>
                             <p id="texte">voir plus</p>
                         </summary>
-                        <ul> 
+                        <ul>
                             <li *ngFor="let item of actors | keyvalue;"> {{item.key}} ({{item.value}})</li>
-                        </ul>                 
+                        </ul>
                     </details>
                 </div>
                 <div class="seven">
                     <mat-icon class="icone">rate_review</mat-icon>
-                    <p><span class="bold">Réalisateurs :</span>  {{this.realisator}}</p>     
+                    <p><span class="bold">Réalisateurs :</span>  {{this.realisator}}</p>
                 </div>
                 <div class="eight">
                     <mat-icon class="icone">event_note</mat-icon>
-                    <p><span class="bold">Synopsys : </span> {{currentFilm.Plot}}</p>
+                    <p><span class="bold">Synopsis : </span> {{currentFilm.Plot}}</p>
                 </div>
         </div>
     </div>
