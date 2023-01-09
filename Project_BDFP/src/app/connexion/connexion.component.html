@@ -19,6 +19,7 @@
           <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="passForm">
         </mat-form-field>
       </div>
+    </div>
       <p *ngIf="errorMess" style="color: white">Identifiants incorrects !</p>
       <div class="action-buttons">
 
@@ -27,7 +28,6 @@
         <button class="but" mat-flat-button (click)="connexion()">Connexion</button>
         <button class="but" mat-flat-button (click)="redirectSign()">S'inscrire</button>
       </div>
-    </div>
   </div>
 </div>
   

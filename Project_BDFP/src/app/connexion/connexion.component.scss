@@ -15,9 +15,8 @@ h2 {
   }
   
   .form-group {
-    display: grid;
-    margin: 20px auto auto 50px;
-    width: 29%;
+    margin: 20px auto auto 20%; 
+    width: 50%;
     align-items: center;
     justify-content: space-between;
     font-size: small;
@@ -104,6 +103,7 @@ h2 {
 
 #centre {
   margin : 0 auto;
+  text-align: center;
 }
 
 #head {
