@@ -17,30 +17,30 @@
             <p id="soustitre">( {{currentFilm.Year}} ) - {{currentFilm.Genre}} - {{currentFilm.Runtime}}</p>
         <div id="details">
             <div class="wrapper">
-            <div class="one">
+            <div>
                 <mat-icon class="icone">star_border</mat-icon>
                 <p><span class="bold">Note :</span>  {{currentFilmInfos.note}}/5</p>
             </div>
-            <div class="two">
+            <div>
                 <mat-icon class="icone">camera_roll</mat-icon>
                 <p><span class="bold">Date de visionnage :</span>  {{currentFilmInfos.dateVision}}</p>
             </div>
-            <div class="three">
+            <div>
 		        <mat-icon class="icone"> place</mat-icon>
                 <p><span class="bold">Cinéma :</span>  {{currentFilmInfos.cinema}}</p>
             </div>
-            <div class="four">
+            <div>
                 <mat-icon class="icone">supervisor_account</mat-icon>
                 <p><span class="bold">Accompagnateurs :</span>  {{currentFilmInfos.accompagnateurs}}</p>
             </div>
-            <div class="five">
+            <div>
                 <mat-icon class="icone"> local_movies</mat-icon>
                 <p><span class="bold">Avis :</span> {{currentFilmInfos.avis}}</p>
             </div>
             </div>
             <hr/>
             <div id="wrapper2">
-                <div class="six">
+                <div>
                     <mat-icon class="icone">movie_creation</mat-icon>
                     <p><span class="bold">Acteurs :</span> {{currentFilm.Actors}}</p>
                     <details>
@@ -52,13 +52,33 @@
                         </ul>
                     </details>
                 </div>
-                <div class="seven">
+                <div>
                     <mat-icon class="icone">rate_review</mat-icon>
                     <p><span class="bold">Réalisateurs :</span>  {{this.realisator}}</p>
                 </div>
-                <div class="eight">
+                <div>
                     <mat-icon class="icone">event_note</mat-icon>
                     <p><span class="bold">Synopsis : </span> {{currentFilm.Plot}}</p>
+                </div>
+                <div>
+                    <mat-icon class="icone">stars</mat-icon>
+                    <p id="ligne"> 
+                        <details>
+                            <summary>
+                                <span class="bold">Critiques :</span>
+                                <p id="texte"> afficher les critiques</p>
+                            </summary>
+                            <ul *ngFor="let rev of listeRevue.results">
+                                <li> 
+                                    <ul id="det">
+                                        <li><span class="bold">utilisateur : </span>{{rev.author}}</li>
+                                        <li><span class="bold"> critique : </span>{{rev.content}}</li>
+                                        <li><span class="bold">en savoir + : </span>{{rev.url}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </details>
+                    </p>
                 </div>
         </div>
     </div>
