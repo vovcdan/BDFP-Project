@@ -1,21 +1,25 @@
+// case qui contient le formulaire
 #dialog {
     text-align: center;
 }
-
+// champ de saisie 
 .field {
     margin-bottom: 30px;
     display: inline-block;
     margin-left: 10px;
+    width: auto;
 }
-
+// radio choix api independant
 .radio{
     margin : 0px 16px 0px 16px;
 }
-
+// radio button ensemble
 #groupradio{
     display: block;
     margin-bottom: 30px;
 }
+
+
 
 
 
