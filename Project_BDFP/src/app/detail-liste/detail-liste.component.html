@@ -13,7 +13,7 @@
                 <p><span class="bold">Durée du film:</span> {{infoMovies.key.Runtime}}</p>
                 <p><span class="bold">Synopsys:</span> {{infoMovies.key.Plot}}</p>
             </div>
-            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key, infoMovies.key.Title)">Details</button>
+            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key.imdbID)">Details</button>
             <button id="supp" mat-raised-button (click)="deleteMovie(infoMovies.key.imdbID, infoMovies.key.Title)">Supprimer le film</button>
 
         </div>

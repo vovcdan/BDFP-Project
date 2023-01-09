@@ -23,6 +23,8 @@ export class DetailListeComponent implements OnInit {
 
   movies: Map<any, string> = new Map();
 
+  singleFilm: Map<any, string> = new Map();
+
   constructor(
     private filmService: FilmsService,
     private utilService: UtilsService,
@@ -66,10 +68,15 @@ export class DetailListeComponent implements OnInit {
     })
   }
 
-  afficherFilm(movie: string, titre: string) {
-    this.utilService.setMovie(movie);
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl('/home/' + titre);
+  afficherFilm(imdbID: string) {
+    this.api.getMovieTMDBByIMDBID(imdbID).subscribe((film: any) => {
+      var poster = "https://image.tmdb.org/t/p/w185/" + film['movie_results'][0].poster_path;
+      console.log(film['movie_results'][0])
+      this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
+        this.singleFilm.set(filmAPI, poster);
+        this.utilService.setMovie(this.singleFilm);
+        this.router.navigateByUrl('/home/' + filmAPI.Title);
+      })
     })
   }
 }
