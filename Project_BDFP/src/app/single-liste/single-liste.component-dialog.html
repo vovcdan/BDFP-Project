@@ -1,73 +1,66 @@
-<div id="entier"> 
+<div id="entier">
   <h1 mat-dialog-title>Entrez un titre</h1>
-  
-  <div>  
-    <div *ngIf="showError" [ngStyle]="{'color': 'blue', 'font-weight': 'bold'}">
-  
-    Ce film existe déjà dans votre liste.
-  
-  </div>
-  
+
+
   <!-- <mat-form-field appearance="fill">
-  
+
     <mat-label>liste des films</mat-label>
-  
+
     <mat-select [(value)]="filmChoisi">
-  
+
       <mat-option *ngFor="let film of movies" [value]="film">
 
 
-  
+
         {{film.titre}}
-  
+
       </mat-option>
-  
+
     </mat-select>
-  
+
   </mat-form-field> -->
 
 
-  
+
   <mat-form-field appearance="fill">
-  
+
     <mat-label>Liste des films</mat-label>
-  
+
     <input type="text"
-  
-      placeholder="Pick one"
-  
+
+      placeholder="Choisir un film"
+
              aria-label="Number"
-  
+
              matInput
-  
+
              [formControl]="filmControl"
-  
+
              [matAutocomplete]="auto"
-  
+
              [(ngModel)]="filmChoisi">
-  
+
              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelected()">
-  
+
         <mat-option *ngFor="let film of filteredMovies | async" [value]="film">
-  
+
           {{film.titre}}
-  
+
         </mat-option>
-  
+
       </mat-autocomplete>
-  
+
     </mat-form-field>
 
 
-  
+
 </div>
-  
+
   <div mat-dialog-actions>
-  
+
     <button mat-button (click)="onNoClick()">Retour</button>
-  
+
     <button mat-button [mat-dialog-close]="dataAjout.title" cdkFocusInitial (click)="ajoutFilm()">Ok</button>
-  
   </div>
-</div> 
+
 
