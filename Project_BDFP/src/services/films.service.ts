@@ -92,9 +92,9 @@ export class FilmsService {
   });
   }
 
-  deleteMovieDBById(titrefilm: string) {
+  deleteMovieDBById(imdbID: string) {
     let response: EventEmitter<any> = new EventEmitter<any>();
-    this.http.delete<any>('http://localhost:8080/api/movies/' + this.utilService.getUserId() + '/movie/' + titrefilm, {}).subscribe((log) => {
+    this.http.delete<any>('http://localhost:8080/api/movies/' + this.utilService.getUserId() + '/movie/' + imdbID, {}).subscribe((log) => {
       response.emit(log);
   }, (error) => {
       console.log(error)
@@ -105,6 +105,16 @@ export class FilmsService {
   deleteMovieFromList(titrelist: string, omdb: string){
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/allLists/' + this.utilService.getUserId() + '/' + titrelist + '/' + omdb, {}).subscribe((log) => {
+    response.emit(log)
+    }, (error) => {
+      console.log(error)
+    })
+    return response;
+  }
+
+  deleteMovieFromAllLists(imdbID: string){
+    let response: EventEmitter<any> = new EventEmitter<any>();
+    this.http.delete<any>('http://localhost:8080/api/allLists/delete/' + this.utilService.getUserId() + '/' + imdbID, {}).subscribe((log) => {
     response.emit(log)
     }, (error) => {
       console.log(error)
