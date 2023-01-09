@@ -42,18 +42,24 @@
             <div id="wrapper2"> 
                 <div class="six">
                     <mat-icon class="icone">movie_creation</mat-icon>
-                    <p><span class="bold">Acteurs :</span>  {{currentFilm.Actors}}</p>
+                    <p><span class="bold">Acteurs :</span> {{currentFilm.Actors}}</p>
+                    <details>
+                        <summary>
+                            <p id="texte">voir plus</p>
+                        </summary>
+                        <ul> 
+                            <li *ngFor="let item of actors | keyvalue;"> {{item.key}} ({{item.value}})</li>
+                        </ul>                 
+                    </details>
                 </div>
-                <p> </p>
                 <div class="seven">
+                    <mat-icon class="icone">rate_review</mat-icon>
+                    <p><span class="bold">Réalisateurs :</span>  {{this.realisator}}</p>     
+                </div>
+                <div class="eight">
                     <mat-icon class="icone">event_note</mat-icon>
                     <p><span class="bold">Synopsys : </span> {{currentFilm.Plot}}</p>
                 </div>
-                <p> </p>
-                <div class="eight">
-                    <mat-icon class="icone">rate_review</mat-icon>
-                    <p><span class="bold">Revues :</span>  {{currentFilm.reviews}}</p>     
-            </div>
         </div>
     </div>
 </div>

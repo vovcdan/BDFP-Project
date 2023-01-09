@@ -38,6 +38,7 @@ export class SingleFilmComponent implements OnInit {
       }
     });
     this.getRealisateur();
+    this.chercherActeurs();
   }
 
   back() {
