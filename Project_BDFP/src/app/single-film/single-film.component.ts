@@ -15,6 +15,8 @@ export class SingleFilmComponent implements OnInit {
 
   currentFilm: any;
 
+  poster!: string;
+
   listfilm: Film[] = [];
 
   currentFilmInfos: any;
@@ -27,11 +29,12 @@ export class SingleFilmComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
-    console.log(this.currentFilm)
+    this.poster = this.currentFilm.values().next().value;
+    this.currentFilm = this.currentFilm.keys().next().value;
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
       this.listfilm = listeFilm[0].movies;
       for(let i = 0; i < this.listfilm.length; i++) {
-        if(this.listfilm[i].omdbID == this.currentFilm.imdb_id || this.listfilm[i].omdbID == this.currentFilm.imdbID) {
+        if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
           return;
         }
@@ -65,7 +68,6 @@ export class SingleFilmComponent implements OnInit {
         actors.cast.forEach((actor: any) => { 
           this.actors.set(actor.name, actor.character)
         })
-        console.log(actors)
       })
     } else {
       this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
@@ -75,7 +77,6 @@ export class SingleFilmComponent implements OnInit {
             actors.cast.forEach((actor: any) => { 
               this.actors.set(actor.name, actor.character)
             })
-            console.log(this.actors)
           })
         })
       })
@@ -96,7 +97,6 @@ export class SingleFilmComponent implements OnInit {
   }
 
   getRealisateur() {
-    //console.log(this.currentFilm)
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
       console.log(film)
       if(film['movie_results'].length != 0) {
@@ -106,7 +106,6 @@ export class SingleFilmComponent implements OnInit {
             credits.crew.forEach((crew: any) => {
               if(crew.job == "Director") {
                 this.realisator = crew.name;
-                console.log("getRealisateur : "+this.realisator)
               }
             })
           })

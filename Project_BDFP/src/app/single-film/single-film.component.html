@@ -6,11 +6,11 @@
 
 <div id="film" [ngStyle]="{'background-image': 'linear-gradient(
     rgba(40, 40, 40, 0.9),
-    rgba(40, 40, 40, 0.9)), url(' + currentFilm.Poster + ')','background-repeat': 'repeat'}">
+    rgba(40, 40, 40, 0.9)), url(' + this.poster + ')','background-repeat': 'repeat'}">
 
 
     <div id="leposter">
-        <img src={{currentFilm.Poster}} alt={{currentFilm.Title}} id="images">
+        <img src={{this.poster}} alt={{currentFilm.Title} id="images">
     </div>
     <div id="infos" *ngIf="currentFilmInfos">
         <div id="titre">{{currentFilm.Title}}</div>

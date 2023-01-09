@@ -28,6 +28,7 @@ export class AffichageFilmsComponent implements OnInit {
   accompagnateursControl = new FormControl();
   resList: any[] = [];
   movies: Map<any, string> = new Map();
+  singleFilm: Map<any, string> = new Map();
 
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
@@ -78,15 +79,13 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   clickFilm(infoFilm: any) {
-    console.log(infoFilm)
     this.api.getMovieTMDbId(infoFilm.id).subscribe((film: any) => {
-      console.log(film)
-      this.utilService.setMovie(film);
-      if(infoFilm.Title != undefined){
-        this.router.navigateByUrl('/home/' + infoFilm.Title);
-      } else {
-        this.router.navigateByUrl('/home/' + infoFilm.original_title);
-      }
+      var poster = "https://image.tmdb.org/t/p/w185/" + film.poster_path
+      this.api.getMovieById(film.imdb_id).subscribe((filmAPI: any) => {
+        this.singleFilm.set(filmAPI, poster);
+        this.utilService.setMovie(this.singleFilm);
+        this.router.navigateByUrl('/home/' + filmAPI.Title);
+      })
     })
   }
 
@@ -121,6 +120,8 @@ export class AffichageFilmsComponent implements OnInit {
       });
       
   }
+
+
 
 
 
