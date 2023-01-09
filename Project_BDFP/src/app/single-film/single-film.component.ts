@@ -25,6 +25,10 @@ export class SingleFilmComponent implements OnInit {
 
   realisator!: string;
 
+  review !: any;
+
+  listeRevue !: any;
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
 
   ngOnInit(): void {
@@ -42,6 +46,7 @@ export class SingleFilmComponent implements OnInit {
     });
     this.getRealisateur();
     this.chercherActeurs();
+    this.getReviews();
   }
 
   back() {
@@ -88,9 +93,12 @@ export class SingleFilmComponent implements OnInit {
       var id = film['movie_results'][0].id;
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
         this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
+          this.listeRevue = reviews
+          console.log(this.listeRevue)
           reviews.results.forEach((review: any) => {
-            console.log(review)
+            this.review = review
           })
+          console.log(this.review)
         })
       })
     })
