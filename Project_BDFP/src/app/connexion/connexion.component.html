@@ -1,29 +1,30 @@
 <div id="entier">
   <div class="form-card">
     <mat-icon id="icone">account_circle</mat-icon>
-    <h2>User login</h2>
-    
-    <div class="form-group">
-      <mat-form-field appearance="fill">
-        <mat-label class="lab" for="UserName">Email</mat-label>
-        <mat-icon matSuffix>face</mat-icon>
-        <input matInput type="text" id="user" [formControl]="idForm">
-      </mat-form-field>
-    </div>
-    <div class="form-group">
-      <mat-form-field appearance="fill">
-        <mat-label class="lab" for="password">Mot de passe</mat-label>
-        <mat-icon matSuffix>lock_open</mat-icon>
-        <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="passForm">
-      </mat-form-field>
-    </div>
-    <p *ngIf="errorMess" style="color: white">Identifiants incorrects !</p>
-    <div class="action-buttons">
-      
-    </div>
-    <div id="buttons">
-      <button class="but" mat-flat-button (click)="connexion()">Connexion</button>
-      <button class="but" mat-flat-button (click)="redirectSign()">S'inscrire</button>
+    <h2>Connexion</h2>
+    <div id="centre">
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label class="lab" for="UserName">Email</mat-label>
+          <mat-icon matSuffix>face</mat-icon>
+          <input matInput type="text" id="user" [formControl]="idForm">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label class="lab" for="password">Mot de passe</mat-label>
+          <mat-icon matSuffix>lock_open</mat-icon>
+          <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="passForm">
+        </mat-form-field>
+      </div>
+      <p *ngIf="errorMess" style="color: white">Identifiants incorrects !</p>
+      <div class="action-buttons">
+
+      </div>
+      <div id="buttons">
+        <button class="but" mat-flat-button (click)="connexion()">Connexion</button>
+        <button class="but" mat-flat-button (click)="redirectSign()">S'inscrire</button>
+      </div>
     </div>
   </div>
 </div>
