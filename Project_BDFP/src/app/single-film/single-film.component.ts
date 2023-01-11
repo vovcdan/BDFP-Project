@@ -62,11 +62,11 @@ export class SingleFilmComponent implements OnInit {
     this.moviesTitles = this.utilService.getMoviesTitles();
     this.filmService.deleteMovieDBById(this.currentFilmInfos.omdbID).subscribe(film => {
       this.moviesTitles.forEach((element: string) => {
-        this.filmService.deleteMovieFromList(element, this.currentFilmInfos.omdbID).subscribe(films => {
-        
-        })
+        if(!element.includes("partagee par")){
+          this.filmService.deleteMovieFromList(element, this.currentFilmInfos.omdbID).subscribe(films => {})
+        }
       })
-      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé Forvneronep')
+      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
       this.back();
     })
   }
