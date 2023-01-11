@@ -101,7 +101,7 @@ export class ajouterFilm implements OnInit {
   filteredMoviesOMDB: any;
   isLoading = false;
   errorMsgFilmExists = false;
-  minLengthTerm = 3;
+  minLengthTerm = 1;
   selectedMovie!: any;
   movieValue!: string;
   films: Film[] = [];
