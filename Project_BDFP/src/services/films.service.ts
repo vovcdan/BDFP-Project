@@ -22,7 +22,9 @@ export class FilmsService {
 
   listExport!: ListFilm[];
 
-  constructor(private http: HttpClient, private crypt: CryptService, private router: Router, private utilService: UtilsService) {}
+  moviesTitles: any[] = [];
+
+  constructor(private http: HttpClient, private crypt: CryptService, private utilService: UtilsService) {}
 
 
   // Initialise la liste pour l'objet Films de l'utilisateur 
@@ -111,17 +113,7 @@ export class FilmsService {
     })
     return response;
   }
-
-  deleteMovieFromAllLists(imdbID: string){
-    let response: EventEmitter<any> = new EventEmitter<any>();
-    this.http.delete<any>('http://localhost:8080/api/allLists/delete/' + this.utilService.getUserId() + '/' + imdbID, {}).subscribe((log) => {
-    response.emit(log)
-    }, (error) => {
-      console.log(error)
-    })
-    return response;
-  }
-
+  
   deleteListOfAllLists(idListe: string) {
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/allLists/' + idListe, {}).subscribe((log) => {
@@ -147,12 +139,6 @@ export class FilmsService {
       console.log(error)
   });
   }
-
-
-  // pas celui ci 
-  //addFilmToList(title: string) {
-   // this.http.put('http://localhost:8080/api/movieslists/idliste', {"titre":title}).subscribe();
-//}
 
   getFilmsByUid(idUser: string) {
     let film: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -182,6 +168,22 @@ export class FilmsService {
     );
 
     return film;
+  }
+
+  getListsTitles(){
+    this.moviesTitles = [];
+    this.http.get<Film>('http://localhost:8080/api/allLists/' + this.utilService.getUserId()).subscribe(
+      (listFilm: any) => {
+        listFilm.forEach((element: { titrelist: Film | undefined; }) => {
+          this.moviesTitles.push(element.titrelist)
+        })
+        this.utilService.setMoviesTitles(this.moviesTitles)
+        console.log(this.moviesTitles);
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   getAllListFromUser(idUser: string) {
@@ -257,16 +259,6 @@ export class FilmsService {
     );
 
     return users;
-  }
-
-  supprimerFilmBD(idFIlm: string) {
-    let lefilme: EventEmitter<Film> = new EventEmitter<Film>();
-    this.http.delete<Film>('http://localhost:8080/api/movies/' + idFIlm, {}).subscribe((log) => {
-      lefilme.emit(log)
-  }, (error) => {
-      console.log(error)
-  });
-  return lefilme
   }
 
   modifierMail(idUser: string, email: string) {

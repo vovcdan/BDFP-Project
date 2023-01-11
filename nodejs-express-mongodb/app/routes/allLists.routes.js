@@ -10,7 +10,7 @@ module.exports = (app) => {
 
   router.post("/", allLists.create);
 
-  router.post("/share", allLists.createShare)
+  router.post("/share", allLists.createShare);
 
   router.post("/:uid/:titrelist", allLists.addFilmToAList);
 
@@ -25,8 +25,6 @@ module.exports = (app) => {
   router.delete("/:idListe", allLists.deleteOne);
 
   router.delete("/:uid/:titrelist/:omdbID", allLists.deleteMovieFromList);
-
-  router.delete("/delete/:uid/:omdbID", allLists.deleteMovieFromAllLists);
 
   app.use("/api/allLists", router);
 };

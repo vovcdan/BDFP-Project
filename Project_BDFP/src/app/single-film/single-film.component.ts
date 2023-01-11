@@ -25,6 +25,8 @@ export class SingleFilmComponent implements OnInit {
 
   realisator!: string;
 
+  moviesTitles: string[] = [];
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
 
   ngOnInit(): void {
@@ -57,15 +59,16 @@ export class SingleFilmComponent implements OnInit {
   }
 
   deleteMovie(){
-    this.filmService.deleteMovieDBById(this.currentFilmInfos.titre).subscribe(film => {
-      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
+    this.moviesTitles = this.utilService.getMoviesTitles();
+    this.filmService.deleteMovieDBById(this.currentFilmInfos.omdbID).subscribe(film => {
+      this.moviesTitles.forEach((element: string) => {
+        this.filmService.deleteMovieFromList(element, this.currentFilmInfos.omdbID).subscribe(films => {
+        
+        })
+      })
+      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé Forvneronep')
       this.back();
     })
-
-   this.filmService.deleteMovieFromAllLists(this.currentFilmInfos.omdbID).subscribe(films => {
-      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé de toutes les listes')
-      this.back();
-   })
   }
 
   chercherActeurs() {
