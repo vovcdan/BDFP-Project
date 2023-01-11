@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
   // si utilisateur est dans favoris
   favs: boolean = false;
 
-  // formulaire 
+  // formulaire
   snapForm!: FormGroup;
 
   // signale si l'utilisateur est connecté ou non
@@ -52,7 +52,7 @@ export class NavComponent implements OnInit {
       imageUrl:[null],
       location: [null]
     });
-    
+
   }
 
   // vérifie si l'utilisateur est connecté
@@ -70,6 +70,7 @@ export class NavComponent implements OnInit {
   disconnect() {
     this.isSign = false;
     this.utilService.disconnect();
+    this.tok.disconnect();
     this.utilService.setUserName('');
     this.router.navigateByUrl('/connect');
     this.utilService.setUserId('');

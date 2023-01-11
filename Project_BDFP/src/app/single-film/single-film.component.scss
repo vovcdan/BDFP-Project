@@ -120,7 +120,7 @@ p {
 
 .wrapper {
     display: grid;
-    grid-template-columns: 300px 250px;
+    grid-template-columns: 400px 400px;
     grid-auto-rows: minmax(30px, auto);
     row-gap: 2em;
   }
@@ -132,7 +132,7 @@ hr {
 
 #wrapper2 {
     display: grid;
-    grid-template-columns: 550px;
+    grid-template-columns: 800px;
     grid-auto-rows: minmax(30px, auto);;
     row-gap: 2em;
 }
@@ -145,4 +145,16 @@ details {
 
 li {
     font-family : 'Times New Roman', Times, serif;
+}
+
+#det {
+    border-left: solid orange;
+}
+
+summary {
+    display: inline;
+}
+
+#ligne {
+    display: inline;
 }
