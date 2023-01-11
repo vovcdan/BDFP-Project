@@ -34,6 +34,17 @@ export class ConnexionComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+    if (this.token.isSessionActive()) {
+      var sessionObject = JSON.parse(this.token.getSession() || '{}');
+      var username = sessionObject.username;
+      var userID = sessionObject.userID;
+      console.log(username);
+      console.log(userID);
+      this.utilService.connect();
+      this.utilService.setUserName(username);
+      this.utilService.setUserId(userID);7
+      this.router.navigateByUrl('home')
+    }
   }
 
   // redirectSign() -> renvoie à la page d'inscription
@@ -64,14 +75,15 @@ export class ConnexionComponent implements OnInit {
           break;
         }
       }
-      
+
       this.idForm.setValue(null);
       this.passForm.setValue(null);
       this.errorMess = true;
       });
-     
-  
+
+
     }
-  }
+
+}
 
 
