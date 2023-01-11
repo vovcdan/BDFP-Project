@@ -25,6 +25,8 @@ export class SingleFilmComponent implements OnInit {
 
   realisator!: string;
 
+  moviesTitles: string[] = [];
+
   review !: any;
 
   listeRevue !: any;
@@ -33,6 +35,7 @@ export class SingleFilmComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
+    console.log(this.currentFilm);
     this.poster = this.currentFilm.values().next().value;
     this.currentFilm = this.currentFilm.keys().next().value;
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
@@ -40,6 +43,7 @@ export class SingleFilmComponent implements OnInit {
       for(let i = 0; i < this.listfilm.length; i++) {
         if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
+          console.log(this.currentFilmInfos)
           return;
         }
       }
@@ -60,7 +64,13 @@ export class SingleFilmComponent implements OnInit {
   }
 
   deleteMovie(){
-    this.filmService.deleteMovieDBById(this.currentFilmInfos.titre).subscribe(film => {
+    this.moviesTitles = this.utilService.getMoviesTitles();
+    this.filmService.deleteMovieDBById(this.currentFilmInfos.omdbID).subscribe(film => {
+      this.moviesTitles.forEach((element: string) => {
+        if(!element.includes("partagee par")){
+          this.filmService.deleteMovieFromList(element, this.currentFilmInfos.omdbID).subscribe(films => {})
+        }
+      })
       this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
       this.back();
     })

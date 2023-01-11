@@ -33,6 +33,7 @@ export class AffichageFilmsComponent implements OnInit {
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
   ngOnInit(): void {
+    this.filmService.getListsTitles();
     this.films = this.utilService.getListeRecherche();
     if(this.films) {
       for(let i = 0; i < this.films.length; i++) {
