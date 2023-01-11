@@ -23,7 +23,7 @@ module.exports = (app) => {
   router.put("/:uid", movie.update);
 
   // Delete a movie with id
-  router.delete("/:uid/movie/:titre", movie.deleteMovieById);
+  router.delete("/:uid/movie/:omdbID", movie.deleteMovieById);
 
   // Create a new movie
   router.delete("/", movie.deleteAll);
