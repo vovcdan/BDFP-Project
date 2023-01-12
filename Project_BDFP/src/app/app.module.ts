@@ -30,6 +30,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
 import { ajouterFilm } from './home/home.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     partagerListe,
     AffichageFilmsComponent,
     SingleFilmComponent,
-    DetailListeComponent
+    DetailListeComponent,
+    SuppDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
-  entryComponents: [ajouterFilm]
+  entryComponents: [ajouterFilm, SuppDialogComponent],
+  
 })
 export class AppModule { }

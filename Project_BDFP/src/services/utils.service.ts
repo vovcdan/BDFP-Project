@@ -23,6 +23,10 @@ export class UtilsService {
 
   estConnecte: boolean = false;
 
+  imdbIdAndMovieTitle: string[] = [];
+
+  listeOuGlobalSupp!: number;
+
   moviesTitles: string[] = [];
 
   constructor() { }
@@ -90,6 +94,23 @@ export class UtilsService {
 
   getMovie() {
     return this.movie;
+  }
+
+  setImdbIdAndMovieTitle(tab: string[]){
+    this.imdbIdAndMovieTitle = tab;
+  }
+
+  getImdbIdAndMovieTitle(){
+    return this.imdbIdAndMovieTitle;
+  }
+
+  setListeOuGlobalSupp(val: number){
+    this.listeOuGlobalSupp = val;
+    console.log(this.listeOuGlobalSupp)
+  }
+
+  getListeOuGlobalSupp() {
+    return this.listeOuGlobalSupp;
   }
 
   setListeRecherche(liste: Film[]) {

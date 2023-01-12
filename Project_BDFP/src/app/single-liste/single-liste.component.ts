@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {ExportService} from 'services/export.service';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
+import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 
 export interface DialogAjoutFilmListe {
   title: string;
@@ -39,8 +40,8 @@ export class SingleListeComponent implements OnInit {
   title!: string;
 
   destUser!: User;
-
   
+  result: any;
 
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
@@ -105,6 +106,22 @@ export class SingleListeComponent implements OnInit {
       this.curListExport = laliste;
       this.exportService.exportExcel(this.curListExport[0].movies, this.curListExport[0].titrelist);
     })
+  }
+
+  suppDialog(omdbID: string): void {
+    this.utilService.setMovie(this.currentListe);
+    console.log(this.currentListe)
+    const message = `Êtes-vous sûr de vouloir supprimer cette liste ?`;
+    const dialogData = new SuppDialogModel("Suppression", message);
+    this.utilService.setListeOuGlobalSupp(3)
+    const dialogRef = this.diag.open(SuppDialogComponent, {
+      maxWidth: "600px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
   }
 
 }
