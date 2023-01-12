@@ -67,19 +67,6 @@ export class SingleFilmComponent implements OnInit {
     });
   }
 
-  deleteMovie(){
-    this.moviesTitles = this.utilService.getMoviesTitles();
-    this.filmService.deleteMovieDBById(this.currentFilmInfos.omdbID).subscribe(film => {
-      this.moviesTitles.forEach((element: string) => {
-        if(!element.includes("partagee par")){
-          this.filmService.deleteMovieFromList(element, this.currentFilmInfos.omdbID).subscribe(films => {})
-        }
-      })
-      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
-      this.back();
-    })
-  }
-
   chercherActeurs() {
     //TODO: Verifier que le premier if marche
     if(this.currentFilm.tmdbID) {

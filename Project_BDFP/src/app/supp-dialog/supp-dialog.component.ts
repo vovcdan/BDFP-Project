@@ -15,27 +15,24 @@ import { Location } from '@angular/common';
   styleUrls: ['./supp-dialog.component.scss']
 })
 export class SuppDialogComponent implements OnInit {
+
   title: string;
   message: string;
-
   films: Film[] = [];
-
   imdbIdAndMovieTitle: string[] = [];
-
   filmsWithAPI: any[] = [];
-
   curList!: any;
   currentFilmInfos: any;
   listfilm: Film[] = [];
   currentFilm: any;
-
   temp!: any;
-
   movies: Map<any, string> = new Map();
-  
   singleFilm: Map<any, string> = new Map();
   result: any;
   bool!: any;
+  moviesTitles: string[] = [];
+
+
   constructor(public dialogRef: MatDialogRef<SuppDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SuppDialogModel,
     private utilService: UtilsService,
@@ -78,19 +75,24 @@ export class SuppDialogComponent implements OnInit {
     this.filmService.deleteMovieFromList(this.curList.titrelist, this.currentFilm.imdbID).subscribe(res => {
       this.openSnackBar(this.currentFilm.Title + ' a été supprimé de la liste ' + res.titrelist)
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl('/favs/' + res.titrelist);
+        this.router.navigateByUrl('/favs/' + res.titrelist);
       })
     })
     this.dialogRef.close(false)
   }
 
-  deleteMovieGlob() {
-    var title = this.currentFilm.Title
-    this.filmService.deleteMovieDBById(this.currentFilm.Title).subscribe(film => {
+  deleteMovieGlob(){
+    this.moviesTitles = this.utilService.getMoviesTitles();
+    var title = this.currentFilm.Title;
+    this.filmService.deleteMovieDBById(this.currentFilm.imdbID).subscribe(film => {
+      this.moviesTitles.forEach((element: string) => {
+        if(!element.includes("partagee par")){
+          this.filmService.deleteMovieFromList(element, this.currentFilm.imdbID).subscribe(films => {})
+        }
+      })
       this.openSnackBar(title + ' à été supprimé')
       this.back();
     })
-    this.dialogRef.close(false)
   }
  
   choixDelete(){
