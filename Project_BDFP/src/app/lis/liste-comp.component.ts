@@ -16,6 +16,7 @@ export class ListeCompComponent implements OnInit {
   listofFilms: ListFilm[] = [];
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
+  searchText!: any;
 
   constructor(private filmsService: FilmsService,
               private router: Router, private utilService: UtilsService, private exportService: ExportService) { }
@@ -23,6 +24,7 @@ export class ListeCompComponent implements OnInit {
   ngOnInit(): void {
     this.filmsService.getAllListFromUser(this.utilService.getUserId()).subscribe((listofFilms) => {
       this.listofFilms = listofFilms;
+      console.log(this.listofFilms);
     });
 }
 

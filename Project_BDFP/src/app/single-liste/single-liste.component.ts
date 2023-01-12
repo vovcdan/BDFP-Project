@@ -40,7 +40,7 @@ export class SingleListeComponent implements OnInit {
   title!: string;
 
   destUser!: User;
-
+  
   result: any;
 
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,

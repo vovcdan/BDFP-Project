@@ -1,5 +1,8 @@
 <div id="entier">
-    <div id="film" *ngFor="let infoMovies of movies | keyvalue">
+    <div class="search-hero">
+        <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country">
+    </div>
+    <div id="film" *ngFor="let infoMovies of movies | keyvalue | filter: searchText">
         <div id="leposter" *ngIf="infoMovies">
 
             <img src={{infoMovies.value}} id="img">

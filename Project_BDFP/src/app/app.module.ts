@@ -29,6 +29,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
 import { ajouterFilm } from './home/home.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 
 @NgModule({
@@ -68,7 +69,8 @@ import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
     MatSelectModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatRadioModule
+    MatRadioModule,
+    Ng2SearchPipeModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

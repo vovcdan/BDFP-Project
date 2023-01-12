@@ -28,6 +28,8 @@ export class DetailListeComponent implements OnInit {
   singleFilm: Map<any, string> = new Map();
   result: any;
 
+  searchText !: any;
+
   constructor(
     private filmService: FilmsService,
     private utilService: UtilsService,
