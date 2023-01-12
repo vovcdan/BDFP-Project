@@ -29,6 +29,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
 import { ajouterFilm } from './home/home.component';
+import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ajouterFilm } from './home/home.component';
     partagerListe,
     AffichageFilmsComponent,
     SingleFilmComponent,
-    DetailListeComponent
+    DetailListeComponent,
+    SuppDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +72,7 @@ import { ajouterFilm } from './home/home.component';
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
-  entryComponents: [ajouterFilm]
+  entryComponents: [ajouterFilm, SuppDialogComponent],
+  
 })
 export class AppModule { }

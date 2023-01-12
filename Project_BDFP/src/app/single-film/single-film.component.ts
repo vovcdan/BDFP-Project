@@ -1,7 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
+import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
@@ -29,7 +31,9 @@ export class SingleFilmComponent implements OnInit {
 
   listeRevue !: any;
 
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService) { }
+  result: any;
+
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
@@ -59,12 +63,12 @@ export class SingleFilmComponent implements OnInit {
     });
   }
 
-  deleteMovie(){
-    this.filmService.deleteMovieDBById(this.currentFilmInfos.titre).subscribe(film => {
-      this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
-      this.back();
-    })
-  }
+  // deleteMovie(){
+  //   this.filmService.deleteMovieDBById(this.currentFilmInfos.titre).subscribe(film => {
+  //   this.openSnackBar(this.currentFilmInfos.titre + ' à été supprimé')
+  //   this.back();
+  //   })
+  // }
 
   chercherActeurs() {
     //TODO: Verifier que le premier if marche
@@ -98,7 +102,6 @@ export class SingleFilmComponent implements OnInit {
           reviews.results.forEach((review: any) => {
             this.review = review
           })
-          console.log(this.review)
         })
       })
     })
@@ -122,4 +125,19 @@ export class SingleFilmComponent implements OnInit {
     })
   }
 
+  suppDialog(omdbID: string): void {
+    this.utilService.setMovie(this.currentFilm);
+    console.log(this.currentFilm)
+    const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
+    const dialogData = new SuppDialogModel("Suppression", message);
+    this.utilService.setListeOuGlobalSupp(false)
+    const dialogRef = this.dialog.open(SuppDialogComponent, {
+      maxWidth: "600px",
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
+  }
 }

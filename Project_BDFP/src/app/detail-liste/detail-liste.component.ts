@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
 import { ListFilm } from 'app/models/listFilm.models';
+import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
@@ -21,9 +23,10 @@ export class DetailListeComponent implements OnInit {
 
   temp!: any;
 
-  movies: Map<any, string> = new Map();
+  movies!: Map<any, string>;
 
   singleFilm: Map<any, string> = new Map();
+  result: any;
 
   constructor(
     private filmService: FilmsService,
@@ -31,9 +34,11 @@ export class DetailListeComponent implements OnInit {
     private api: ApiServiceService,
     private router: Router,
     private snack: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.movies = new Map();
     this.curList = this.utilService.getCurrentListe();
     this.filmService
       .getOneList(this.utilService.getUserId(), this.curList.titrelist)
@@ -59,14 +64,14 @@ export class DetailListeComponent implements OnInit {
     });
   }
 
-  deleteMovie(imdbID: string, titre: string) {
-    this.filmService.deleteMovieFromList(this.curList.titrelist, imdbID).subscribe(res => {
-      this.openSnackBar(titre + ' a été supprimé de la liste ' + res.titrelist)
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigateByUrl('/favs/' + res.titrelist);
-      })
-    })
-  }
+  // deleteMovie(imdbID: string, titre: string) {
+  //   this.filmService.deleteMovieFromList(this.curList.titrelist, imdbID).subscribe(res => {
+  //     this.openSnackBar(titre + ' a été supprimé de la liste ' + res.titrelist)
+  //     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+  //       this.router.navigateByUrl('/favs/' + res.titrelist);
+  //     })
+  //   })
+  // }
 
   afficherFilm(imdbID: string) {
     this.api.getMovieTMDBByIMDBID(imdbID).subscribe((film: any) => {
@@ -77,6 +82,23 @@ export class DetailListeComponent implements OnInit {
         this.utilService.setMovie(this.singleFilm);
         this.router.navigateByUrl('/home/' + filmAPI.Title);
       })
+    })
+  }
+
+  suppDialog(omdbID: string): void {
+    this.api.getMovieById(omdbID).subscribe((film) => {
+      this.utilService.setMovie(film);
+      const message = `Êtes-vous sûr de vouloir supprimer ce film de la liste ?`;
+      const dialogData = new SuppDialogModel("Suppression", message);
+      this.utilService.setListeOuGlobalSupp(true)
+      const dialogRef = this.dialog.open(SuppDialogComponent, {
+        maxWidth: "600px",
+        data: dialogData
+      });
+
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        this.result = dialogResult;
+      });
     })
   }
 }
