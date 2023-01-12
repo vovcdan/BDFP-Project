@@ -1,4 +1,4 @@
-import { Component, Inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   MatDialog,
@@ -89,7 +89,9 @@ export class HomeComponent implements OnInit {
   templateUrl: 'home.component-dialog.html',
   styleUrls: ['./home.component-dialog.scss'],
 })
+
 export class ajouterFilm implements OnInit {
+
   filmError: boolean = false;
 
  // currentListAPI: any;

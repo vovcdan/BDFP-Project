@@ -17,7 +17,7 @@
     <mat-form-field class="field" appearance="fill">
       <mat-label for="title">Titre</mat-label>
       <input matInput [(ngModel)]="selectedMovie" [matAutocomplete]="auto"
-        [formControl]="searchMoviesCtrl" placeholder="Titanic">
+        [formControl]="searchMoviesCtrl" placeholder="Titanic" cdkFocusInitial>
       <button *ngIf="selectedMovie" matSuffix mat-icon-button aria-label="Clear" (click)="clearSelection()">
         <mat-icon>close</mat-icon>
       </button>
@@ -71,7 +71,7 @@
   <div mat-dialog-actions>
 
     <button mat-button (click)="onNoClick()">Retour</button>
-    <button mat-button cdkFocusInitial [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
+    <button mat-button (keydown.enter)="clickButtonChooseAPIINIT()" [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
 
   </div>
 </div>

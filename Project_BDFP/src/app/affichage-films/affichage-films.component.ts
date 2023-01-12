@@ -48,22 +48,12 @@ export class AffichageFilmsComponent implements OnInit {
       this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
         this.films = allfilms[0].movies;
         this.utilService.setListOfFilms(this.films);
-        if(this.films.length >= 14) {
-          for(let i = 0; i < 14; i++) {
-            this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-              var id = filmAPI['movie_results'][0].id;
-              var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
-              this.movies.set(filmAPI, poster);
-            })
-            }
-        } else {
           for(let i = 0; i < this.films.length; i++) {
             this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
               var id = filmAPI['movie_results'][0].id;
               var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
               this.movies.set(filmAPI, poster);
             })
-          }
         }
       });
     }
