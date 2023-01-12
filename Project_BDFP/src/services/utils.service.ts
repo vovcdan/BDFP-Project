@@ -25,7 +25,7 @@ export class UtilsService {
 
   imdbIdAndMovieTitle: string[] = [];
 
-  listeOuGlobalSupp!: boolean;
+  listeOuGlobalSupp!: number;
 
   moviesTitles: string[] = [];
 
@@ -104,12 +104,12 @@ export class UtilsService {
     return this.imdbIdAndMovieTitle;
   }
 
-  setListeOuGlobalSupp(val: boolean){
+  setListeOuGlobalSupp(val: number){
     this.listeOuGlobalSupp = val;
     console.log(this.listeOuGlobalSupp)
   }
 
-  getListeOuGlobalSupp(): any{
+  getListeOuGlobalSupp() {
     return this.listeOuGlobalSupp;
   }
 

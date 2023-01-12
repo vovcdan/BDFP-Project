@@ -90,7 +90,7 @@ export class DetailListeComponent implements OnInit {
       this.utilService.setMovie(film);
       const message = `Êtes-vous sûr de vouloir supprimer ce film de la liste ?`;
       const dialogData = new SuppDialogModel("Suppression", message);
-      this.utilService.setListeOuGlobalSupp(true)
+      this.utilService.setListeOuGlobalSupp(1)
       const dialogRef = this.dialog.open(SuppDialogComponent, {
         maxWidth: "600px",
         data: dialogData

@@ -127,7 +127,7 @@ export class SingleFilmComponent implements OnInit {
     console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
-    this.utilService.setListeOuGlobalSupp(false)
+    this.utilService.setListeOuGlobalSupp(2)
     const dialogRef = this.dialog.open(SuppDialogComponent, {
       maxWidth: "600px",
       data: dialogData
