@@ -29,6 +29,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatRadioModule} from '@angular/material/radio';
 import { ajouterFilm } from './home/home.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ajouterFilm } from './home/home.component';
     MatSelectModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatRadioModule
+    MatRadioModule,
+    Ng2SearchPipeModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
