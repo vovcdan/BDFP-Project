@@ -194,6 +194,7 @@ exports.deleteMovieFromList = (req, res) => {
     } else {
       res.send({
         message: "Le film a été supprimé",
+        titrelist: titrelist,
       });
     }
   })
