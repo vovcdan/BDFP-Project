@@ -1,6 +1,9 @@
 <div id="entier">
-    <div class="search-hero">
-        <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Start searching for a hero by id or name or country">
+    <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-icon matSuffix>search</mat-icon>
+          <input matInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="titre d'un film">
+        </mat-form-field>
     </div>
     <div id="film" *ngFor="let infoMovies of movies | keyvalue | filter: searchText">
         <div id="leposter" *ngIf="infoMovies">
