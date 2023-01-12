@@ -29,6 +29,7 @@ export class AffichageFilmsComponent implements OnInit {
   resList: any[] = [];
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
+  idActor: number = 0;
 
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
@@ -65,7 +66,8 @@ export class AffichageFilmsComponent implements OnInit {
           }
         }
       });
-    }    
+    }
+    this.getActorsIdByActorsName("Gérard Depardieu")
   }
 
   reloadFilms() {
@@ -87,6 +89,14 @@ export class AffichageFilmsComponent implements OnInit {
         this.utilService.setMovie(this.singleFilm);
         this.router.navigateByUrl('/home/' + filmAPI.Title);
       })
+    })
+  }
+
+  getActorsIdByActorsName(name: string){
+    this.api.getActorsIdByActorsName(name).subscribe((actor: any) => {
+      console.log(actor)
+      this.idActor = actor['results'][0].id;
+      console.log(this.idActor)
     })
   }
 
@@ -119,7 +129,6 @@ export class AffichageFilmsComponent implements OnInit {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigateByUrl('/home');
       });
-      
   }
 
 
