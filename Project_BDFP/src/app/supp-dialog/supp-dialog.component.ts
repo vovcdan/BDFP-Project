@@ -29,7 +29,7 @@ export class SuppDialogComponent implements OnInit {
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
   result: any;
-  bool!: any;
+  switch!: any;
   moviesTitles: string[] = [];
 
 
@@ -94,17 +94,27 @@ export class SuppDialogComponent implements OnInit {
       this.back();
     })
   }
+
+  deleteListe() {
+    var inst = this.utilService.getCurrentListe();
+    this.filmService.deleteListOfAllLists(inst._id).subscribe(del => {
+      this.openSnackBar('Liste ' + inst.titrelist + " a été supprimé")
+      this.loc.back();
+    })
+  }
  
   choixDelete(){
-    this.bool = this.utilService.getListeOuGlobalSupp()
-    console.log(this.bool)
-    if (this.bool){
+    this.switch = this.utilService.getListeOuGlobalSupp()
+    if (this.switch == 1){
       console.log("JE SUPPRIME LE FILM DE LA LISTE")
       this.deleteMovieList()
     }
-    else {
+    else if(this.switch == 2) {
       console.log("JE SUPPRIME LE FILM DE PARTOUUUUUT")
       this.deleteMovieGlob()
+    }
+    else if(this.switch == 3){
+      this.deleteListe()
     }
   }
 }
