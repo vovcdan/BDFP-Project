@@ -3,28 +3,28 @@
  * aux différentes données pour les utilisateurs
  */
 
- module.exports = (app) => {
-    const allLists = require("../controllers/allLists.controller.js");
-  
-    var router = require("express").Router();
+module.exports = (app) => {
+  const allLists = require("../controllers/allLists.controller.js");
 
-    router.post("/", allLists.create);
+  var router = require("express").Router();
 
-    router.post("/share", allLists.createShare)
+  router.post("/", allLists.create);
 
-    router.post("/:uid/:titrelist", allLists.addFilmToAList);
+  router.post("/share", allLists.createShare);
 
-    router.get("/:uid/:titrelist", allLists.findByIdAndTitle);
+  router.post("/:uid/:titrelist", allLists.addFilmToAList);
 
-    router.get("/:uid", allLists.findById);
+  router.get("/:uid/:titrelist", allLists.findByIdAndTitle);
 
-    router.get("/", allLists.findAll);
+  router.get("/:uid", allLists.findById);
 
-    router.delete("/", allLists.deleteAll);
+  router.get("/", allLists.findAll);
 
-    router.delete("/:idListe", allLists.deleteOne);
+  router.delete("/", allLists.deleteAll);
 
-    router.delete("/:uid/:titrelist/:omdbID", allLists.deleteMovieFromList);
-  
-    app.use("/api/allLists", router);
-  };
+  router.delete("/:idListe", allLists.deleteOne);
+
+  router.delete("/:uid/:titrelist/:omdbID", allLists.deleteMovieFromList);
+
+  app.use("/api/allLists", router);
+};

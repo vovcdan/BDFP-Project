@@ -27,6 +27,8 @@ export class UtilsService {
 
   listeOuGlobalSupp!: boolean;
 
+  moviesTitles: string[] = [];
+
   constructor() { }
 
   connect() {
@@ -117,6 +119,14 @@ export class UtilsService {
 
   getListeRecherche() {
     return this.listeRecherche;
+  }
+
+  setMoviesTitles(tab: string []){
+    this.moviesTitles = tab;
+  }
+
+  getMoviesTitles(){
+    return this.moviesTitles;
   }
 
 }

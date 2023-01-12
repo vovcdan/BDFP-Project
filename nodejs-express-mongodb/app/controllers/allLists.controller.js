@@ -158,7 +158,6 @@ exports.addFilmToAList = (req, res) => {
   allListDB.collection.updateOne(
     
     { "uid" : uid, "titrelist": titrelist },
-    
     {$push: {"movies" : req.body.movies}}
   ).then((data) => {
     if (!data) {
@@ -194,14 +193,13 @@ exports.deleteMovieFromList = (req, res) => {
       });
     } else {
       res.send({
-        message: "Le film a été supprimée",
-        titrelist: titrelist,
+        message: "Le film a été supprimé",
       });
     }
   })
   .catch((err) => {
     res.status(500).send({
-      message: `Le film ${omdbID} n'a pas pu être supprimée`,
+      message: `Le film ${omdbID} n'a pas pu être supprimé`,
     });
   });
 }
@@ -221,7 +219,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-
-
-
