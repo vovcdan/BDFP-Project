@@ -20,7 +20,6 @@ export class AuthService {
   ): boolean {
     const token = this.token.getToken();
     const sessionActive = this.token.isSessionActive();
-    console.log(sessionActive);
     if (token || sessionActive) {
       return true;
     } else {

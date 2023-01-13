@@ -10,10 +10,9 @@ import { UtilsService } from 'services/utils.service';
 @Component({
   selector: 'app-affichage-films',
   templateUrl: './affichage-films.component.html',
-  styleUrls: ['./affichage-films.component.scss']
+  styleUrls: ['./affichage-films.component.scss'],
 })
 export class AffichageFilmsComponent implements OnInit {
-
   films: Film[] = [];
 
   filmsWithAPI: any[] = [];
@@ -27,67 +26,138 @@ export class AffichageFilmsComponent implements OnInit {
   locationControl = new FormControl();
   accompagnateursControl = new FormControl();
   resList: any[] = [];
-  movies: Map<any, string> = new Map();
+  movies: Map<any, any> = new Map();
   singleFilm: Map<any, string> = new Map();
   idActor: number = 0;
+  noPoster: boolean = false;
+  fromTMDB: boolean = true;
 
-  constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
+  constructor(
+    private filmService: FilmsService,
+    private api: ApiServiceService,
+    private router: Router,
+    private utilService: UtilsService,
+    private rechercheService: RechercheService
+  ) {}
 
   ngOnInit(): void {
     this.filmService.getListsTitles();
     this.films = this.utilService.getListeRecherche();
-    if(this.films) {
-      for(let i = 0; i < this.films.length; i++) {
-        this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-          var id = filmAPI['movie_results'][0].id;
-          var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
-          this.movies.set(filmAPI, poster);
-        })
+    if (this.films) {
+      for (let i = 0; i < this.films.length; i++) {
+        this.api
+          .getMovieTMDBByIMDBID(this.films[i].omdbID)
+          .subscribe((filmAPI: any) => {
+            if (filmAPI['movie_results'].length > 0) {
+              var id = filmAPI['movie_results'][0].id;
+              var poster:String =
+              'https://image.tmdb.org/t/p/w185/' +
+              filmAPI['movie_results'][0].poster_path;
+              var title = filmAPI['movie_results'][0].original_title;
+              var release_date = filmAPI['movie_results'][0].release_date;
+              var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+              this.movies.set(filmAPI, values);
+            } else {
+              this.fromTMDB = false;
+              this.api
+                .getMovieById(this.films[i].omdbID)
+                .subscribe((filmAPI: any) => {
+                  var id = filmAPI.imdbID;
+                  var poster:String = filmAPI.Poster;
+                  var title = filmAPI.Title;
+                  var release_date = filmAPI.Year;
+
+                  if (poster != 'N/A') {
+                    var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                    this.movies.set(filmAPI, values);
+                  } else {
+                      this.noPoster = true;
+                      poster =
+                       '../../assets/no-poster.jpg';
+                      var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                      this.movies.set(filmAPI, values);
+                  }
+                });
+            }
+          });
       }
     } else {
-      this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
-        this.films = allfilms[0].movies;
-        this.utilService.setListOfFilms(this.films);
-          for(let i = 0; i < this.films.length; i++) {
-            this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-              var id = filmAPI['movie_results'][0].id;
-              var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
-              this.movies.set(filmAPI, poster);
-            })
-        }
-      });
+      this.filmService
+        .getFilmsByUid(this.utilService.getUserId())
+        .subscribe((allfilms) => {
+          this.films = allfilms[0].movies;
+          this.utilService.setListOfFilms(this.films);
+          for (let i = 0; i < this.films.length; i++) {
+            this.api
+              .getMovieTMDBByIMDBID(this.films[i].omdbID)
+              .subscribe((filmAPI: any) => {
+                if (filmAPI['movie_results'].length > 0) {
+                  var id = filmAPI['movie_results'][0].id;
+                  var poster:String =
+                    'https://image.tmdb.org/t/p/w185/' +
+                    filmAPI['movie_results'][0].poster_path;
+                  var title = filmAPI['movie_results'][0].original_title;
+                  var release_date = filmAPI['movie_results'][0].release_date;
+                  var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                  this.movies.set(filmAPI, values);
+                } else if (filmAPI['movie_results'].length == 0) {
+                  this.api
+                    .getMovieById(this.films[i].omdbID)
+                    .subscribe((filmAPI: any) => {
+                      var id = filmAPI.imdbID;
+                      var poster:String = filmAPI.Poster;
+                      var title = filmAPI.Title;
+                      var release_date = filmAPI.Year;
+                      if (poster != 'N/A') {
+                        var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                        this.movies.set(filmAPI, values);
+                      } else {
+                        this.noPoster = true;
+                        poster =
+                          '../../assets/no-poster.jpg';
+                        var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                        this.movies.set(filmAPI, values);
+                      }
+                    });
+                }
+              });
+          }
+        });
     }
-    this.getActorsIdByActorsName("Gérard Depardieu")
+    this.getActorsIdByActorsName('Gérard Depardieu');
   }
 
   reloadFilms() {
-    this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
-      this.films = allfilms[0].movies;
-      this.utilService.setListOfFilms(this.films);      
-      this.utilService.setListeRecherche(this.films);
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigateByUrl('/home');
+    this.filmService
+      .getFilmsByUid(this.utilService.getUserId())
+      .subscribe((allfilms) => {
+        this.films = allfilms[0].movies;
+        this.utilService.setListOfFilms(this.films);
+        this.utilService.setListeRecherche(this.films);
+        this.router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this.router.navigateByUrl('/home');
+          });
       });
-    })
   }
 
   clickFilm(infoFilm: any) {
-    this.api.getMovieTMDbId(infoFilm.id).subscribe((film: any) => {
-      var poster = "https://image.tmdb.org/t/p/w185/" + film.poster_path
+    console.log(infoFilm)
+    this.api.getMovieTMDbId(infoFilm.ID).subscribe((film: any) => {
+      var poster = 'https://image.tmdb.org/t/p/w185/' + film.poster_path;
       this.api.getMovieById(film.imdb_id).subscribe((filmAPI: any) => {
         this.singleFilm.set(filmAPI, poster);
         this.utilService.setMovie(this.singleFilm);
         this.router.navigateByUrl('/home/' + filmAPI.Title);
-      })
-    })
+      });
+    });
   }
 
-  getActorsIdByActorsName(name: string){
+  getActorsIdByActorsName(name: string) {
     this.api.getActorsIdByActorsName(name).subscribe((actor: any) => {
-      console.log(actor)
       this.idActor = actor['results'][0].id;
-      console.log(this.idActor)
-    })
+    });
   }
 
   affichageForm() {
@@ -96,42 +166,53 @@ export class AffichageFilmsComponent implements OnInit {
 
   rechercherFilm() {
     this.resList = [];
-    if(this.titreControl.value != undefined && this.titreControl.value != ""){
+    if (this.titreControl.value != undefined && this.titreControl.value != '') {
       this.getFilmsByTitre(this.titreControl.value, this.resList);
     }
-    if(this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+    if (
+      this.realisatorControl.value != undefined &&
+      this.realisatorControl.value != ''
+    ) {
       this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
     }
-    if(this.yearControl.value != undefined && this.yearControl.value != ""){
+    if (this.yearControl.value != undefined && this.yearControl.value != '') {
       this.getFilmsByYear(this.yearControl.value, this.resList);
     }
-    if(this.actorsControl.value != undefined && this.actorsControl.value != ""){
+    if (
+      this.actorsControl.value != undefined &&
+      this.actorsControl.value != ''
+    ) {
       this.getFilmsByActors(this.actorsControl.value, this.resList);
     }
-    if(this.locationControl.value != undefined && this.locationControl.value != ""){
+    if (
+      this.locationControl.value != undefined &&
+      this.locationControl.value != ''
+    ) {
       this.getFilmsByLocation(this.locationControl.value, this.resList);
     }
-    if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
-      this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
+    if (
+      this.accompagnateursControl.value != undefined &&
+      this.accompagnateursControl.value != ''
+    ) {
+      this.getFilmsByAccompagnateurs(
+        this.accompagnateursControl.value,
+        this.resList
+      );
     }
 
-      this.utilService.setListeRecherche(this.resList);
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigateByUrl('/home');
-      });
+    this.utilService.setListeRecherche(this.resList);
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl('/home');
+    });
   }
-
-
-
-
 
   // parti du formulaire de recherche
 
-  getFilmsByTitre(titre: string, tab: any[]){
+  getFilmsByTitre(titre: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByTitre(titre, tab);
   }
 
-  getFilmsByRealisator(real: string, tab: any[]){
+  getFilmsByRealisator(real: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByRealisator(real, tab);
   }
 
