@@ -46,8 +46,9 @@ export class AffichageFilmsComponent implements OnInit {
     if (this.films) {
       for (let i = 0; i < this.films.length; i++) {
         this.api
-          .getMovieTMDBByIMDBID(this.films[i].omdbID)
-          .subscribe((filmAPI: any) => {
+        .getMovieTMDBByIMDBID(this.films[i].omdbID)
+        .subscribe((filmAPI: any) => {
+            var imdb_id_local = this.films[i].omdbID;
             if (filmAPI['movie_results'].length > 0) {
               var id = filmAPI['movie_results'][0].id;
               var poster:String =
@@ -55,26 +56,27 @@ export class AffichageFilmsComponent implements OnInit {
               filmAPI['movie_results'][0].poster_path;
               var title = filmAPI['movie_results'][0].original_title;
               var release_date = filmAPI['movie_results'][0].release_date;
-              var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+              var values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
               this.movies.set(filmAPI, values);
+              console.log(this.movies)
             } else {
               this.fromTMDB = false;
               this.api
                 .getMovieById(this.films[i].omdbID)
                 .subscribe((filmAPI: any) => {
-                  var id = filmAPI.imdbID;
+                  var imdb_id_local = this.films[i].omdbID;
                   var poster:String = filmAPI.Poster;
                   var title = filmAPI.Title;
                   var release_date = filmAPI.Year;
 
                   if (poster != 'N/A') {
-                    var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                    var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                     this.movies.set(filmAPI, values);
                   } else {
                       this.noPoster = true;
                       poster =
                        '../../assets/no-poster.jpg';
-                      var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                      var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                       this.movies.set(filmAPI, values);
                   }
                 });
@@ -89,8 +91,9 @@ export class AffichageFilmsComponent implements OnInit {
           this.utilService.setListOfFilms(this.films);
           for (let i = 0; i < this.films.length; i++) {
             this.api
-              .getMovieTMDBByIMDBID(this.films[i].omdbID)
-              .subscribe((filmAPI: any) => {
+            .getMovieTMDBByIMDBID(this.films[i].omdbID)
+            .subscribe((filmAPI: any) => {
+                var imdb_id_local = this.films[i].omdbID;
                 if (filmAPI['movie_results'].length > 0) {
                   var id = filmAPI['movie_results'][0].id;
                   var poster:String =
@@ -98,9 +101,10 @@ export class AffichageFilmsComponent implements OnInit {
                     filmAPI['movie_results'][0].poster_path;
                   var title = filmAPI['movie_results'][0].original_title;
                   var release_date = filmAPI['movie_results'][0].release_date;
-                  var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                  var values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
                   this.movies.set(filmAPI, values);
-                } else if (filmAPI['movie_results'].length == 0) {
+                  console.log(this.movies);
+                } else {
                   this.api
                     .getMovieById(this.films[i].omdbID)
                     .subscribe((filmAPI: any) => {
@@ -109,13 +113,13 @@ export class AffichageFilmsComponent implements OnInit {
                       var title = filmAPI.Title;
                       var release_date = filmAPI.Year;
                       if (poster != 'N/A') {
-                        var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                        var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                         this.movies.set(filmAPI, values);
                       } else {
                         this.noPoster = true;
                         poster =
                           '../../assets/no-poster.jpg';
-                        var values = {ID: id, Poster: poster, Title: title, Release_Date: release_date}
+                        var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                         this.movies.set(filmAPI, values);
                       }
                     });
@@ -143,15 +147,31 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   clickFilm(infoFilm: any) {
+    console.log("infoFilm ==== affichage.films")
     console.log(infoFilm)
-    this.api.getMovieTMDbId(infoFilm.ID).subscribe((film: any) => {
-      var poster = 'https://image.tmdb.org/t/p/w185/' + film.poster_path;
-      this.api.getMovieById(film.imdb_id).subscribe((filmAPI: any) => {
-        this.singleFilm.set(filmAPI, poster);
+    // if(infoFilm.TMDBID != '') {
+    //   this.api.getMovieTMDbId(infoFilm.TMDBID).subscribe((filmTMDB: any) => {
+    //     var poster = 'https://image.tmdb.org/t/p/w185/' + filmTMDB.poster_path;
+    //     this.api.getMovieById(filmTMDB.imdb_id).subscribe((filmAPIOMDB: any) => {
+    //       this.singleFilm.set(filmAPIOMDB, poster);
+    //       this.utilService.setMovie(this.singleFilm);
+    //       this.router.navigateByUrl('/home/' + filmAPIOMDB.Title);
+    //     });
+    //   });
+    // } else if (infoFilm.TMDBID == '') {
+    //   this.api.getMovieById(infoFilm.IMDBID).subscribe((filmOMDB: any) => {
+    //     var poster = filmOMDB.Poster;
+    //     this.singleFilm.set(filmOMDB, poster);
+    //     this.utilService.setMovie(this.singleFilm);
+    //     this.router.navigateByUrl('/home/' + filmOMDB.Title);
+    //   });
+    // }
+      var poster = infoFilm.Poster;
+      this.api.getMovieById(infoFilm.IMDBID).subscribe((filmOMDB: any) => {
+        this.singleFilm.set(filmOMDB, poster);
         this.utilService.setMovie(this.singleFilm);
-        this.router.navigateByUrl('/home/' + filmAPI.Title);
+        this.router.navigateByUrl('/home/' + filmOMDB.Title);
       });
-    });
   }
 
   getActorsIdByActorsName(name: string) {
