@@ -30,6 +30,7 @@ export class AffichageFilmsComponent implements OnInit {
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
   idActor: number = 0;
+  moviesNumber: number = 0;
 
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
@@ -37,7 +38,8 @@ export class AffichageFilmsComponent implements OnInit {
     this.filmService.getListsTitles();
     this.films = this.utilService.getListeRecherche();
     if(this.films) {
-      for(let i = 0; i < this.films.length; i++) {
+      this.moviesNumber = this.films.length
+      for(let i = 0; i < this.moviesNumber; i++) {
         this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
           var id = filmAPI['movie_results'][0].id;
           var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
@@ -47,8 +49,9 @@ export class AffichageFilmsComponent implements OnInit {
     } else {
       this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
         this.films = allfilms[0].movies;
+        this.moviesNumber = this.films.length;
         this.utilService.setListOfFilms(this.films);
-          for(let i = 0; i < this.films.length; i++) {
+          for(let i = 0; i < this.moviesNumber; i++) {
             this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
               var id = filmAPI['movie_results'][0].id;
               var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
