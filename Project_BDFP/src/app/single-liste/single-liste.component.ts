@@ -13,6 +13,7 @@ import {ExportService} from 'services/export.service';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
+import {MatIconModule} from '@angular/material/icon';
 
 export interface DialogAjoutFilmListe {
   title: string;

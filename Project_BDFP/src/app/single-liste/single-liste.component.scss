@@ -10,9 +10,15 @@
 }
 
 #bout {
-justify-content: center;
-display: flex;
-margin-bottom: 50px;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 50px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+    &:hover {
+        color: orange;
+    }
 }
 
 #titrelist {
@@ -37,14 +43,12 @@ margin-bottom: 50px;
 
 .bt {
     margin-right: 10px;
-    transition: 0.4s;
     margin-top: 10px;
     margin-bottom: 5px;
-    color: white;
-    background-color: rgb(39, 39, 39);
-    border: solid 2px white;
+    color: white; 
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
     &:hover {
-        border: solid 2px orange;
-        
+        color: orange;
     }
 }
