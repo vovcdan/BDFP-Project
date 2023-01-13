@@ -71,7 +71,7 @@
   <div mat-dialog-actions>
 
     <button mat-button (click)="onNoClick()">Retour</button>
-    <button mat-button (keydown.enter)="clickButtonChooseAPIINIT()" [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
+    <button mat-button (keyup.enter)="clickButtonChooseAPIINIT()" [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
 
   </div>
 </div>

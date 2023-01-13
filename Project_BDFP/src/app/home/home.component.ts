@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
   MatDialog,
@@ -116,6 +116,13 @@ export class ajouterFilm implements OnInit {
 
     ngOnInit(): void {
       this.OMDBInit();
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+      if (event.key === 'Enter') {
+        this.clickButtonChooseAPIINIT();
+      }
     }
 
     changeBoolTrue() {
