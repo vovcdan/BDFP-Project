@@ -4,20 +4,29 @@
     </div>
     <button id="back" mat-mini-fab color="grey" (click)="back()"><mat-icon>arrow_back</mat-icon></button>
     <div id="bout">
-        <div>
-            <button class="bt" mat-raised-button color="grey" (click)="suppDialog('')">Supprimer la liste</button>
+
+        <div class="bt">
+            <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <div class="bt">
+            <button class="bt" mat-fab matTooltip="Supprimer la liste" (click)="suppDialog('')">
+                <mat-icon>delete</mat-icon>
+            </button>
         </div>
         
-        <div>
-            <button class="bt" mat-raised-button (click)="openDialog()">Ajouter un film</button>
+        <div class="bt">
+            <button class="bt" mat-fab matTooltip="Partager la liste" mat-fab (click)="dialogShare()">
+                <mat-icon>share</mat-icon>
+            </button>
         </div>
 
-        <div>
-            <button class="bt" mat-raised-button (click)="dialogShare()">Partager la liste</button>
-        </div>
-
-        <div>
-            <button class="bt" mat-raised-button (click)="export()">Exporter la liste</button>
+        <div class="bt">
+            <button class="bt" mat-fab matTooltip="Exporter la liste" mat-fab (click)="export()">
+                <mat-icon> vertical_align_bottom</mat-icon>
+            </button>
         </div>
     </div>
     <app-detail-liste></app-detail-liste>
