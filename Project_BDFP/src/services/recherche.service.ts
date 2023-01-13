@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { createWriteStream } from 'fs';
 import { ApiServiceService } from './api-service.service';
 import { FilmsService } from './films.service';
 import { UtilsService } from './utils.service';
@@ -137,6 +138,15 @@ export class RechercheService {
     this.resultFilms = tab
     this.filmsAPI = this.utilService.getListOfFilms();
     let reg = new RegExp(real);
+    for (let i = 0; i < this.filmsAPI.length; i++) {
+      this.api.getMovieTMDBByIMDBID(this.filmsAPI[i].omdbID).subscribe((unFilm: any) => {
+        console.log(unFilm)
+        this.api.getCastTMDB(unFilm['movie_results'][0].id).subscribe((unCast: any) => {
+          console.log(unCast)
+          console.log(unCast.crew.filter((crew: any) => crew.job == "Director")[0].name)
+        })
+      })
+    }
     if (this.resultFilms.length != 0) {
       for (let i = 0; i < this.resultFilms.length; i++) {
         this.api
