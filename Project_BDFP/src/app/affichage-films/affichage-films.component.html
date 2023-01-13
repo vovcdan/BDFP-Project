@@ -2,6 +2,9 @@
     <button id="butAjout" mat-flat-button (click)="affichageForm()">Rechercher</button>
     <button id="butAjout" mat-flat-button (click)="reloadFilms()">recharger tous les films</button>
 </a>
+
+<p>Nombre de films : {{this.moviesNumber}}</p>
+
 <div *ngIf="showFormRecherche"  id="cherche" class="form-card">
     <form [formGroup]="formRecherche">
         <div class="form-group">
