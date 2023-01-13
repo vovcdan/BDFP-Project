@@ -31,6 +31,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { ajouterFilm } from './home/home.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
     AffichageFilmsComponent,
     SingleFilmComponent,
     DetailListeComponent,
-    SuppDialogComponent
+    SuppDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +72,7 @@ import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
     MatAutocompleteModule,
     MatRadioModule,
     Ng2SearchPipeModule,
+    MatTooltipModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

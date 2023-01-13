@@ -31,6 +31,7 @@ export class AffichageFilmsComponent implements OnInit {
   idActor: number = 0;
   noPoster: boolean = false;
   fromTMDB: boolean = true;
+  moviesNumber: number = 0;
 
   constructor(
     private filmService: FilmsService,
@@ -147,25 +148,6 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   clickFilm(infoFilm: any) {
-    console.log("infoFilm ==== affichage.films")
-    console.log(infoFilm)
-    // if(infoFilm.TMDBID != '') {
-    //   this.api.getMovieTMDbId(infoFilm.TMDBID).subscribe((filmTMDB: any) => {
-    //     var poster = 'https://image.tmdb.org/t/p/w185/' + filmTMDB.poster_path;
-    //     this.api.getMovieById(filmTMDB.imdb_id).subscribe((filmAPIOMDB: any) => {
-    //       this.singleFilm.set(filmAPIOMDB, poster);
-    //       this.utilService.setMovie(this.singleFilm);
-    //       this.router.navigateByUrl('/home/' + filmAPIOMDB.Title);
-    //     });
-    //   });
-    // } else if (infoFilm.TMDBID == '') {
-    //   this.api.getMovieById(infoFilm.IMDBID).subscribe((filmOMDB: any) => {
-    //     var poster = filmOMDB.Poster;
-    //     this.singleFilm.set(filmOMDB, poster);
-    //     this.utilService.setMovie(this.singleFilm);
-    //     this.router.navigateByUrl('/home/' + filmOMDB.Title);
-    //   });
-    // }
       var poster = infoFilm.Poster;
       this.api.getMovieById(infoFilm.IMDBID).subscribe((filmOMDB: any) => {
         this.singleFilm.set(filmOMDB, poster);

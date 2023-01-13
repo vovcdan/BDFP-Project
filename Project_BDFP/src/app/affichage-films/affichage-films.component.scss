@@ -155,3 +155,29 @@
     color: orange;
 }
 
+.circle{
+    display:block;
+    position: relative;
+    //width:80px;
+    //height: 80px;
+    //border-radius:50%;
+    text-align:center;
+    float: right;
+    //color: white;
+    //border-color: orange;
+    //border-style: solid;
+    margin: 30px 35px;
+  }
+  
+  .circle_text{
+    display: inline;
+    border-style: solid;
+    border-color: orange;
+    border-radius: 30px;
+    padding: 5px 10px 5px 10px;
+    color: orange;
+    margin: 0px 10px 0px 20px ;
+    width: 300px;
+    text-align: center;
+   }
+
