@@ -71,7 +71,7 @@ export class SingleFilmComponent implements OnInit {
     //TODO: Verifier que le premier if marche
     if(this.currentFilm.tmdbID) {
       this.api.getCastTMDB(this.currentFilm.tmdbID).subscribe((actors: any) => {
-        actors.cast.forEach((actor: any) => {
+        actors.cast.forEach((actor: any) => { 
           this.actors.set(actor.name, actor.character)
         })
       })
@@ -80,7 +80,7 @@ export class SingleFilmComponent implements OnInit {
         var id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
           this.api.getCastTMDB(film.id).subscribe((actors: any) => {
-            actors.cast.forEach((actor: any) => {
+            actors.cast.forEach((actor: any) => { 
               this.actors.set(actor.name, actor.character)
             })
           })
@@ -95,6 +95,7 @@ export class SingleFilmComponent implements OnInit {
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
         this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
           this.listeRevue = reviews
+          console.log(this.listeRevue)
           reviews.results.forEach((review: any) => {
             this.review = review
           })
@@ -105,6 +106,7 @@ export class SingleFilmComponent implements OnInit {
 
   getRealisateur() {
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+      console.log(film)
       if(film['movie_results'].length != 0) {
         var id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
@@ -122,6 +124,7 @@ export class SingleFilmComponent implements OnInit {
 
   suppDialog(omdbID: string): void {
     this.utilService.setMovie(this.currentFilm);
+    console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
     this.utilService.setListeOuGlobalSupp(2)
