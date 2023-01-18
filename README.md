@@ -15,27 +15,28 @@ Repo pour projet tuteuré.
 Préconditions
 ------------
 
-* Node.js : doit être installé sur la machine.
-Vous pouvez le télécharger depuis le lien suivant : https://nodejs.org/en/download/
-Choissisez la version LTS (Long Term Support) et téléchargez le fichier correspondant à votre système d'exploitation.
-Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
+* Node.js : 
+Vous pouvez le télécharger depuis le lien suivant : `https://nodejs.org/en/download/`. Choissisez la version LTS (Long Term Support) et téléchargez le fichier correspondant à votre système d'exploitation. Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
 * Angular : 
-Ouvrez un terminal et tapez la commande suivante : npm install -g @angular/cli
+Ouvrez un terminal et tapez la commande suivante : `npm install -g @angular/cli`
 * Git :
-Vous devez posséder un compte sur le site https://mi-git.univ-tlse2.fr/ et avoir les droits d'accès au projet.
+ - Vous pouvez télécharger Git à partir du lien suivant : `https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/Git-2.39.1-64-bit.exe`. Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
+ - Vous devez posséder un compte sur le site `https://mi-git.univ-tlse2.fr/` et avoir les droits d'accès au projet.
 
 Installation
 ------------
 
-* Ouvrez un terminal
+* Ouvrez le gestionnaire de fichiers et deplacez vous dans un dossier où vous souhaitez avoir l'application. Click droit à l'interieur du dossier et prenez l'option `Ouvrir dans un Terminal`.
 
-* Clonez le projet vous devez ouvir un terminal et taper la commande suivante : git clone https://mi-git.univ-tlse2.fr/Louis.LANGELLIER/project-bdfp.git
+* Clonez le projet. Pour cela, vous devez taper la commande suivante dans le terminal : `git clone https://mi-git.univ-tlse2.fr/Louis.LANGELLIER/project-bdfp.git`. ATTENTION : Cette action doit être faite qu'une seule fois !
 
-* Exécutez la commande suivante "cd .\Project_BDFP\" afin de changer de dossier.
+* Exécutez la commande suivante `cd project-bdfp\Project_BDFP` afin de changer de dossier.
 
-* Exécutez la commande "npm install" pour installer les dépendances nécessaires au projet.
+* Exécutez la commande `npm install` pour installer les dépendances nécessaires au projet.
 
-* Exécutez la commande "npm run all" pour lancer le projet.
+* Exécutez la commande `npm run all` pour lancer le projet.
+
+* Accèdez à l'application à partir du lien qui s'affiche dans le terminal. De base, il devrait être `http://localhost:4200/`.
 
 
 Glossaire
