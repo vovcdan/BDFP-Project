@@ -15,20 +15,16 @@ Repo pour projet tuteuré.
 Préconditions
 ------------
 
-* Node.js : 
-Vous pouvez le télécharger depuis le lien suivant : https://nodejs.org/en/download/. Choissisez la version LTS (Long Term Support) et téléchargez le fichier correspondant à votre système d'exploitation. Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
-* Angular : 
-Ouvrez un terminal et tapez la commande suivante : `npm install -g @angular/cli`
-* Git :
- - Vous pouvez télécharger Git à partir du lien suivant : https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/Git-2.39.1-64-bit.exe. Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
- - Vous devez posséder un compte sur le site https://mi-git.univ-tlse2.fr/ et avoir les droits d'accès au projet.
+* Node.js : Vous pouvez le télécharger depuis le lien suivant : https://nodejs.org/en/download/. Choissisez la version LTS (Long Term Support) et téléchargez le fichier correspondant à votre système d'exploitation. Ouvrez le fichier téléchargé et suivez l'assitant d'installation.
+* Angular : Ouvrez un terminal et tapez la commande suivante : `npm install -g @angular/cli`
+* Git : Vous pouvez télécharger Git à partir du lien suivant : https://github.com/git-for-windows/git/releases/download/v2.39.1.windows.1/Git-2.39.1-64-bit.exe. Ouvrez le fichier téléchargé et suivez l'assitant d'installation. De plus, vous devez posséder un compte sur le site https://mi-git.univ-tlse2.fr/ et avoir les droits d'accès au projet.
 
-Installation
+Installation du projet
 ------------
 
 * Ouvrez le gestionnaire de fichiers et deplacez vous dans un dossier où vous souhaitez avoir l'application. Click droit à l'interieur du dossier et prenez l'option `Ouvrir dans un Terminal`.
 
-* Clonez le projet. Pour cela, vous devez taper la commande suivante dans le terminal : `git clone https://mi-git.univ-tlse2.fr/Louis.LANGELLIER/project-bdfp.git`. ATTENTION : Cette action doit être faite qu'une seule fois !
+* Clonez le projet. Pour cela, vous devez taper la commande suivante dans le terminal : `git clone https://mi-git.univ-tlse2.fr/Louis.LANGELLIER/project-bdfp.git`. ATTENTION : Cette action ne doit être faite qu'une seule fois !
 
 * Exécutez la commande suivante `cd project-bdfp\Project_BDFP` afin de changer de dossier.
 
