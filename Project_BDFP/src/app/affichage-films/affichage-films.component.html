@@ -1,7 +1,17 @@
-<a>
-    <button id="butAjout" mat-flat-button (click)="affichageForm()">Rechercher</button>
-    <button id="butAjout" mat-flat-button (click)="reloadFilms()">recharger tous les films</button>
-</a>
+
+<div id="bout">
+    <div class="bt">
+        <button class="butAjout" mat-fab matTooltip="Rechercher un film" mat-fab (click)="affichageForm()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+
+    <div class="bt">
+        <button class="butAjout" mat-fab matTooltip="Recharger les films" (click)="reloadFilms()">
+            <mat-icon>cached</mat-icon>
+        </button>
+    </div>
+</div>
 
 <div class="circle">
     <span class="circle_text"><strong> FILMS :</strong> {{this.moviesNumber}} </span>

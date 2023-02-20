@@ -18,19 +18,24 @@
     }
 }
 
-#butAjout {
-    margin: 20px;
+.butAjout {
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: white; 
     transition: 0.4s;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    color: white;
-    background-color: rgb(39, 39, 39);
-    border: solid 2px white;
+    background-color: rgb(39,39,39);
     &:hover {
-        
-        border: solid 2px orange;
-        
+        color: orange;
     }
+}
+
+.bt {
+    display: inline;
+}
+
+#bout {
+    display : inline-block
 }
 
 #images {
