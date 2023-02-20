@@ -39,7 +39,6 @@ export class SingleFilmComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
-    console.log(this.currentFilm);
     this.poster = this.currentFilm.values().next().value;
     this.currentFilm = this.currentFilm.keys().next().value;
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
@@ -47,7 +46,6 @@ export class SingleFilmComponent implements OnInit {
       for(let i = 0; i < this.listfilm.length; i++) {
         if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
-          console.log(this.currentFilmInfos)
           return;
         }
       }
@@ -71,43 +69,43 @@ export class SingleFilmComponent implements OnInit {
     //TODO: Verifier que le premier if marche
     if(this.currentFilm.tmdbID) {
       this.api.getCastTMDB(this.currentFilm.tmdbID).subscribe((actors: any) => {
-        actors.cast.forEach((actor: any) => { 
+        actors.cast.forEach((actor: any) => {
           this.actors.set(actor.name, actor.character)
         })
       })
     } else {
       this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+        if (film['movie_results'][0]) {
         var id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
           this.api.getCastTMDB(film.id).subscribe((actors: any) => {
-            actors.cast.forEach((actor: any) => { 
+            actors.cast.forEach((actor: any) => {
               this.actors.set(actor.name, actor.character)
             })
           })
-        })
+        })}
       })
     }
   }
 
   getReviews() {
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+      if (film['movie_results'][0]) {
       var id = film['movie_results'][0].id;
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
         this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
           this.listeRevue = reviews
-          console.log(this.listeRevue)
           reviews.results.forEach((review: any) => {
             this.review = review
           })
         })
-      })
+      })}
     })
   }
 
   getRealisateur() {
-    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
-      console.log(film)
-      if(film['movie_results'].length != 0) {
+    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => { 
+      if(film['movie_results'].length != 0 && film['movie_results'][0]) {
         var id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
           this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {

@@ -51,12 +51,10 @@ export class DetailListeComponent implements OnInit {
           this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
             var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
             this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
-              console.log(film)
               this.movies.set(film, poster);
             });
           })
         }
-        console.log(this.movies)
       });
   }
 

@@ -60,7 +60,6 @@ export class AffichageFilmsComponent implements OnInit {
               var release_date = filmAPI['movie_results'][0].release_date;
               var values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
               this.movies.set(filmAPI, values);
-              console.log(this.movies)
             } else {
               this.fromTMDB = false;
               this.api
@@ -80,7 +79,6 @@ export class AffichageFilmsComponent implements OnInit {
                        '../../assets/no-poster.jpg';
                       var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                       this.movies.set(filmAPI, values);
-                      console.log(this.movies)
                   }
                 });
             }
@@ -107,7 +105,6 @@ export class AffichageFilmsComponent implements OnInit {
                   var release_date = filmAPI['movie_results'][0].release_date;
                   var values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
                   this.movies.set(filmAPI, values);
-                  console.log(this.movies);
                 } else {
                   this.api
                     .getMovieById(this.films[i].omdbID)
@@ -119,7 +116,6 @@ export class AffichageFilmsComponent implements OnInit {
                       if (poster != 'N/A') {
                         var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                         this.movies.set(filmAPI, values);
-                        console.log(this.movies);
 
                       } else {
                         this.noPoster = true;
@@ -127,8 +123,6 @@ export class AffichageFilmsComponent implements OnInit {
                           '../../assets/no-poster.jpg';
                         var values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                         this.movies.set(filmAPI, values);
-                        console.log(this.movies);
-
                       }
                     });
                 }

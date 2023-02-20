@@ -70,14 +70,15 @@
                 </div>
                 <div>
                     <mat-icon class="icone">stars</mat-icon>
-                    <p id="ligne"> 
+                    <p id="ligne">
                         <details>
                             <summary>
                                 <span class="bold">Critiques :</span>
                                 <p id="texte"> afficher les critiques</p>
                             </summary>
+                            <section *ngIf="listeRevue">
                             <ul *ngFor="let rev of listeRevue.results">
-                                <li> 
+                                <li>
                                     <ul id="det">
                                         <li><span class="bold">utilisateur : </span>{{rev.author}}</li>
                                         <li><span class="bold"> critique : </span>{{rev.content}}</li>
@@ -85,6 +86,7 @@
                                     </ul>
                                 </li>
                             </ul>
+                          </section>
                         </details>
                     </p>
                 </div>

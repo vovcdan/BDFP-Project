@@ -89,7 +89,6 @@ export class UtilsService {
 
   setMovie(movie: any) {
     this.movie = movie;
-    console.log(this.movie)
   }
 
   getMovie() {
