@@ -87,9 +87,7 @@ export class AffichageFilmsComponent implements OnInit {
 
   getActorsIdByActorsName(name: string){
     this.api.getActorsIdByActorsName(name).subscribe((actor: any) => {
-      console.log(actor)
       this.idActor = actor['results'][0].id;
-      console.log(this.idActor)
     })
   }
 

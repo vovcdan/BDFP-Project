@@ -45,28 +45,47 @@ export class RechercheService {
     this.resultFilms = tab;
     this.filmsAPI = this.utilService.getListOfFilms();
     let reg = new RegExp(actors);
-    if (this.resultFilms.length != 0) {
-      for (let i = 0; i < this.resultFilms.length; i++) {
-        this.api
-          .getMovieById(this.resultFilms[i].omdbID)
-          .subscribe((unFilm) => {
-            this.temp = unFilm;
-            if (!reg.test(this.temp.Actors)) {
-              this.resultFilms.splice(i, 1);
-              i--;
-            }
-          });
-      }
-    } else {
-      for (let i = 0; i < this.filmsAPI.length; i++) {
-        this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
-          this.temp = unFilm;
-          if (reg.test(this.temp.Actors)) {
-            this.resultFilms.push(this.filmsAPI[i]);
-          }
-        });
-      }
-    }
+    let tab_actors = actors.split(",");
+    let promises: any[] = [];
+
+    tab_actors.forEach(actor => {
+      promises.push(this.api.getPerson(actor).toPromise());
+    });
+
+    Promise.all(promises).then((acts: any[]) => {
+      let actors_id = "";
+      acts.forEach((act: any) => {
+        actors_id += act.results[0].id + ",";
+      });
+      actors_id = actors_id.slice(0, -1);
+      console.log(actors_id);
+      this.api.getMoviesByActorId(actors_id).subscribe((movies: any) => {
+        console.log(movies);
+      });
+    });
+  
+    // if (this.resultFilms.length != 0) {
+    //   for (let i = 0; i < this.resultFilms.length; i++) {
+    //     this.api
+    //       .getMovieById(this.resultFilms[i].omdbID)
+    //       .subscribe((unFilm) => {
+    //         this.temp = unFilm;
+    //         if (!reg.test(this.temp.Actors)) {
+    //           this.resultFilms.splice(i, 1);
+    //           i--;
+    //         }
+    //       });
+    //   }
+    // } else {
+    //   for (let i = 0; i < this.filmsAPI.length; i++) {
+    //     this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
+    //       this.temp = unFilm;
+    //       if (reg.test(this.temp.Actors)) {
+    //         this.resultFilms.push(this.filmsAPI[i]);
+    //       }
+    //     });
+    //   }
+    // }
     return this.resultFilms;
   }
 
@@ -138,37 +157,50 @@ export class RechercheService {
     this.resultFilms = tab
     this.filmsAPI = this.utilService.getListOfFilms();
     let reg = new RegExp(real);
-    for (let i = 0; i < this.filmsAPI.length; i++) {
-      this.api.getMovieTMDBByIMDBID(this.filmsAPI[i].omdbID).subscribe((unFilm: any) => {
-        console.log(unFilm)
-        this.api.getCastTMDB(unFilm['movie_results'][0].id).subscribe((unCast: any) => {
-          console.log(unCast)
-          console.log(unCast.crew.filter((crew: any) => crew.job == "Director")[0].name)
-        })
+    this.api.getPerson(real).subscribe((unReal: any) => {
+      this.api.getMoviesByRealisatorId(unReal.results[0].id).subscribe((movies: any) => {
+        console.log(movies.results[0].title)
+        for (let i = 0; i < movies.results.length; i++) {
+          this.resultFilms.push(movies.results[i].title)
+        }
+        console.log(this.resultFilms)
+        // for (let i = 0; i < movies.length; i++) {
+        //   this.resultFilms.push(movies.results[i].title)
+        // }
+        // console.log(this.resultFilms)
       })
-    }
-    if (this.resultFilms.length != 0) {
-      for (let i = 0; i < this.resultFilms.length; i++) {
-        this.api
-          .getMovieById(this.resultFilms[i].omdbID)
-          .subscribe((unFilm) => {
-            this.temp = unFilm;
-            if (!reg.test(this.temp.Director)) {
-              this.resultFilms.splice(i, 1);
-              i--;
-            }
-          });
-      }
-    } else {
-      for (let i = 0; i < this.filmsAPI.length; i++) {
-        this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
-          this.temp = unFilm;
-          if (reg.test(this.temp.Director)) {
-            this.resultFilms.push(this.filmsAPI[i]);
-          }
-        });
-      }
-    }
+    })
+    // for (let i = 0; i < this.filmsAPI.length; i++) {
+    //   this.api.getMovieTMDBByIMDBID(this.filmsAPI[i].omdbID).subscribe((unFilm: any) => {
+    //     console.log(unFilm)
+    //     this.api.getCastTMDB(unFilm['movie_results'][0].id).subscribe((unCast: any) => {
+    //       console.log(unCast)
+    //       console.log(unCast.crew.filter((crew: any) => crew.job == "Director")[0].name)
+    //     })
+    //   })
+    // }
+    // if (this.resultFilms.length != 0) {
+    //   for (let i = 0; i < this.resultFilms.length; i++) {
+    //     this.api
+    //       .getMovieById(this.resultFilms[i].omdbID)
+    //       .subscribe((unFilm) => {
+    //         this.temp = unFilm;
+    //         if (!reg.test(this.temp.Director)) {
+    //           this.resultFilms.splice(i, 1);
+    //           i--;
+    //         }
+    //       });
+    //   }
+    // } else {
+    //   for (let i = 0; i < this.filmsAPI.length; i++) {
+    //     this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
+    //       this.temp = unFilm;
+    //       if (reg.test(this.temp.Director)) {
+    //         this.resultFilms.push(this.filmsAPI[i]);
+    //       }
+    //     });
+    //   }
+    // }
     return this.resultFilms;
   }
 }

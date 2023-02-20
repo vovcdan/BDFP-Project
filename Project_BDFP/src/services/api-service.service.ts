@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { runInThisContext } from 'vm';
 
 @Injectable({
   providedIn: 'root'
@@ -55,9 +54,16 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/search/person?api_key=11d68f95601d6ec7858fe9a41e26fd86&query=${query}`)
   }
 
-  getRealisatorIdByRealisatorName(query: any){
+  getPerson(query: any){
     return this.http.get(`https://api.themoviedb.org/3/search/person?api_key=11d68f95601d6ec7858fe9a41e26fd86&query=${query}`)
   }
 
+  getMoviesByRealisatorId(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_crew=${query}&crew_job=Director`)
+  }
 
+  getMoviesByActorId(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=287,234352`)
+    //return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}`)
+  }
 }

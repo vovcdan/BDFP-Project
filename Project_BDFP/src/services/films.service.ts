@@ -178,7 +178,6 @@ export class FilmsService {
           this.moviesTitles.push(element.titrelist)
         })
         this.utilService.setMoviesTitles(this.moviesTitles)
-        console.log(this.moviesTitles);
       },
       (error: any) => {
         console.log(error);
