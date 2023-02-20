@@ -100,13 +100,13 @@ export class AffichageFilmsComponent implements OnInit {
     if(this.titreControl.value != undefined && this.titreControl.value != ""){
       this.getFilmsByTitre(this.titreControl.value, this.resList);
     }
-    if(this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+    if(this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value == undefined || this.actorsControl.value == ""){
       this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
     }
     if(this.yearControl.value != undefined && this.yearControl.value != ""){
       this.getFilmsByYear(this.yearControl.value, this.resList);
     }
-    if(this.actorsControl.value != undefined && this.actorsControl.value != ""){
+    if(this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value == undefined || this.realisatorControl.value == ""){
       this.getFilmsByActors(this.actorsControl.value, this.resList);
     }
     if(this.locationControl.value != undefined && this.locationControl.value != ""){
@@ -115,6 +115,10 @@ export class AffichageFilmsComponent implements OnInit {
     if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
       this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
     }
+    if(this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
+      this.getMoviesByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value, this.resList);
+    }
+
 
       this.utilService.setListeRecherche(this.resList);
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -151,4 +155,9 @@ export class AffichageFilmsComponent implements OnInit {
   getFilmsByAccompagnateurs(acc: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByAccompagnateurs(acc, tab);
   }
+
+  getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
+    this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab);
+  }
+
 }

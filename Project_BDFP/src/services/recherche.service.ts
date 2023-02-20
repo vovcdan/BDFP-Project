@@ -41,54 +41,6 @@ export class RechercheService {
     return this.resultFilms;
   }
 
-  getFilmsByActor(actors: string, tab: any[]) {
-    this.resultFilms = tab;
-    this.filmsAPI = this.utilService.getListOfFilms();
-    let reg = new RegExp(actors);
-    let tab_actors = actors.split(",");
-    let promises: any[] = [];
-
-    tab_actors.forEach(actor => {
-      promises.push(this.api.getPerson(actor).toPromise());
-    });
-
-    Promise.all(promises).then((acts: any[]) => {
-      let actors_id = "";
-      acts.forEach((act: any) => {
-        actors_id += act.results[0].id + ",";
-      });
-      actors_id = actors_id.slice(0, -1);
-      console.log(actors_id);
-      this.api.getMoviesByActorId(actors_id).subscribe((movies: any) => {
-        console.log(movies);
-      });
-    });
-  
-    // if (this.resultFilms.length != 0) {
-    //   for (let i = 0; i < this.resultFilms.length; i++) {
-    //     this.api
-    //       .getMovieById(this.resultFilms[i].omdbID)
-    //       .subscribe((unFilm) => {
-    //         this.temp = unFilm;
-    //         if (!reg.test(this.temp.Actors)) {
-    //           this.resultFilms.splice(i, 1);
-    //           i--;
-    //         }
-    //       });
-    //   }
-    // } else {
-    //   for (let i = 0; i < this.filmsAPI.length; i++) {
-    //     this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
-    //       this.temp = unFilm;
-    //       if (reg.test(this.temp.Actors)) {
-    //         this.resultFilms.push(this.filmsAPI[i]);
-    //       }
-    //     });
-    //   }
-    // }
-    return this.resultFilms;
-  }
-
   getFilmsByLocation(loc: string, tab: any[]) {
     this.resultFilms = tab;
     this.filmsAPI = this.utilService.getListOfFilms();
@@ -158,49 +110,124 @@ export class RechercheService {
     this.filmsAPI = this.utilService.getListOfFilms();
     let reg = new RegExp(real);
     this.api.getPerson(real).subscribe((unReal: any) => {
+      console.log(unReal.results[0].id)
       this.api.getMoviesByRealisatorId(unReal.results[0].id).subscribe((movies: any) => {
         console.log(movies.results[0].title)
         for (let i = 0; i < movies.results.length; i++) {
           this.resultFilms.push(movies.results[i].title)
         }
         console.log(this.resultFilms)
-        // for (let i = 0; i < movies.length; i++) {
-        //   this.resultFilms.push(movies.results[i].title)
-        // }
-        // console.log(this.resultFilms)
       })
     })
-    // for (let i = 0; i < this.filmsAPI.length; i++) {
-    //   this.api.getMovieTMDBByIMDBID(this.filmsAPI[i].omdbID).subscribe((unFilm: any) => {
-    //     console.log(unFilm)
-    //     this.api.getCastTMDB(unFilm['movie_results'][0].id).subscribe((unCast: any) => {
-    //       console.log(unCast)
-    //       console.log(unCast.crew.filter((crew: any) => crew.job == "Director")[0].name)
-    //     })
-    //   })
-    // }
-    // if (this.resultFilms.length != 0) {
-    //   for (let i = 0; i < this.resultFilms.length; i++) {
-    //     this.api
-    //       .getMovieById(this.resultFilms[i].omdbID)
-    //       .subscribe((unFilm) => {
-    //         this.temp = unFilm;
-    //         if (!reg.test(this.temp.Director)) {
-    //           this.resultFilms.splice(i, 1);
-    //           i--;
-    //         }
-    //       });
-    //   }
-    // } else {
-    //   for (let i = 0; i < this.filmsAPI.length; i++) {
-    //     this.api.getMovieById(this.filmsAPI[i].omdbID).subscribe((unFilm) => {
-    //       this.temp = unFilm;
-    //       if (reg.test(this.temp.Director)) {
-    //         this.resultFilms.push(this.filmsAPI[i]);
-    //       }
-    //     });
-    //   }
-    // }
     return this.resultFilms;
   }
+
+  getFilmsByActor(actors: string, tab: any[]) {
+    this.resultFilms = tab;
+    this.filmsAPI = this.utilService.getListOfFilms();
+    let reg = new RegExp(actors);
+    let tab_actors = actors.split(",");
+    let promises: any[] = [];
+
+    tab_actors.forEach(actor => {
+      promises.push(this.api.getPerson(actor).toPromise());
+    });
+
+    Promise.all(promises).then((acts: any[]) => {
+      let actors_id = "";
+      acts.forEach((act: any) => {
+        actors_id += act.results[0].id + ",";
+      });
+      actors_id = actors_id.slice(0, -1);
+      console.log(actors_id);
+      this.api.getMoviesByActorId(actors_id).subscribe((movies: any) => {
+        console.log(movies);
+        for (let i = 0; i < movies.results.length; i++) {
+          this.resultFilms.push(movies.results[i].title)
+        }
+      });
+    });
+    return this.resultFilms;
+  }
+
+  getMoviesByActorsAndRealisator(actors: string, realisator: string, tab: any[]) {
+    this.resultFilms = tab;
+    let actorsQuery = "";
+    let realisatorId = "";
+    let promises: any[] = [];
+
+    promises.push(this.api.getPerson(realisator).toPromise());
+  
+    let actorsArray = actors.split(",");
+    console.log(actorsArray)
+    actorsArray.forEach(actor => {
+      console.log(actor)
+      promises.push(this.api.getPerson(actor).toPromise());
+    });
+  
+    Promise.all(promises).then((actorsData: any[]) => {
+      realisatorId = actorsData[1].results[0].id
+      for(let i = 1; i < actorsData.length; i++){
+        actorsQuery += actorsData[i].results[0].id + ",";
+      }
+      actorsQuery = actorsQuery.slice(0, -1);
+    }).then(() => {
+
+    console.log(actorsQuery);
+    console.log(realisatorId);
+    this.api.getMoviesByActorsAndRealisator(actorsQuery, realisatorId).subscribe((movies: any) => {
+      console.log(movies);
+    })
+  })
+    //return this.resultFilms;
+
+  }
+  
+  // getMoviesByActorsAndRealisator(actors: string, realisator: string, tab: any[]) {
+  //   this.resultFilms = tab;
+
+  //   this.api.getMoviesByActorsAndRealisator(actors, realisator).subscribe((movies: any) => {
+  //     console.log(movies);
+  //     for (let i = 0; i < movies.results.length; i++) {
+  //       this.resultFilms.push(movies.results[i].title);
+  //     }
+  //   });
+
+
+  //   // let tab_actors = actors.split(",");
+  //   // let promises: any[] = [];
+  //   // let real_id = "";
+
+  //   // this.api.getPerson(realisator).subscribe((unReal: any) => {
+  //   //   real_id = unReal.results[0].id;
+  //   // })
+
+  //   // tab_actors.forEach(actor => {
+  //   //   promises.push(this.api.getPerson(actor).toPromise());
+  //   // });
+
+  //   // promises.push(this.api.getPerson(realisator).toPromise());
+    
+
+  //   // Promise.all(promises).then((acts: any[]) => {
+  //   //   let actors_id = "";      
+
+  //   //   acts.forEach((act: any) => {
+  //   //     actors_id += act.results[0].id + ",";
+  //   //   });
+  //   //   actors_id = actors_id.slice(0, -1);
+
+  //   //   console.log(actors_id);
+  //   //   this.api.getMoviesByActorsAndRealisator(actors_id, real_id).subscribe((movies: any) => {
+  //   //     console.log(movies);
+  //   //     for (let i = 0; i < movies.results.length; i++) {
+  //   //       this.resultFilms.push(movies.results[i].title)
+  //   //     }
+  //   //   });
+  //   // });
+
+  //   return this.resultFilms;
+  // }
+  
+
 }

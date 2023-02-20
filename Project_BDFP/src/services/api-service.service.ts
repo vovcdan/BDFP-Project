@@ -63,7 +63,12 @@ export class ApiServiceService {
   }
 
   getMoviesByActorId(query: any){
-    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=287,234352`)
-    //return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}`)
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}`)
   }
+
+  getMoviesByActorsAndRealisator(actorsQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}`);
+  }
+
+  
 }
