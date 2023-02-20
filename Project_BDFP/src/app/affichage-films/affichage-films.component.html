@@ -13,9 +13,20 @@
     </div>
 </div>
 
-<div class="circle">
+<!--<div class="circle">
     <span class="circle_text"><strong> FILMS :</strong> {{this.moviesNumber}} </span>
-  </div>
+</div>-->
+
+<div id="compteur">
+    <header>
+        <mat-icon id="icone">local_movies</mat-icon>
+    </header>
+    <article id="centre">
+        <h2>{{this.moviesNumber}}</h2>
+        <p>Films vus</p>
+    </article>
+</div>
+
 
 <div *ngIf="showFormRecherche"  id="cherche" class="form-card">
     <form [formGroup]="formRecherche">

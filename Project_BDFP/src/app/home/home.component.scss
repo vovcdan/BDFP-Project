@@ -1,5 +1,6 @@
 
 .bt{
+    vertical-align: baseline;
     justify-content: center;
     display: inline-block;
     margin-bottom: 50px;
@@ -14,7 +15,7 @@
 #ajout {
     justify-content: center;
     float : left;
-    margin-bottom: 50px;
+    margin: 10px auto auto 100px;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     color: white;
@@ -25,6 +26,7 @@
 
 
 .butAjout {
+    vertical-align: baseline;
     margin-right: 10px;
     margin-top: 10px;
     margin-bottom: 5px;
@@ -38,13 +40,12 @@
 
 
 h1 {
-    display: inline;
     border-style: solid;
     border-color: orange;
     border-radius: 30px;
     padding: 5px 30px 5px 30px;
     color: orange;
-    margin: 0px 10px 0px 20px ;
+    margin: 10px 10px 0px 20px ;
     width: 300px;
     text-align: center;
 }
