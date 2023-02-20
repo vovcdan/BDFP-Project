@@ -38,8 +38,6 @@ export class ConnexionComponent implements OnInit {
       var sessionObject = JSON.parse(this.token.getSession() || '{}');
       var username = sessionObject.username;
       var userID = sessionObject.userID;
-      console.log(username);
-      console.log(userID);
       this.utilService.connect();
       this.utilService.setUserName(username);
       this.utilService.setUserId(userID);7
