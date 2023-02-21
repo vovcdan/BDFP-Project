@@ -201,8 +201,12 @@ export class ajouterUnFilm implements OnInit {
 
   private _filter(titre: string): Film[] {
     const filterValue = titre.toLowerCase();
-
-    return this.optionsMovie.filter(option => option.titre.includes(filterValue));
+    return this.optionsMovie.filter(option => {
+      if (option && option.titre) {
+        return option.titre.toLowerCase().includes(filterValue);
+      }
+      return false;
+    });
   }
 
   onSelected() {

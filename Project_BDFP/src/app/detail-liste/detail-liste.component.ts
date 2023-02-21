@@ -49,10 +49,19 @@ export class DetailListeComponent implements OnInit {
         this.films = this.temp[0].movies;
         for (let i = 0; i < this.films.length; i++) {
           this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-            var poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
-            this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
-              this.movies.set(film, poster);
-            });
+            if (filmAPI['movie_results'][0]) {
+              let poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
+              this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
+                this.movies.set(film, poster);
+            })}
+            else {
+              this.api.getMovieById(this.films[i].omdbID).subscribe((filmAPI: any) => {
+                if (filmAPI.Poster) {
+                  let poster = filmAPI.Poster;
+                  this.movies.set(filmAPI, poster);
+                }
+              })
+            };
           })
         }
       });
@@ -75,14 +84,22 @@ export class DetailListeComponent implements OnInit {
 
   afficherFilm(imdbID: string) {
     this.api.getMovieTMDBByIMDBID(imdbID).subscribe((film: any) => {
-      var poster = "https://image.tmdb.org/t/p/w185/" + film['movie_results'][0].poster_path;
-      console.log(film['movie_results'][0])
-      this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
-        this.singleFilm.set(filmAPI, poster);
-        this.utilService.setMovie(this.singleFilm);
-        this.router.navigateByUrl('/home/' + filmAPI.Title);
-      })
-    })
+      if (film['movie_results'][0]) {
+        let poster = "https://image.tmdb.org/t/p/w185/" + film['movie_results'][0].poster_path;
+        this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
+          this.singleFilm.set(filmAPI, poster);
+          this.utilService.setMovie(this.singleFilm);
+          this.router.navigateByUrl('/home/' + filmAPI.Title);
+        })
+      } else {
+        this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
+          let poster = filmAPI.Poster;
+          this.singleFilm.set(filmAPI, poster);
+          this.utilService.setMovie(this.singleFilm);
+          this.router.navigateByUrl('/home/' + filmAPI.Title);
+        })
+      }
+  })
   }
 
   suppDialog(omdbID: string): void {
