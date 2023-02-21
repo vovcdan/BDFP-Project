@@ -70,5 +70,20 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}`);
   }
 
+  getMoviesByYear(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}`)
+  }
+
+  getMoviesByYearAndActors(yearQuery: any, actorsQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_cast=${actorsQuery}`)
+  }
+
+  getMoviesByYearAndRealisator(yearQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director`)
+  }
+
+  getMoviesByYearAndActorsAndRealisator(yearQuery: any, actorsQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&with_cast=${actorsQuery}`)
+  }
   
 }
