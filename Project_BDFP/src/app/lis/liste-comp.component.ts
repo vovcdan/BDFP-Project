@@ -24,7 +24,6 @@ export class ListeCompComponent implements OnInit {
   ngOnInit(): void {
     this.filmsService.getAllListFromUser(this.utilService.getUserId()).subscribe((listofFilms) => {
       this.listofFilms = listofFilms;
-      console.log(this.listofFilms);
     });
 }
 
@@ -34,4 +33,3 @@ gererListe(laliste: ListFilm){
 }
 }
 
-  

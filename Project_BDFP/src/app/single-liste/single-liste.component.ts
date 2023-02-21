@@ -41,7 +41,7 @@ export class SingleListeComponent implements OnInit {
   title!: string;
 
   destUser!: User;
-  
+
   result: any;
 
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
@@ -171,10 +171,15 @@ export class ajouterUnFilm implements OnInit {
 
   ngOnInit(): void {
     this.film.getFilmsByUid(this.utilService.getUserId()).subscribe((allFilms) => {
+      console.log(allFilms);
+
       this.currentListFilm = allFilms;
       for(let i = 0; i < this.currentListFilm.length; i++) {
         this.movies = this.currentListFilm[i].movies;
       }
+
+      console.log(this.movies);
+
 
       for (let i = 0; i < this. movies.length; i++) {
         this.optionsMovie.push(this.movies[i]);
@@ -196,8 +201,12 @@ export class ajouterUnFilm implements OnInit {
 
   private _filter(titre: string): Film[] {
     const filterValue = titre.toLowerCase();
-
-    return this.optionsMovie.filter(option => option.titre.toLowerCase().includes(filterValue));
+    return this.optionsMovie.filter(option => {
+      if (option && option.titre) {
+        return option.titre.toLowerCase().includes(filterValue);
+      }
+      return false;
+    });
   }
 
   onSelected() {
