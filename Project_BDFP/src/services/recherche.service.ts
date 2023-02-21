@@ -110,13 +110,10 @@ export class RechercheService {
     this.filmsAPI = this.utilService.getListOfFilms();
     let reg = new RegExp(real);
     this.api.getPerson(real).subscribe((unReal: any) => {
-      console.log(unReal.results[0].id)
       this.api.getMoviesByRealisatorId(unReal.results[0].id).subscribe((movies: any) => {
-        console.log(movies.results[0].title)
         for (let i = 0; i < movies.results.length; i++) {
           this.resultFilms.push(movies.results[i].title)
         }
-        console.log(this.resultFilms)
       })
     })
     return this.resultFilms;
@@ -139,9 +136,7 @@ export class RechercheService {
         actors_id += act.results[0].id + ",";
       });
       actors_id = actors_id.slice(0, -1);
-      console.log(actors_id);
       this.api.getMoviesByActorId(actors_id).subscribe((movies: any) => {
-        console.log(movies);
         for (let i = 0; i < movies.results.length; i++) {
           this.resultFilms.push(movies.results[i].title)
         }
@@ -150,7 +145,7 @@ export class RechercheService {
     return this.resultFilms;
   }
 
-  getMoviesByActorsAndRealisator(actors: string, realisator: string, tab: any[]) {
+  async getMoviesByActorsAndRealisator(actors: string, realisator: string, tab: any[]) {
     this.resultFilms = tab;
     let actorsQuery = "";
     let realisatorId = "";
@@ -159,27 +154,23 @@ export class RechercheService {
     promises.push(this.api.getPerson(realisator).toPromise());
   
     let actorsArray = actors.split(",");
-    console.log(actorsArray)
     actorsArray.forEach(actor => {
-      console.log(actor)
       promises.push(this.api.getPerson(actor).toPromise());
     });
   
-    Promise.all(promises).then((actorsData: any[]) => {
-      realisatorId = actorsData[1].results[0].id
+    await Promise.all(promises).then((actorsData: any[]) => {
+      realisatorId = actorsData[0].results[0].id
       for(let i = 1; i < actorsData.length; i++){
         actorsQuery += actorsData[i].results[0].id + ",";
       }
       actorsQuery = actorsQuery.slice(0, -1);
     }).then(() => {
-
-    console.log(actorsQuery);
-    console.log(realisatorId);
-    this.api.getMoviesByActorsAndRealisator(actorsQuery, realisatorId).subscribe((movies: any) => {
-      console.log(movies);
-    })
-  })
-    //return this.resultFilms;
+      return this.api.getMoviesByActorsAndRealisator(actorsQuery, realisatorId).toPromise();
+    }).then((movies: any) => {
+      this.resultFilms.push(movies.results[0].title)
+    });
+  
+    return this.resultFilms;
 
   }
   
@@ -187,7 +178,6 @@ export class RechercheService {
   //   this.resultFilms = tab;
 
   //   this.api.getMoviesByActorsAndRealisator(actors, realisator).subscribe((movies: any) => {
-  //     console.log(movies);
   //     for (let i = 0; i < movies.results.length; i++) {
   //       this.resultFilms.push(movies.results[i].title);
   //     }
@@ -217,9 +207,7 @@ export class RechercheService {
   //   //   });
   //   //   actors_id = actors_id.slice(0, -1);
 
-  //   //   console.log(actors_id);
   //   //   this.api.getMoviesByActorsAndRealisator(actors_id, real_id).subscribe((movies: any) => {
-  //   //     console.log(movies);
   //   //     for (let i = 0; i < movies.results.length; i++) {
   //   //       this.resultFilms.push(movies.results[i].title)
   //   //     }

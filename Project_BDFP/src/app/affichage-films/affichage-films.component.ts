@@ -134,30 +134,37 @@ export class AffichageFilmsComponent implements OnInit {
 
   getFilmsByTitre(titre: string, tab: any[]){
     this.resList = this.rechercheService.getFilmsByTitre(titre, tab);
+    console.log(this.resList)
   }
 
   getFilmsByRealisator(real: string, tab: any[]){
     this.resList = this.rechercheService.getFilmsByRealisator(real, tab);
+    console.log(this.resList)
   }
 
   getFilmsByYear(year: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByYear(year, tab);
+    console.log(this.resList)
   }
 
   getFilmsByActors(actors: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByActor(actors, tab);
+    console.log(this.resList)
   }
 
   getFilmsByLocation(loc: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByLocation(loc, tab);
+    console.log(this.resList)
   }
 
   getFilmsByAccompagnateurs(acc: string, tab: any[]) {
     this.resList = this.rechercheService.getFilmsByAccompagnateurs(acc, tab);
+    console.log(this.resList)
   }
 
-  getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
-    this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab);
+  async getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
+    this.resList = await this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab)
+        console.log(this.resList)
   }
 
 }
