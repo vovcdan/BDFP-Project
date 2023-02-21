@@ -4,7 +4,7 @@
     flex: 1;
     flex-grow: 1;
     flex-basis: auto;
-    margin-right: 30px;
+    margin-right: 20px;
     margin-bottom: 15px;
     box-shadow: 2px 5px 7px 3px rgb(0, 0, 0);
     transition: 0.3s;
@@ -18,19 +18,24 @@
     }
 }
 
-#butAjout {
-    margin: 20px;
+.butAjout {
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    color: white; 
     transition: 0.4s;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    color: white;
-    background-color: rgb(39, 39, 39);
-    border: solid 2px white;
+    background-color: rgb(39,39,39);
     &:hover {
-        
-        border: solid 2px orange;
-        
+        color: orange;
     }
+}
+
+.bt {
+    display: inline;
+}
+
+#bout {
+    display : inline-block
 }
 
 #images {
@@ -44,7 +49,7 @@
     font-size: 16px;
     font-weight: bold;
     text-align: left;
-    margin: 3em 0px -5px 30px;
+    margin: 50px 0px -5px 30px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -155,29 +160,47 @@
     color: orange;
 }
 
-.circle{
-    display:block;
-    position: relative;
-    //width:80px;
-    //height: 80px;
-    //border-radius:50%;
-    text-align:center;
-    float: right;
-    //color: white;
-    //border-color: orange;
-    //border-style: solid;
-    margin: 30px 35px;
+//compteur de films
+#compteur {
+    position: absolute;
+    right: 0;
+    display:inline-block;
+    min-width: 100px;
+    box-sizing: border-box;
+    width: 10%;
+    margin: 20px 30px 15px auto;
+    padding: 5px;
+    //box-shadow: orange 4px 4px 15px;
+    border-radius: 30px;
+    background-color: rgba(212, 211, 211, 0.06);
+    align-items: center;
+}
+
+header {
+    margin : 0 auto;
+    text-align: center;
+}
+
+#icone {
+    transform: scale(1.3);
+    margin : 10px;
+    background-color: orange;
+    border-radius: 60px;
+    padding: 5px;
+    color:rgb(39,39,39);
+}
+
+  #centre {
+    margin : 0 auto;
+    text-align: center;
   }
   
-  .circle_text{
-    display: inline;
-    border-style: solid;
-    border-color: orange;
-    border-radius: 30px;
-    padding: 5px 10px 5px 10px;
-    color: orange;
-    margin: 0px 10px 0px 20px ;
-    width: 300px;
-    text-align: center;
-   }
+  #centre h2 {
+    font-size: 30px;
+    margin : 0px;
+    color: white ;
+  }
 
+  #centre p {
+    color : rgba(255, 255, 255, 0.313)
+  }

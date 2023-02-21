@@ -1,11 +1,36 @@
-<a>
-    <button id="butAjout" mat-flat-button (click)="affichageForm()">Rechercher</button>
-    <button id="butAjout" mat-flat-button (click)="reloadFilms()">recharger tous les films</button>
-</a>
 
-<div class="circle">
+<div id="bout">
+    <div class="bt">
+        <button class="butAjout" mat-fab matTooltip="Rechercher un film" mat-fab (click)="affichageForm()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+
+    <div class="bt">
+        <button class="butAjout" mat-fab matTooltip="Recharger les films" (click)="reloadFilms()">
+            <mat-icon>cached</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div id="compteur">
+    <header>
+        <mat-icon id="icone">local_movies</mat-icon>
+    </header>
+    <article id="centre">
+        <h2>{{this.moviesNumber}}</h2>
+        <p>Films vus</p>
+    </article>
+</div>
+
+
+
+<!--<div class="circle">
     <span class="circle_text"><strong> FILMS :</strong> {{this.moviesNumber}} </span>
-  </div>
+</div>-->
+
+
+
 
 <div *ngIf="showFormRecherche"  id="cherche" class="form-card">
     <form [formGroup]="formRecherche">

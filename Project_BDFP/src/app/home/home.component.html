@@ -1,8 +1,10 @@
 <div id="ajout">
-    <h1> Tous les films vus</h1>
-    <a>
-        <button id="butAjout" mat-raised-button (click)="openDialog()">Ajouter un film</button>
-    </a>
+    <div id="logo"><img src="../../assets/3.png" alt="logo"></div>
+    <div class="bt">
+        <button class="butAjout" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
     <app-affichage-films></app-affichage-films>
 </div>
 
