@@ -54,7 +54,7 @@ export class AffichageFilmsComponent implements OnInit {
             if (filmAPI['movie_results'][0]) {
               let id = filmAPI['movie_results'][0].id;
               let poster:String =
-              'https://image.tmdb.org/t/p/w185/' +
+              'https://image.tmdb.org/t/p/w300/' +
               filmAPI['movie_results'][0].poster_path;
               let title = filmAPI['movie_results'][0].original_title;
               let release_date = filmAPI['movie_results'][0].release_date;
@@ -99,7 +99,7 @@ export class AffichageFilmsComponent implements OnInit {
                 if (filmAPI['movie_results'][0]) {
                   let id = filmAPI['movie_results'][0].id;
                   let poster:String =
-                    'https://image.tmdb.org/t/p/w185/' +
+                    'https://image.tmdb.org/t/p/w300/' +
                     filmAPI['movie_results'][0].poster_path;
                   let title = filmAPI['movie_results'][0].original_title;
                   let release_date = filmAPI['movie_results'][0].release_date;

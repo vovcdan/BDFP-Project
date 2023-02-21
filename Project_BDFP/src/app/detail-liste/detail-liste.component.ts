@@ -50,7 +50,7 @@ export class DetailListeComponent implements OnInit {
         for (let i = 0; i < this.films.length; i++) {
           this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
             if (filmAPI['movie_results'][0]) {
-              let poster = "https://image.tmdb.org/t/p/w185/" + filmAPI['movie_results'][0].poster_path;
+              let poster = "https://image.tmdb.org/t/p/w300/" + filmAPI['movie_results'][0].poster_path;
               this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
                 this.movies.set(film, poster);
             })}
@@ -85,7 +85,7 @@ export class DetailListeComponent implements OnInit {
   afficherFilm(imdbID: string) {
     this.api.getMovieTMDBByIMDBID(imdbID).subscribe((film: any) => {
       if (film['movie_results'][0]) {
-        let poster = "https://image.tmdb.org/t/p/w185/" + film['movie_results'][0].poster_path;
+        let poster = "https://image.tmdb.org/t/p/w300/" + film['movie_results'][0].poster_path;
         this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
           this.singleFilm.set(filmAPI, poster);
           this.utilService.setMovie(this.singleFilm);
