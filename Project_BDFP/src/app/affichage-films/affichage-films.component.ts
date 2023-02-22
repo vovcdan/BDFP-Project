@@ -98,22 +98,22 @@ export class AffichageFilmsComponent implements OnInit {
 
   rechercherFilm() {
 
-    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != "" && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
       this.switch_number = 1;
     } else {
-      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != "" && this.actorsControl.value != undefined && (this.realisatorControl.value == undefined || this.realisatorControl.value == "") && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
         this.switch_number = 2
       } else {
-        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != "" && this.realisatorControl.value != undefined && (this.actorsControl.value == undefined || this.actorsControl.value == "") && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
           this.switch_number = 3
         } else {
-          if (this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value == "" && this.yearControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+          if (this.realisatorControl.value != undefined && this.realisatorControl.value != "" && (this.actorsControl.value == "" || this.actorsControl.value == undefined) && (this.yearControl.value == "" || this.yearControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
             this.switch_number = 4
           } else {
-            if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value == "" && this.actorsControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+            if (this.yearControl.value != undefined && this.yearControl.value != "" && (this.realisatorControl.value == "" || this.realisatorControl.value == undefined) && (this.actorsControl.value == "" || this.actorsControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
               this.switch_number = 5
             } else {
-              if (this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value == "" && this.yearControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == "" && this.titreControl.value == ""){
+              if (this.actorsControl.value != undefined && this.actorsControl.value != "" && (this.realisatorControl.value == "" || this.realisatorControl.value == undefined) && (this.yearControl.value == "" || this.yearControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
                 this.switch_number = 6
               }
             }
@@ -127,10 +127,10 @@ export class AffichageFilmsComponent implements OnInit {
         this.getMoviesByYearAndActorsAndRealisator(this.yearControl.value, this.actorsControl.value, this.realisatorControl.value, this.resList);
         break;
       case (2):
-        this.getMoviesByYearAndRealisator(this.yearControl.value, this.realisatorControl.value, this.resList);
+        this.getMoviesByYearAndActors(this.yearControl.value, this.actorsControl.value, this.resList);
         break;
       case (3):
-        this.getMoviesByYearAndActors(this.yearControl.value, this.actorsControl.value, this.resList);
+        this.getMoviesByYearAndRealisator(this.yearControl.value, this.realisatorControl.value, this.resList);
         break;
       case (4):
         this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
