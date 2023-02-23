@@ -26,7 +26,7 @@ export class AffichageFilmsComponent implements OnInit {
   actorsControl = new FormControl();
   locationControl = new FormControl();
   accompagnateursControl = new FormControl();
-  resList: any;
+  resList!: Map<string, number>;
   movieExist: any[] = [];
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
@@ -129,42 +129,42 @@ export class AffichageFilmsComponent implements OnInit {
     console.log(this.switch_number)
 
     switch (this.switch_number) {
-      case (1):
-        this.getMoviesByYearAndActorsAndRealisator(this.yearControl.value, this.actorsControl.value, this.realisatorControl.value, this.resList);
-        break;
-      case (2):
-        this.getMoviesByYearAndActors(this.yearControl.value, this.actorsControl.value, this.resList);
-        break;
-      case (3):
-        this.getMoviesByYearAndRealisator(this.yearControl.value, this.realisatorControl.value, this.resList);
-        break;
-      case (4):
-        this.getMoviesByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value, this.resList);
-        break;
+      // case (1):
+      //   this.getMoviesByYearAndActorsAndRealisator(this.yearControl.value, this.actorsControl.value, this.realisatorControl.value, this.resList);
+      //   break;
+      // case (2):
+      //   this.getMoviesByYearAndActors(this.yearControl.value, this.actorsControl.value, this.resList);
+      //   break;
+      // case (3):
+      //   this.getMoviesByYearAndRealisator(this.yearControl.value, this.realisatorControl.value, this.resList);
+      //   break;
+      // case (4):
+      //   this.getMoviesByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value, this.resList);
+      //   break;
       case (5):
         this.getFilmsByRealisator(this.realisatorControl.value);
         break;
       case (6):
-        this.getFilmsByYear(this.yearControl.value, this.resList);
-        break;
-      case (7):
-        this.getFilmsByActors(this.actorsControl.value, this.resList);
-        break;
+      //   this.getFilmsByYear(this.yearControl.value, this.resList);
+      //   break;
+      // case (7):
+      //   this.getFilmsByActors(this.actorsControl.value, this.resList);
+      //   break;
       default:
         this.error_message = "Vous devez remplir au moins un champ";
         break;
     }
 
     //   [];
-    if(this.titreControl.value != undefined && this.titreControl.value != ""){
-      this.getFilmsByTitre(this.titreControl.value, this.resList);
-    }
-    if(this.locationControl.value != undefined && this.locationControl.value != ""){
-      this.getFilmsByLocation(this.locationControl.value, this.resList);
-    }
-    if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
-      this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
-    }
+    // if(this.titreControl.value != undefined && this.titreControl.value != ""){
+    //   this.getFilmsByTitre(this.titreControl.value, this.resList);
+    // }
+    // if(this.locationControl.value != undefined && this.locationControl.value != ""){
+    //   this.getFilmsByLocation(this.locationControl.value, this.resList);
+    // }
+    // if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
+    //   this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
+    // }
 
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigateByUrl('/home');
@@ -200,9 +200,11 @@ export class AffichageFilmsComponent implements OnInit {
   async getFilmsByRealisator(real: string){
     this.resList = await this.rechercheService.getFilmsByRealisator(real)
     console.log(this.resList)
-    for (let i = 0; i < this.resList.length; i++) {
+    console.log(this.resList.size);
+
+    for (const [key, value] of this.resList) {
       console.log("kakak")
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
         console.log(movie)
         this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
           this.movieExist.push(film)
@@ -211,91 +213,90 @@ export class AffichageFilmsComponent implements OnInit {
       })
     }
     console.log(this.resList);
-
   }
 
-  async getFilmsByYear(year: string, tab: any[]) {
-    this.resList = await this.rechercheService.getFilmsByYear(year, tab);
+  // async getFilmsByYear(year: string, tab: any[]) {
+  //   this.resList = await this.rechercheService.getFilmsByYear(year, tab);
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
-    console.log(this.movieExist)
-  }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
+  //   console.log(this.movieExist)
+  // }
 
-  async getFilmsByActors(actors: string, tab: any[]) {
-    this.resList = await this.rechercheService.getFilmsByActor(actors, tab);
+  // async getFilmsByActors(actors: string, tab: any[]) {
+  //   this.resList = await this.rechercheService.getFilmsByActor(actors, tab);
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
-    console.log(this.movieExist)
-  }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
+  //   console.log(this.movieExist)
+  // }
 
-  async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
-    this.resList = await this.rechercheService.getMoviesByYearAndActors(year, actors, tab);
+  // async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
+  //   this.resList = await this.rechercheService.getMoviesByYearAndActors(year, actors, tab);
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
-    console.log(this.movieExist)
-  }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
+  //   console.log(this.movieExist)
+  // }
 
-  async getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
-    this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real, tab);
+  // async getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
+  //   this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real, tab);
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
-    console.log(this.movieExist)
-  }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
+  //   console.log(this.movieExist)
+  // }
 
-  async getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
-    this.resList = await this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab)
+  // async getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
+  //   this.resList = await this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab)
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
-    console.log(this.movieExist)
-  }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
+  //   console.log(this.movieExist)
+  // }
 
-  async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string, tab: any[]){
-    this.resList = await this.rechercheService.getMoviesByYearAndActorsAndRealisator(year, actors, real, tab);
+  // async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string, tab: any[]){
+  //   this.resList = await this.rechercheService.getMoviesByYearAndActorsAndRealisator(year, actors, real, tab);
 
-    for (let i = 0; i < this.resList.length; i++) {
-      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
-        console.log(movie)
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
-    }
+  //   for (let i = 0; i < this.resList.length; i++) {
+  //     this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+  //       console.log(movie)
+  //       this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+  //         this.movieExist.push(film)
+  //       })
+  //     })
+  //   }
 
-    console.log(this.movieExist)
-  }
+  //   console.log(this.movieExist)
+  // }
 }

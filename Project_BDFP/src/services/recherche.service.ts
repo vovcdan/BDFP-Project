@@ -141,26 +141,21 @@ export class RechercheService {
   // }
 
   async getFilmsByRealisator(real: string) {
-    let promises: any[] = [];
-    let temp = new Map<string, number>();
-
-    promises.push(this.api.getPerson(real).toPromise());
-
-    await Promise.all(promises).then((real: any) => {
-      let realisators_id = "";
-      realisators_id += real[0].results[0].id + ",";
-      realisators_id = realisators_id.slice(0, -1);
-      return this.api.getMoviesByRealisatorId(realisators_id).subscribe((movies: any) => {
-        console.log(movies)
-        for (let i = 0; i < movies.results.length; i++) {
-          temp.set(movies.results[i].title, movies.results[i].id)
-        }
-      });
-    });
-
-    console.log(temp)
-
-    return this.temp;
+    try {
+      const personResponse = await this.api.getPerson(real).toPromise();
+      const realisators_id = (personResponse as any).results[0].id;
+      const moviesResponse = await this.api.getMoviesByRealisatorId(realisators_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      console.log(temp);
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by director: ${error}`);
+      return new Map<string, number>();
+    }
   }
 
   // async getFilmsByRealisator(real: string, tab: any[]) {
