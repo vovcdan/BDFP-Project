@@ -23,29 +23,34 @@
         <div id="titre">{{currentFilm.Title}}</div>
             <p id="soustitre">( {{currentFilm.Year}} ) - {{currentFilm.Genre}} - {{currentFilm.Runtime}}</p>
         <div id="details">
+            <h2> Informations personnelles </h2>
             <div class="wrapper">
-            <div>
-                <mat-icon class="icone">star_border</mat-icon>
-                <p><span class="bold">Note :</span>  {{currentFilmInfos.note}}/5</p>
-            </div>
-            <div>
-                <mat-icon class="icone">camera_roll</mat-icon>
-                <p><span class="bold">Date de visionnage :</span>  {{currentFilmInfos.dateVision}}</p>
-            </div>
-            <div>
-		        <mat-icon class="icone"> place</mat-icon>
-                <p><span class="bold">Cinéma :</span>  {{currentFilmInfos.cinema}}</p>
-            </div>
-            <div>
-                <mat-icon class="icone">supervisor_account</mat-icon>
-                <p><span class="bold">Accompagnateurs :</span>  {{currentFilmInfos.accompagnateurs}}</p>
-            </div>
-            <div>
-                <mat-icon class="icone"> local_movies</mat-icon>
-                <p><span class="bold">Avis :</span> {{currentFilmInfos.avis}}</p>
-            </div>
+                <div class="partie">
+                    <mat-icon class="icone">star_border</mat-icon>
+                    <p><span class="bold">Note :</span>  {{currentFilmInfos.note}}/5</p>
+                </div>
+                <div class="partie">
+                    <mat-icon class="icone">camera_roll</mat-icon>
+                    <p><span class="bold">Date de visionnage :</span>  {{currentFilmInfos.dateVision}}</p>
+                </div>
+                <div class="partie">
+		            <mat-icon class="icone"> place</mat-icon>
+                    <p><span class="bold">Cinéma :</span>  {{currentFilmInfos.cinema}}</p>
+                </div>
+                <div class="partie">
+                    <mat-icon class="icone">supervisor_account</mat-icon>
+                    <p><span class="bold">Accompagnateurs :</span>  {{currentFilmInfos.accompagnateurs}}</p>
+                </div>
+                <div class="partie">
+                    <mat-icon class="icone"> local_movies</mat-icon>
+                    <p><span class="bold">Avis :</span> {{currentFilmInfos.avis}}</p>
+                </div>
+                <button id="butModif" mat-mini-fab matTooltip="Modifier mes informations"> <!--(click)=""-->
+                    <mat-icon>create</mat-icon>
+                </button>
             </div>
             <hr/>
+            <h2> Informations extraites des API </h2>
             <div id="wrapper2">
                 <div>
                     <mat-icon class="icone">movie_creation</mat-icon>
@@ -59,19 +64,19 @@
                         </ul>
                     </details>
                 </div>
-                <div>
+                <div class="partie">
                     <mat-icon class="icone">rate_review</mat-icon>
                     <p><span class="bold">Réalisateurs :</span>  {{this.realisator}}</p>
                 </div>
-                <div>
+                <div class="partie">
                     <mat-icon class="icone">calendar_month</mat-icon>
                     <p><span class="bold">Année :</span>  {{currentFilm.Year}}</p>
                 </div>
-                <div>
+                <div class="partie">
                     <mat-icon class="icone">access_time</mat-icon>
                     <p><span class="bold">Durée :</span>  {{currentFilm.Runtime}}</p>
                 </div>
-                <div>
+                <div class="partie"> 
                     <mat-icon class="icone">event_note</mat-icon>
                     <p><span class="bold">Synopsis : </span> {{currentFilm.Plot}}</p>
                 </div>
