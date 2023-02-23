@@ -26,7 +26,7 @@ export class AffichageFilmsComponent implements OnInit {
   actorsControl = new FormControl();
   locationControl = new FormControl();
   accompagnateursControl = new FormControl();
-  resList: any[] = [];
+  resList: any;
   movieExist: any[] = [];
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
@@ -68,8 +68,7 @@ export class AffichageFilmsComponent implements OnInit {
   reloadFilms() {
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((allfilms) => {
       this.films = allfilms[0].movies;
-      this.utilService.setListOfFilms(this.films);      
-      this.utilService.setListeRecherche(this.films);
+      this.utilService.setListOfFilms(this.films);
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
         this.router.navigateByUrl('/home');
       });
@@ -143,7 +142,7 @@ export class AffichageFilmsComponent implements OnInit {
         this.getMoviesByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value, this.resList);
         break;
       case (5):
-        this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
+        this.getFilmsByRealisator(this.realisatorControl.value);
         break;
       case (6):
         this.getFilmsByYear(this.yearControl.value, this.resList);
@@ -155,7 +154,7 @@ export class AffichageFilmsComponent implements OnInit {
         this.error_message = "Vous devez remplir au moins un champ";
         break;
     }
-    
+
     //   [];
     if(this.titreControl.value != undefined && this.titreControl.value != ""){
       this.getFilmsByTitre(this.titreControl.value, this.resList);
@@ -167,8 +166,6 @@ export class AffichageFilmsComponent implements OnInit {
       this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
     }
 
-
-    this.utilService.setListeRecherche(this.resList);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigateByUrl('/home');
     });
@@ -200,10 +197,9 @@ export class AffichageFilmsComponent implements OnInit {
 
   // REQUETE VERS L'API
 
-  async getFilmsByRealisator(real: string, tab: any[]){
-    this.resList = await this.rechercheService.getFilmsByRealisator(real, tab)
+  async getFilmsByRealisator(real: string){
+    this.resList = await this.rechercheService.getFilmsByRealisator(real)
     console.log(this.resList)
-    console.log(this.resList.length)
     for (let i = 0; i < this.resList.length; i++) {
       console.log("kakak")
       this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
@@ -214,6 +210,8 @@ export class AffichageFilmsComponent implements OnInit {
         })
       })
     }
+    console.log(this.resList);
+
   }
 
   async getFilmsByYear(year: string, tab: any[]) {
@@ -232,7 +230,7 @@ export class AffichageFilmsComponent implements OnInit {
 
   async getFilmsByActors(actors: string, tab: any[]) {
     this.resList = await this.rechercheService.getFilmsByActor(actors, tab);
-    
+
     for (let i = 0; i < this.resList.length; i++) {
       this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
         console.log(movie)
@@ -246,7 +244,7 @@ export class AffichageFilmsComponent implements OnInit {
 
   async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
     this.resList = await this.rechercheService.getMoviesByYearAndActors(year, actors, tab);
-    
+
     for (let i = 0; i < this.resList.length; i++) {
       this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
         console.log(movie)
@@ -260,7 +258,7 @@ export class AffichageFilmsComponent implements OnInit {
 
   async getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
     this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real, tab);
-    
+
     for (let i = 0; i < this.resList.length; i++) {
       this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
         console.log(movie)

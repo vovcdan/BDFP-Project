@@ -94,7 +94,7 @@ export class RechercheService {
         if (!reg.test(this.resultFilms[i].dateVision)) {
           this.resultFilms.splice(i, 1);
           i--;
-        } 
+        }
       }
     } else {
       for (let i = 0; i < this.filmsAPI.length; i++) {
@@ -140,26 +140,27 @@ export class RechercheService {
   //   return this.resultFilms;
   // }
 
-  async getFilmsByRealisator(real: string, tab: any[]) {
-    this.resultFilms = tab;
+  async getFilmsByRealisator(real: string) {
     let promises: any[] = [];
+    let temp = new Map<string, number>();
 
     promises.push(this.api.getPerson(real).toPromise());
 
-    await Promise.all(promises).then((reals: any[]) => {
+    await Promise.all(promises).then((real: any) => {
       let realisators_id = "";
-      reals.forEach((real: any) => {
-        realisators_id += real.results[0].id + ",";
-      });
+      realisators_id += real[0].results[0].id + ",";
       realisators_id = realisators_id.slice(0, -1);
-      this.api.getMoviesByRealisatorId(realisators_id).subscribe((movies: any) => {
+      return this.api.getMoviesByRealisatorId(realisators_id).subscribe((movies: any) => {
+        console.log(movies)
         for (let i = 0; i < movies.results.length; i++) {
-          this.resultFilms.push([movies.results[i].title, movies.results[i].id])
+          temp.set(movies.results[i].title, movies.results[i].id)
         }
       });
     });
-    console.log(this.resultFilms)
-    return this.resultFilms;
+
+    console.log(temp)
+
+    return this.temp;
   }
 
   // async getFilmsByRealisator(real: string, tab: any[]) {
@@ -205,12 +206,12 @@ export class RechercheService {
     let promises: any[] = [];
 
     promises.push(this.api.getPerson(realisator).toPromise());
-  
+
     let actorsArray = actors.split(",");
     actorsArray.forEach(actor => {
       promises.push(this.api.getPerson(actor).toPromise());
     });
-  
+
     await Promise.all(promises).then((actorsData: any[]) => {
       realisatorId = actorsData[0].results[0].id
       for(let i = 1; i < actorsData.length; i++){
@@ -225,7 +226,7 @@ export class RechercheService {
     console.log(this.resultFilms)
     return this.resultFilms;
 
-  } 
+  }
 
   async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
     this.resultFilms = tab
@@ -264,7 +265,7 @@ export class RechercheService {
     return this.resultFilms;
   }
 
-  
+
 
   async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string, tab: any[]){
     this.resultFilms = tab;
@@ -273,12 +274,12 @@ export class RechercheService {
     let promises: any[] = [];
 
     promises.push(this.api.getPerson(real).toPromise());
-  
+
     let actorsArray = actors.split(",");
     actorsArray.forEach(actor => {
       promises.push(this.api.getPerson(actor).toPromise());
     });
-  
+
     await Promise.all(promises).then((actorsData: any[]) => {
       realisatorId = actorsData[0].results[0].id
       for(let i = 1; i < actorsData.length; i++){

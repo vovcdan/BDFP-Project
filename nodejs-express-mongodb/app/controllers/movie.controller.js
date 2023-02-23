@@ -68,13 +68,13 @@
    MovieDB.find(condition)
      .then((data) => {
        if (!data)
-         res.status(404).send({ message: "Liste de films non trouvée " + id });
+         res.status(404).send({ message: "Liste de films non trouvée pour l'utilisateur " + uid });
        else res.send(data);
      })
      .catch((err) => {
        res
          .status(500)
-         .send({ message: "Erreur pendant la récupération de la liste " + id });
+         .send({ message: "Erreur pendant la récupération de la liste de l'utilisateur " + uid });
      });
  };
  
