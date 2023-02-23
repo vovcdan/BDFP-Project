@@ -31,7 +31,6 @@ export class AffichageFilmsComponent implements OnInit {
   idActor: number = 0;
   noPoster: boolean = false;
   fromTMDB: boolean = true;
-  moviesNumber: number = 0;
 
   constructor(
     private filmService: FilmsService,
@@ -45,7 +44,6 @@ export class AffichageFilmsComponent implements OnInit {
     this.filmService.getListsTitles();
     this.films = this.utilService.getListeRecherche();
     if (this.films) {
-      this.moviesNumber = this.films.length
       for (let i = 0; i < this.films.length; i++) {
         this.api
         .getMovieTMDBByIMDBID(this.films[i].omdbID)
@@ -60,7 +58,7 @@ export class AffichageFilmsComponent implements OnInit {
               } else {
                 poster = '../../assets/no-poster.png';
               }
-              let title = filmAPI['movie_results'][0].original_title;
+              let title = filmAPI['movie_results'][0].title;
               let release_date = filmAPI['movie_results'][0].release_date;
               let values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
               this.movies.set(filmAPI, values);
@@ -93,7 +91,6 @@ export class AffichageFilmsComponent implements OnInit {
         .getFilmsByUid(this.utilService.getUserId())
         .subscribe((allfilms) => {
           this.films = allfilms[0].movies;
-          this.moviesNumber = this.films.length
           this.utilService.setListOfFilms(this.films);
           for (let i = 0; i < this.films.length; i++) {
             this.api
@@ -109,7 +106,7 @@ export class AffichageFilmsComponent implements OnInit {
                   } else {
                     poster = '../../assets/no-poster.png';
                   }
-                  let title = filmAPI['movie_results'][0].original_title;
+                  let title = filmAPI['movie_results'][0].title;
                   let release_date = filmAPI['movie_results'][0].release_date;
                   let values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
                   this.movies.set(filmAPI, values);

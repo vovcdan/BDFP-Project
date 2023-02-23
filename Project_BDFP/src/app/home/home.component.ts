@@ -13,6 +13,8 @@ import {
   distinctUntilChanged,
   filter,
   finalize,
+  map,
+  Observable,
   switchMap,
   tap,
 } from 'rxjs';
@@ -45,6 +47,7 @@ export class HomeComponent implements OnInit {
   note!: string;
   films: Film[] = [];
   list: any;
+  numberOfFilms!: Observable<number>;
 
   constructor(
     private filmService: FilmsService,
@@ -54,10 +57,18 @@ export class HomeComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.numberOfFilms = this.getNumberOfFilms();
+  }
 
   suppFilm(titrefilm: string) {
     this.filmService.deleteMovieDBById(titrefilm);
+  }
+
+  getNumberOfFilms(): Observable<number> {
+    return this.filmService.getFilmsByUid(this.utilService.getUserId()).pipe(
+      map(allfilms => allfilms[0].movies.length)
+    );
   }
 
   openDialog(): void {
@@ -116,6 +127,8 @@ export class ajouterFilm implements OnInit {
 
     ngOnInit(): void {
       this.OMDBInit();
+
+
     }
 
     @HostListener('document:keydown', ['$event'])
