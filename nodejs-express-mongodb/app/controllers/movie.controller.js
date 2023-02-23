@@ -84,18 +84,26 @@
   * @param res revoie le status des requêtes
   */
  exports.findOne = (req, res) => {
-   const id = req.params.id;
+   const uid = req.params.uid;
+   const omdbID = req.params.omdbID;
+
+   var condition = uid && omdbID
+    ? { uid: uid, movies: {$elemMatch: {omdbID: omdbID}} }
+    : {};
  
-   MovieDB.findById(id)
+   MovieDB.findOne(condition)
      .then((data) => {
        if (!data)
-         res.status(404).send({ message: "Aucun film trouvé avec l'id: " + id });
-       else res.send(data);
+         res.status(404).send({ message: "Aucun film trouvé avec l'id: " + omdbID });
+       else {
+        const movie = data.movies.find(m => m.omdbID === omdbID);
+        res.send(movie);
+       }
      })
      .catch((err) => {
        res
          .status(500)
-         .send({ message: "Erreur pendant la récupération du film avec l'id" + id });
+         .send({ message: "Erreur pendant la récupération du film avec l'id " + err });
      });
  };
  

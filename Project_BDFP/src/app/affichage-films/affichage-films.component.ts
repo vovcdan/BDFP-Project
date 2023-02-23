@@ -27,11 +27,13 @@ export class AffichageFilmsComponent implements OnInit {
   locationControl = new FormControl();
   accompagnateursControl = new FormControl();
   resList: any[] = [];
+  movieExist: any[] = [];
   movies: Map<any, string> = new Map();
   singleFilm: Map<any, string> = new Map();
   idActor: number = 0;
   moviesNumber: number = 0;
   switch_number = -1;
+  error_message = ""
 
   constructor(private filmService: FilmsService, private api: ApiServiceService, private router: Router, private utilService: UtilsService, private rechercheService: RechercheService) { }
 
@@ -61,7 +63,6 @@ export class AffichageFilmsComponent implements OnInit {
         }
       });
     }
-    this.getActorsIdByActorsName("Gérard Depardieu")
   }
 
   reloadFilms() {
@@ -98,29 +99,35 @@ export class AffichageFilmsComponent implements OnInit {
 
   rechercherFilm() {
 
-    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != "" && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
       this.switch_number = 1;
     } else {
-      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != "" && this.actorsControl.value != undefined && (this.realisatorControl.value == undefined || this.realisatorControl.value == "") && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != "" && this.actorsControl.value != undefined){
         this.switch_number = 2
       } else {
-        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != "" && this.realisatorControl.value != undefined && (this.actorsControl.value == undefined || this.actorsControl.value == "") && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != "" && this.realisatorControl.value != undefined){
           this.switch_number = 3
         } else {
-          if (this.realisatorControl.value != undefined && this.realisatorControl.value != "" && (this.actorsControl.value == "" || this.actorsControl.value == undefined) && (this.yearControl.value == "" || this.yearControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+          if(this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
             this.switch_number = 4
-          } else {
-            if (this.yearControl.value != undefined && this.yearControl.value != "" && (this.realisatorControl.value == "" || this.realisatorControl.value == undefined) && (this.actorsControl.value == "" || this.actorsControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+          }else {
+            if (this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
               this.switch_number = 5
             } else {
-              if (this.actorsControl.value != undefined && this.actorsControl.value != "" && (this.realisatorControl.value == "" || this.realisatorControl.value == undefined) && (this.yearControl.value == "" || this.yearControl.value == undefined) && (this.locationControl.value == "" || this.locationControl.value == undefined) && (this.accompagnateursControl.value == "" || this.accompagnateursControl.value == undefined) && (this.titreControl.value == "" || this.titreControl.value == undefined)){
+              if (this.yearControl.value != undefined && this.yearControl.value != ""){
                 this.switch_number = 6
+              } else {
+                if (this.actorsControl.value != undefined && this.actorsControl.value != ""){
+                  this.switch_number = 7
+                }
               }
             }
           }
         }
       }
     }
+
+    console.log(this.switch_number)
 
     switch (this.switch_number) {
       case (1):
@@ -133,28 +140,30 @@ export class AffichageFilmsComponent implements OnInit {
         this.getMoviesByYearAndRealisator(this.yearControl.value, this.realisatorControl.value, this.resList);
         break;
       case (4):
-        this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
+        this.getMoviesByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value, this.resList);
         break;
       case (5):
-        this.getFilmsByYear(this.yearControl.value, this.resList);
+        this.getFilmsByRealisator(this.realisatorControl.value, this.resList);
         break;
       case (6):
+        this.getFilmsByYear(this.yearControl.value, this.resList);
+        break;
+      case (7):
         this.getFilmsByActors(this.actorsControl.value, this.resList);
         break;
       default:
-        console.log("Vous devez remplir au moins un champ")
+        this.error_message = "Vous devez remplir au moins un champ";
         break;
     }
-
     
-    // this.resList = [];
-    if(this.titreControl.value != undefined && this.titreControl.value != "" && this.realisatorControl.value == undefined || this.realisatorControl.value == "" && this.actorsControl.value == undefined || this.actorsControl.value == "" && this.yearControl.value == undefined || this.yearControl.value == "" && this.locationControl.value == "" && this.accompagnateursControl.value == ""){
+    //   [];
+    if(this.titreControl.value != undefined && this.titreControl.value != ""){
       this.getFilmsByTitre(this.titreControl.value, this.resList);
     }
-    if(this.locationControl.value != undefined && this.locationControl.value != "" && this.titreControl.value == undefined || this.titreControl.value == "" && this.realisatorControl.value == undefined || this.realisatorControl.value == "" && this.actorsControl.value == undefined || this.actorsControl.value == "" && this.yearControl.value == undefined || this.yearControl.value == "" && this.accompagnateursControl.value == ""){
+    if(this.locationControl.value != undefined && this.locationControl.value != ""){
       this.getFilmsByLocation(this.locationControl.value, this.resList);
     }
-    if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != "" && this.titreControl.value == undefined || this.titreControl.value == "" && this.realisatorControl.value == undefined || this.realisatorControl.value == "" && this.actorsControl.value == undefined || this.actorsControl.value == "" && this.yearControl.value == undefined || this.yearControl.value == "" && this.locationControl.value == ""){
+    if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
       this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
     }
 
@@ -167,59 +176,128 @@ export class AffichageFilmsComponent implements OnInit {
 
   // parti du formulaire de recherche
 
-  getFilmsByTitre(titre: string, tab: any[]){
-    this.resList = this.rechercheService.getFilmsByTitre(titre, tab);
-    console.log(this.resList)
-  }
+  // REQUETE VERS NOTRE BASE DE DONNEES
 
-  getFilmsByRealisator(real: string, tab: any[]){
-    this.resList = this.rechercheService.getFilmsByRealisator(real, tab);
+  getFilmsByTitre(titre: string, tab: any[]){
+      this.rechercheService.getFilmsByTitre(titre, tab);
     console.log(this.resList)
   }
 
   getFilmsByDateVision(year: string, tab: any[]) {
-    this.resList = this.rechercheService.getFilmsByDateVision(year, tab);
-    console.log(this.resList)
-  }
-
-  getFilmsByYear(year: string, tab: any[]) {
-    this.resList = this.rechercheService.getFilmsByYear(year, tab);
-    console.log(this.resList)
-  }
-
-  getFilmsByActors(actors: string, tab: any[]) {
-    this.resList = this.rechercheService.getFilmsByActor(actors, tab);
+      this.rechercheService.getFilmsByDateVision(year, tab);
     console.log(this.resList)
   }
 
   getFilmsByLocation(loc: string, tab: any[]) {
-    this.resList = this.rechercheService.getFilmsByLocation(loc, tab);
+      this.rechercheService.getFilmsByLocation(loc, tab);
     console.log(this.resList)
   }
 
   getFilmsByAccompagnateurs(acc: string, tab: any[]) {
-    this.resList = this.rechercheService.getFilmsByAccompagnateurs(acc, tab);
+      this.rechercheService.getFilmsByAccompagnateurs(acc, tab);
     console.log(this.resList)
   }
 
-  getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
-    this.resList = this.rechercheService.getMoviesByYearAndActors(year, actors, tab);
+  // REQUETE VERS L'API
+
+  async getFilmsByRealisator(real: string, tab: any[]){
+    this.resList = await this.rechercheService.getFilmsByRealisator(real, tab)
     console.log(this.resList)
+    console.log(this.resList.length)
+    for (let i = 0; i < this.resList.length; i++) {
+      console.log("kakak")
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+          console.log(this.movieExist)
+        })
+      })
+    }
   }
 
-  getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
-    this.resList = this.rechercheService.getMoviesByYearAndRealisator(year, real, tab);
-    console.log(this.resList)
+  async getFilmsByYear(year: string, tab: any[]) {
+    this.resList = await this.rechercheService.getFilmsByYear(year, tab);
+
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getFilmsByActors(actors: string, tab: any[]) {
+    this.resList = await this.rechercheService.getFilmsByActor(actors, tab);
+    
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
+    this.resList = await this.rechercheService.getMoviesByYearAndActors(year, actors, tab);
+    
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
+    this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real, tab);
+    
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
   }
 
   async getMoviesByActorsAndRealisator(actors: string, real: string, tab: any[]) {
     this.resList = await this.rechercheService.getMoviesByActorsAndRealisator(actors,real, tab)
-    console.log(this.resList)
+
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
   }
 
   async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string, tab: any[]){
     this.resList = await this.rechercheService.getMoviesByYearAndActorsAndRealisator(year, actors, real, tab);
-    console.log(this.resList)
-  }
 
+    for (let i = 0; i < this.resList.length; i++) {
+      this.api.getMovieTMDbId(this.resList[i][1]).subscribe((movie: any) => {
+        console.log(movie)
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+
+    console.log(this.movieExist)
+  }
 }
