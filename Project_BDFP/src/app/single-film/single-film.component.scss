@@ -1,5 +1,37 @@
 $maincolor : red;
 
+// Bouton de retour
+#butR {
+    display: inline;
+    color: white; 
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    &:hover {
+        color: orange;
+    }
+}
+
+.boutonSeul{
+    display: inline-block;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+    &:hover {
+        color: orange;
+    }
+}
+
+#boutons {
+    left: 0;
+    margin: 10px auto 10px 10px;
+    transition: 0.4s;
+    color: white;
+    &:hover {
+        color: orange;
+    }
+}
+
+
 p {
     display: inline;
     font-family : 'Times New Roman', Times, serif;
@@ -26,21 +58,6 @@ p {
     min-width: 300px;
 }
 
-
-
-#retour {
-    display: inline;
-    margin-left: 15px;
-    margin-left: 10px;
-    transition: 0.4s;
-    background-color: rgb(39,39,39);
-    border: solid 1px white;
-    color: white;
-    &:hover {
-        color: orange;
-    }
-}
-
 #titre {
     width: 100%;
     margin-top: 70px;
@@ -58,15 +75,15 @@ p {
 }
 
 #entete h1 {
-    font-size: medium;
     display: inline;
+    font-size: medium;
     border-style: solid;
     border-color: orange;
     border-radius: 30px;
-    padding: 5px 30px 5px 30px;
+    padding: 5px 10px 5px 10px;
     color: orange;
-    margin: 0px 0px 0px 20px ;
-    width: 100%;
+    margin: 0px 20px 0px 20px ;
+    width: 100px;
     text-align: center;
 }
 

@@ -1,8 +1,15 @@
 <div id="entete">
-    <button id="retour" mat-mini-fab (click)="back()"><mat-icon>arrow_back</mat-icon></button>
-    <h1> Film vu</h1>
-    <button id="supp" (click)="suppDialog('')">Supprimer le film</button>
+    <div id="boutons">
+        <button id="butR" mat-fab  mat-fab (click)="back()">
+            <mat-icon>keyboard_return</mat-icon>
+        </button>
+        <h1> Film vu</h1>
+        <button id="butR" mat-fab  mat-fab (click)="suppDialog('')">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
 </div>
+
 
 <div id="film" [ngStyle]="{'background-image': 'linear-gradient(
     rgba(40, 40, 40, 0.9),
