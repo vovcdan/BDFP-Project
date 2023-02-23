@@ -1,7 +1,9 @@
-<div class="add">
-    <a>
-        <button id="butAjout" mat-raised-button (click)="openDialog()">Ajouter une liste</button>
-    </a>
+<div id="ajout">
+    <div class="add">
+        <button id="butAjout" mat-fab matTooltip="Ajouter une liste" mat-fab (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
 </div>
 
 <app-liste-comp></app-liste-comp>
