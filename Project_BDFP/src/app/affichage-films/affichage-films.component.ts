@@ -53,9 +53,13 @@ export class AffichageFilmsComponent implements OnInit {
             let imdb_id_local = this.films[i].omdbID;
             if (filmAPI['movie_results'][0]) {
               let id = filmAPI['movie_results'][0].id;
-              let poster:String =
-              'https://image.tmdb.org/t/p/w300/' +
-              filmAPI['movie_results'][0].poster_path;
+              let poster_path = filmAPI['movie_results'][0].poster_path;
+              let poster:String;
+              if (poster_path !== null) {
+                poster = 'https://image.tmdb.org/t/p/w300/' + poster_path;
+              } else {
+                poster = '../../assets/no-poster.png';
+              }
               let title = filmAPI['movie_results'][0].original_title;
               let release_date = filmAPI['movie_results'][0].release_date;
               let values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
@@ -76,7 +80,7 @@ export class AffichageFilmsComponent implements OnInit {
                   } else {
                       this.noPoster = true;
                       poster =
-                       '../../assets/no-poster.jpg';
+                       '../../assets/no-poster.png';
                       let values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                       this.movies.set(filmAPI, values);
                   }
@@ -98,9 +102,13 @@ export class AffichageFilmsComponent implements OnInit {
                 let imdb_id_local = this.films[i].omdbID;
                 if (filmAPI['movie_results'][0]) {
                   let id = filmAPI['movie_results'][0].id;
-                  let poster:String =
-                    'https://image.tmdb.org/t/p/w300/' +
-                    filmAPI['movie_results'][0].poster_path;
+                  let poster_path = filmAPI['movie_results'][0].poster_path;
+                  let poster:String;
+                  if (poster_path !== null) {
+                    poster = 'https://image.tmdb.org/t/p/w300/' + poster_path;
+                  } else {
+                    poster = '../../assets/no-poster.png';
+                  }
                   let title = filmAPI['movie_results'][0].original_title;
                   let release_date = filmAPI['movie_results'][0].release_date;
                   let values = {IMDBID: imdb_id_local, TMDBID:id, Poster: poster, Title: title, Release_Date: release_date}
@@ -120,7 +128,7 @@ export class AffichageFilmsComponent implements OnInit {
                       } else {
                         this.noPoster = true;
                         poster =
-                          '../../assets/no-poster.jpg';
+                          '../../assets/no-poster.png';
                         let values = {IMDBID: imdb_id_local, TMDBID:"", Poster: poster, Title: title, Release_Date: release_date}
                         this.movies.set(filmAPI, values);
                       }

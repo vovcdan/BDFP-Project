@@ -171,15 +171,10 @@ export class ajouterUnFilm implements OnInit {
 
   ngOnInit(): void {
     this.film.getFilmsByUid(this.utilService.getUserId()).subscribe((allFilms) => {
-      console.log(allFilms);
-
       this.currentListFilm = allFilms;
       for(let i = 0; i < this.currentListFilm.length; i++) {
         this.movies = this.currentListFilm[i].movies;
       }
-
-      console.log(this.movies);
-
 
       for (let i = 0; i < this. movies.length; i++) {
         this.optionsMovie.push(this.movies[i]);

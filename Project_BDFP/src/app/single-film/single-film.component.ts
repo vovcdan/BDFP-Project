@@ -39,7 +39,11 @@ export class SingleFilmComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
+    console.log(this.currentFilm);
+
     this.poster = this.currentFilm.values().next().value;
+    console.log(this.poster);
+
     this.currentFilm = this.currentFilm.keys().next().value;
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
       this.listfilm = listeFilm[0].movies;
@@ -104,7 +108,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
   getRealisateur() {
-    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => { 
+    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
       if(film['movie_results'].length != 0 && film['movie_results'][0]) {
         var id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {

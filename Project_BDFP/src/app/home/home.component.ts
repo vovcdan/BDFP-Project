@@ -241,7 +241,6 @@ export class ajouterFilm implements OnInit {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
-    console.log(this.selectedMovie);
     var IMDBid = this.selectedMovie.imdbID;
     if (IMDBid && this.selectedMovie.Title && !this.checkIfFilmExistsInList(IMDBid)) {
       this.filmService
