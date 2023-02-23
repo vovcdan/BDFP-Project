@@ -1,8 +1,29 @@
-#back {
-    margin-left: 10px;
+// Bouton de retour
+#butR {
+    color: white; 
     transition: 0.4s;
     background-color: rgb(39,39,39);
-    border: solid 1px white;
+    &:hover {
+        color: orange;
+    }
+}
+
+.back{
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+    &:hover {
+        color: orange;
+    }
+}
+
+#retour {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 100px auto auto 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
     color: white;
     &:hover {
         color: orange;
@@ -12,7 +33,7 @@
 #bout {
     justify-content: center;
     display: flex;
-    margin-bottom: 50px;
+    margin : 30px auto 30px;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     color: white;
