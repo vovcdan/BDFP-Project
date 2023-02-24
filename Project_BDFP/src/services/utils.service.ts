@@ -30,6 +30,8 @@ export class UtilsService {
 
   moviesTitles: string[] = [];
 
+  searchedMovies: any[] = []
+
   constructor() { }
 
   connect() {
@@ -128,6 +130,16 @@ export class UtilsService {
 
   getMoviesTitles(){
     return this.moviesTitles;
+  }
+
+  async setSearchedMovies(searchedMovies: any){
+    this.searchedMovies = []
+    this.searchedMovies = searchedMovies;
+    console.log(this.searchedMovies)
+  }
+
+  async getSearchedMovies(){
+    return this.searchedMovies;
   }
 
 }

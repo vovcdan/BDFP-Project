@@ -29,6 +29,10 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/movie/${query}?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US`);
   }
 
+  async getMovieTMDbIdAsync(query: any) {
+    return fetch(`https://api.themoviedb.org/3/movie/${query}?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US`);
+  }
+
   // permet de recuperer aussi l'id TMDB
   getMovieTMDBByIMDBID(query: any) {
     return this.http.get(`https://api.themoviedb.org/3/find/${query}?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&external_source=imdb_id`)

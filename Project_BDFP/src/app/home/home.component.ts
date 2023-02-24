@@ -134,6 +134,14 @@ export class HomeComponent implements OnInit {
     this.showFormRecherche = !this.showFormRecherche;
   }
 
+  searchedMoviesNotEmpty(){
+    if(this.movieExist){
+      return true
+    } else {
+      return false
+    }
+  }
+
   rechercherFilm() {
 
     if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
@@ -248,7 +256,8 @@ export class HomeComponent implements OnInit {
         })
       })
     }
-    console.log(this.movieExist);
+    this.utilService.setSearchedMovies(this.movieExist)
+    console.log(this.movieExist.length);
   }
 
   async getFilmsByYear(year: string) {
@@ -261,6 +270,7 @@ export class HomeComponent implements OnInit {
         })
       })
     }
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
 
@@ -269,12 +279,20 @@ export class HomeComponent implements OnInit {
     console.log(this.resList)
 
     for (const [key, value] of this.resList) {
-      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
-        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
-          this.movieExist.push(film)
-        })
-      })
+      // this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+      //   this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+      //     this.movieExist.push(film)
+      //   })
+      // })
+
+      let movie = await this.api.getMovieTMDbIdAsync(value);
+      let imdb_id = (movie as any).imdb_id;
+      let movieDB = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), imdb_id);
+      this.movieExist.push(movieDB);
+
     }
+
+    await this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
   
@@ -288,6 +306,7 @@ export class HomeComponent implements OnInit {
         })
       })
     }
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
 
@@ -301,6 +320,7 @@ export class HomeComponent implements OnInit {
         })
       })
     }
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
 
@@ -314,6 +334,7 @@ export class HomeComponent implements OnInit {
         })
       })
     }
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
 
@@ -327,6 +348,7 @@ export class HomeComponent implements OnInit {
         })
       })
     }
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
 

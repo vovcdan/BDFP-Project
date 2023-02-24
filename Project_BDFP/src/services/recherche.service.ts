@@ -131,7 +131,6 @@ export class RechercheService {
         const movie = (moviesResponse as any).results[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp);
       return temp;
     } catch (error) {
       console.error(`Error getting films by year: ${error}`);

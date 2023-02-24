@@ -176,6 +176,21 @@ export class FilmsService {
     return film;
   }
 
+  async getFilmByOmdbIDAsync(uid: string, omdbID: string) {
+    try {
+      const movie = await fetch('http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID);
+      return movie;
+    } catch(error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée."
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null;
+    } 
+  
+  }
+
   getListsTitles(){
     this.moviesTitles = [];
     this.http.get<Film>('http://localhost:8080/api/allLists/' + this.utilService.getUserId()).subscribe(

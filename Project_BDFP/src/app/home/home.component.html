@@ -72,7 +72,11 @@
         </form>
     
     </div>
+    <div *ngIf="searchedMoviesNotEmpty">
+        <app-affichage-recherche></app-affichage-recherche>
+    </div>
     <app-affichage-films></app-affichage-films>
+    
 </div>
 
 <div id="glob">
