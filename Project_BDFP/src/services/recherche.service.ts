@@ -192,8 +192,10 @@ export class RechercheService {
       for (let i = 0; i < tab_actors.length; i++) {
         const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
         const id = (personResponse as any).results[0].id;
-        actors_id += id;
+        actors_id += id + ",";
       }
+      actors_id = actors_id.slice(0, -1);
+      console.log(actors_id)
       const moviesResponse = await this.api.getMoviesByYearAndActors(year, actors_id).toPromise();
       const temp = new Map<string, number>();
       for (let i = 0; i < (moviesResponse as any).results.length; i++) {
@@ -216,8 +218,10 @@ export class RechercheService {
       for (let i = 0; i < tab_actors.length; i++) {
         const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
         const id = (personResponse as any).results[0].id;
-        actors_id += id;
+        actors_id += id + ",";
       }
+      actors_id = actors_id.slice(0, -1);
+      console.log(actors_id)
       const personResponse = await this.api.getPerson(real).toPromise();
       const realisators_id = (personResponse as any).results[0].id;
       const moviesResponse = await this.api.getMoviesByActorsAndRealisator(actors_id, realisators_id).toPromise();
@@ -242,8 +246,10 @@ export class RechercheService {
       for (let i = 0; i < tab_actors.length; i++) {
         const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
         const id = (personResponse as any).results[0].id;
-        actors_id += id;
+        actors_id += id + ",";
       }
+      actors_id = actors_id.slice(0, -1);
+      console.log(actors_id)
       const personResponse = await this.api.getPerson(real).toPromise();
       const realisators_id = (personResponse as any).results[0].id;
       const moviesResponse = await this.api.getMoviesByYearAndActorsAndRealisator(year, actors_id, realisators_id).toPromise();
