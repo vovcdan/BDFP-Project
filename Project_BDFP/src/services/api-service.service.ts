@@ -41,12 +41,10 @@ export class ApiServiceService {
   async getMoviesTMDBTitleSearchAllPages(query: any) {
     const results = [];
 
-    // Fetch the first page of results
     let response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&query=${query}&page=1&include_adult=false`);
     let data = await response.json();
     results.push(...data.results);
 
-    // Fetch remaining pages of results
     const totalPages = data.total_pages;
     for (let i = 2; i <= totalPages; i++) {
       response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&query=${query}&page=${i}&include_adult=false`);
@@ -59,6 +57,24 @@ export class ApiServiceService {
 
   getReviewsTMDB(query: any) {
     return this.http.get(`https://api.themoviedb.org/3/movie/${query}/reviews?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&page=1`);
+  }
+
+  async getReviewsTMDBAllPages(query: any) {
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/movie/${query}/reviews?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/movie/${query}/reviews?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+
   }
 
   getCastTMDB(query: any) {
@@ -81,28 +97,155 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_crew=${query}&crew_job=Director`)
   }
 
+  async getMoviesByRealisatorIdAllPages(query: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_crew=${query}&crew_job=Director&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_crew=${query}&crew_job=Director&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+  }
+
   getMoviesByActorId(query: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}`)
+  }
+
+  async getMoviesByActorIdAllPages(query: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
   }
 
   getMoviesByActorsAndRealisator(actorsQuery: any, realisatorQuery: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}`);
   }
 
+  async getMoviesByActorsAndRealisatorAllPages(actorsQuery: any, realisatorQuery: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+  }
+
   getMoviesByYear(query: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}`)
+  }
+
+  async getMoviesByYearAllPages(query: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
   }
 
   getMoviesByYearAndActors(yearQuery: any, actorsQuery: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_cast=${actorsQuery}`)
   }
 
+  async getMoviesByYearAndActorsAllPages(yearQuery: any, actorsQuery: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_cast=${actorsQuery}&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_cast=${actorsQuery}&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+  }
+
   getMoviesByYearAndRealisator(yearQuery: any, realisatorQuery: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director`)
+  }
+
+  async getMoviesByYearAndRealisatorAllPages(yearQuery: any, realisatorQuery: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
   }
 
   getMoviesByYearAndActorsAndRealisator(yearQuery: any, actorsQuery: any, realisatorQuery: any){
     return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&with_cast=${actorsQuery}`)
   }
+
+  async getMoviesByYearAndActorsAndRealisatorAllPages(yearQuery: any, actorsQuery: any, realisatorQuery: any){
+
+    const results = [];
+
+    let response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&with_cast=${actorsQuery}&page=1`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&with_cast=${actorsQuery}&page=${i}`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+  }
+
 
 }
