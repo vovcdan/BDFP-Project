@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -20,6 +20,7 @@ import {
 } from 'rxjs';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
+import { RechercheService } from 'services/recherche.service';
 import { UtilsService } from 'services/utils.service';
 
 export interface DialogAjoutFilm {
@@ -48,13 +49,26 @@ export class HomeComponent implements OnInit {
   films: Film[] = [];
   list: any;
   numberOfFilms!: Observable<number>;
+  showFormRecherche: boolean = false;
+  formRecherche!: FormGroup;
+  titreControl = new FormControl();
+  realisatorControl = new FormControl();
+  yearControl = new FormControl();
+  actorsControl = new FormControl();
+  locationControl = new FormControl();
+  accompagnateursControl = new FormControl();
+  resList!: Map<string, number>;
+  movieExist: any[] = [];
+  switch_number = -1;
+  error_message = "";
 
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
     private api: ApiServiceService,
     private utilService: UtilsService,
-    private router: Router
+    private router: Router,
+    private rechercheService: RechercheService,
   ) {}
 
   ngOnInit(): void {
@@ -72,56 +86,38 @@ export class HomeComponent implements OnInit {
 
   async searchMoviesTMDBTitleSearchAllPages(title:string) {
     const tab = await this.api.getMoviesTMDBTitleSearchAllPages(title);
-    console.log("ava");
-    console.log(tab);
   }
 
   async seachReviewsTMDBAllPages(id:string) {
     const tab = await this.api.getReviewsTMDBAllPages(id);
-    console.log("Revues pour le film avatar");
-    console.log(tab)
   }
 
   async searchMoviesByRealisatorIdAllPages(id:string){
     const tab = await this.api.getMoviesByRealisatorIdAllPages(id);
-    console.log("Realisé par Nolan")
-    console.log(tab)
   }
 
   async searchMoviesByActorIdAllPages(id:string) {
     const tab = await this.api.getMoviesByActorIdAllPages(id);
-    console.log("Joué par Brad Pitt")
-    console.log(tab)
   }
 
   async searchMoviesByActorsAndRealisatorAllPages(idActor:string, idRealisator:string) {
     const tab = await this.api.getMoviesByActorsAndRealisatorAllPages(idActor, idRealisator);
-    console.log("Realisé par Nolan et joué par robert pattinson")
-    console.log(tab)
   }
 
   async searchMoviesByYearAllPages(year:string) {
-    const tab = await this.api. getMoviesByYearAllPages(year);
-    console.log("Realisé en 2020")
-    console.log(tab)
+    const tab = await this.api.getMoviesByYearAllPages(year);
   }
 
   async searchMoviesByYearAndActorsAllPages(year:string, idActor:string) {
     const tab = await this.api.getMoviesByYearAndActorsAllPages(year, idActor);
-    console.log("Realisé en 2020 avec Robert Pattinson")
-    console.log(tab)
   }
 
   async searchMoviesByYearAndRealisatorAllPages(year:string, idRealisator:string) {
     const tab = await this.api.getMoviesByYearAndRealisatorAllPages(year, idRealisator);
-    console.log("Realisé par Nolan en 2020")
-    console.log(tab)
   }
 
   async searchMoviesByYearAndActorsAndRealisatorAllPages(year:string, idActor:string, idRealisator:string) {
     const tab = await this.api.getMoviesByYearAndActorsAndRealisatorAllPages(year,idActor, idRealisator);
-    console.log("Realisé par Nolan en 2020 avec Robert Pattinson")
-    console.log(tab)
   }
 
   suppFilm(titrefilm: string) {
@@ -132,6 +128,221 @@ export class HomeComponent implements OnInit {
     return this.filmService.getFilmsByUid(this.utilService.getUserId()).pipe(
       map(allfilms => allfilms[0].movies.length)
     );
+  }
+
+  affichageForm() {
+    this.showFormRecherche = !this.showFormRecherche;
+  }
+
+  rechercherFilm() {
+
+    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
+      this.switch_number = 1;
+    } else {
+      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != "" && this.actorsControl.value != undefined){
+        this.switch_number = 2
+      } else {
+        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != "" && this.realisatorControl.value != undefined){
+          this.switch_number = 3
+        } else {
+          if(this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+            this.switch_number = 4
+          }else {
+            if (this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+              this.switch_number = 5
+            } else {
+              if (this.yearControl.value != undefined && this.yearControl.value != ""){
+                this.switch_number = 6
+              } else {
+                if (this.actorsControl.value != undefined && this.actorsControl.value != ""){
+                  this.switch_number = 7
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    console.log(this.switch_number)
+
+    switch (this.switch_number) {
+      case (1):
+        this.getFilmsByYearAndActorsAndRealisator(this.yearControl.value, this.actorsControl.value, this.realisatorControl.value);
+        break;
+      case (2):
+        this.getFilmsByYearAndActors(this.yearControl.value, this.actorsControl.value);
+        break;
+      case (3):
+        this.getFilmsByYearAndRealisator(this.yearControl.value, this.realisatorControl.value);
+        break;
+      case (4):
+        this.getFilmsByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value);
+        break;
+      case (5):
+        this.getFilmsByRealisator(this.realisatorControl.value);
+        break;
+      case (6):
+        this.getFilmsByYear(this.yearControl.value);
+        break;
+      case (7):
+        this.getFilmsByActors(this.actorsControl.value);
+        break;
+      default:
+        this.error_message = "Vous devez remplir au moins un champ";
+        break;
+    }
+
+    //   [];
+    // if(this.titreControl.value != undefined && this.titreControl.value != ""){
+    //   this.getFilmsByTitre(this.titreControl.value, this.resList);
+    // }
+    // if(this.locationControl.value != undefined && this.locationControl.value != ""){
+    //   this.getFilmsByLocation(this.locationControl.value, this.resList);
+    // }
+    // if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
+    //   this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
+    // }
+
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl('/home');
+    });
+  }
+  getMoviesByYearAndRealisator(value: any, value1: any, resList: Map<string, number>) {
+    throw new Error('Method not implemented.');
+  }
+
+  // parti du formulaire de recherche
+
+  // REQUETE VERS NOTRE BASE DE DONNEES
+
+  getFilmsByTitre(titre: string, tab: any[]){
+      this.rechercheService.getFilmsByTitre(titre, tab);
+    console.log(this.resList)
+  }
+
+  getFilmsByDateVision(year: string, tab: any[]) {
+      this.rechercheService.getFilmsByDateVision(year, tab);
+    console.log(this.resList)
+  }
+
+  getFilmsByLocation(loc: string, tab: any[]) {
+      this.rechercheService.getFilmsByLocation(loc, tab);
+    console.log(this.resList)
+  }
+
+  getFilmsByAccompagnateurs(acc: string, tab: any[]) {
+      this.rechercheService.getFilmsByAccompagnateurs(acc, tab);
+    console.log(this.resList)
+  }
+
+  // REQUETE VERS L'API
+
+  async getFilmsByRealisator(real: string){
+    this.resList = await this.rechercheService.getFilmsByRealisator(real)
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist);
+  }
+
+  async getFilmsByYear(year: string) {
+    this.resList = await this.rechercheService.getFilmsByYear(year);
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getFilmsByActors(actors: string) {
+    this.resList = await this.rechercheService.getFilmsByActor(actors);
+    console.log(this.resList)
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+  
+  async getFilmsByYearAndRealisator(year: string, real: string) {
+    this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real);
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getFilmsByYearAndActors(year: string, actors: string) {
+    this.resList = await this.rechercheService.getMoviesByYearAndActors(year, actors);
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getFilmsByActorsAndRealisator(actors: string, real: string) {
+    this.resList = await this.rechercheService.getMoviesByActorsAndRealisator(actors, real);
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  async getFilmsByYearAndActorsAndRealisator(year: string, actors: string, real: string) {
+    this.resList = await this.rechercheService.getMoviesByYearAndActorsAndRealisator(year, actors, real);
+
+    for (const [key, value] of this.resList) {
+      this.api.getMovieTMDbId(value).subscribe((movie: any) => {
+        this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
+          this.movieExist.push(film)
+        })
+      })
+    }
+    console.log(this.movieExist)
+  }
+
+  reloadFilms() {
+    this.filmService
+      .getFilmsByUid(this.utilService.getUserId())
+      .subscribe((allfilms) => {
+        this.films = allfilms[0].movies;
+        this.utilService.setListOfFilms(this.films);
+        this.utilService.setListeRecherche(this.films);
+        this.router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this.router.navigateByUrl('/home');
+          });
+      });
   }
 
   openDialog(): void {
