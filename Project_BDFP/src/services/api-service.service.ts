@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { runInThisContext } from 'vm';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +38,25 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/search/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&query=${query}&page=1&include_adult=false`);
   }
 
+  async getMoviesTMDBTitleSearchAllPages(query: any) {
+    const results = [];
+
+    // Fetch the first page of results
+    let response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&query=${query}&page=1&include_adult=false`);
+    let data = await response.json();
+    results.push(...data.results);
+
+    // Fetch remaining pages of results
+    const totalPages = data.total_pages;
+    for (let i = 2; i <= totalPages; i++) {
+      response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&query=${query}&page=${i}&include_adult=false`);
+      data = await response.json();
+      results.push(...data.results);
+    }
+
+    return results;
+  }
+
   getReviewsTMDB(query: any) {
     return this.http.get(`https://api.themoviedb.org/3/movie/${query}/reviews?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&page=1`);
   }
@@ -55,8 +73,36 @@ export class ApiServiceService {
     return this.http.get(`https://api.themoviedb.org/3/search/person?api_key=11d68f95601d6ec7858fe9a41e26fd86&query=${query}`)
   }
 
+  getPerson(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/search/person?api_key=11d68f95601d6ec7858fe9a41e26fd86&query=${query}`)
+  }
 
+  getMoviesByRealisatorId(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_crew=${query}&crew_job=Director`)
+  }
 
+  getMoviesByActorId(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${query}`)
+  }
 
+  getMoviesByActorsAndRealisator(actorsQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&with_cast=${actorsQuery}&with_crew=${realisatorQuery}`);
+  }
+
+  getMoviesByYear(query: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}`)
+  }
+
+  getMoviesByYearAndActors(yearQuery: any, actorsQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_cast=${actorsQuery}`)
+  }
+
+  getMoviesByYearAndRealisator(yearQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director`)
+  }
+
+  getMoviesByYearAndActorsAndRealisator(yearQuery: any, actorsQuery: any, realisatorQuery: any){
+    return this.http.get(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${yearQuery}&with_crew=${realisatorQuery}&crew_job=Director&with_cast=${actorsQuery}`)
+  }
 
 }

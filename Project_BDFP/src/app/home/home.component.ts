@@ -59,6 +59,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+    this.searchMovies("Ava");
+  }
+
+  async searchMovies(title:string) {
+    const tab = await this.api.getMoviesTMDBTitleSearchAllPages("Ava");
+    console.log(tab);
   }
 
   suppFilm(titrefilm: string) {
@@ -127,7 +133,6 @@ export class ajouterFilm implements OnInit {
 
     ngOnInit(): void {
       this.OMDBInit();
-
 
     }
 
