@@ -59,12 +59,60 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
-    this.searchMovies("Ava");
+    this.searchMoviesTMDBTitleSearchAllPages("Ava");
+    this.seachReviewsTMDBAllPages("19995")
+    this.searchMoviesByRealisatorIdAllPages("525")
+    this.searchMoviesByActorIdAllPages("287")
+    this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
+    this.searchMoviesByYearAllPages("2020")
+    this.searchMoviesByYearAndActorsAllPages("2020","11288")
+    this.searchMoviesByYearAndRealisatorAllPages("2020","525")
+    this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
   }
 
-  async searchMovies(title:string) {
-    const tab = await this.api.getMoviesTMDBTitleSearchAllPages("Ava");
+  async searchMoviesTMDBTitleSearchAllPages(title:string) {
+    const tab = await this.api.getMoviesTMDBTitleSearchAllPages(title);
     console.log(tab);
+  }
+
+  async seachReviewsTMDBAllPages(id:string) {
+    const tab = await this.api.getReviewsTMDBAllPages(id);
+    console.log(tab)
+  }
+
+  async searchMoviesByRealisatorIdAllPages(id:string){
+    const tab = await this.api.getMoviesByRealisatorIdAllPages(id);
+    console.log(tab)
+  }
+
+  async searchMoviesByActorIdAllPages(id:string) {
+    const tab = await this.api.getMoviesByActorIdAllPages(id);
+    console.log(tab)
+  }
+
+  async searchMoviesByActorsAndRealisatorAllPages(idActor:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByActorsAndRealisatorAllPages(idActor, idRealisator);
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAllPages(year:string) {
+    const tab = await this.api. getMoviesByYearAllPages(year);
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndActorsAllPages(year:string, idActor:string) {
+    const tab = await this.api.getMoviesByYearAndActorsAllPages(year, idActor);
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndRealisatorAllPages(year:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByYearAndRealisatorAllPages(year, idRealisator);
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndActorsAndRealisatorAllPages(year:string, idActor:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByYearAndActorsAndRealisatorAllPages(year,idActor, idRealisator);
+    console.log(tab)
   }
 
   suppFilm(titrefilm: string) {
