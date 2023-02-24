@@ -165,3 +165,94 @@ header {
     color : rgba(255, 255, 255, 0.313)
   }
 
+  #butRecherche {
+    border: solid black;
+    border-radius: 8px;
+    transition: 0.4s;
+    margin-left: 60px;
+
+    &:hover {
+        border-radius: 14px;
+        background-color: rgb(240, 240, 240);
+    }
+}
+
+#cherche {
+    height: auto;
+    width: 60%;
+    margin-top: 7em;
+    transition: 0.5s;
+    background-color: rgb(39,39,39);
+    border: solid 3px black;
+}
+
+.form-card {
+    box-sizing: border-box;
+    width: 10%;
+    margin: 20px auto;
+    background-color: rgb(39,39,39);
+    border: solid 1px white;
+    border-radius: 30px;
+    
+  }
+
+.form-group {
+    margin: 20px auto;
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: auto;
+    flex-wrap: wrap;
+    color: white;
+    
+}
+
+.action-buttons {
+    width: 100%;
+}
+
+.buttonR{
+    display: block;
+    margin: 20px auto;
+        background-color: rgb(39,39,39);
+        border: solid black;
+        border-radius: 8px;
+        transition: 0.4s;
+        color: white;
+        
+    
+        &:hover {
+            color: orange;
+           
+        }
+    
+    
+}
+
+
+.field {
+    background-color: rgb(39,39,39);
+    color:white;
+    margin-bottom: 10px;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: white !important;
+  }
+
+.lab {
+    color: orange;
+}
+
