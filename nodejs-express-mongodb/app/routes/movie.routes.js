@@ -19,6 +19,9 @@ module.exports = (app) => {
   // Retrieve a list of user
   router.get("/:uid", movie.getListOfUser);
 
+  // Retrieve a single movie with id
+  router.get("/omdb/:uid/:omdbID", movie.findOne);
+
   // Update a movie with id
   router.put("/:uid", movie.update);
 
