@@ -1,22 +1,33 @@
 #butAjout {
+    vertical-align: baseline;
+    color: white; 
     transition: 0.4s;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    color: white;
-    background-color: rgb(39, 39, 39);
-    border: solid white;
+    background-color: rgb(39,39,39);
     &:hover {
-        
-        color: white;
-        border: solid orange;
-        
+        color: orange;
     }
 }
 
 .add {
     text-align: center;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+    &:hover {
+        color: orange;
+    }
 }
 
+#ajout {
+    justify-content: center;
+    margin: 10px auto auto 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+    &:hover {
+        color: orange;
+    }
+}
 .comp-laliste{
     margin-bottom: 1em;
     background-color: grey;
@@ -24,6 +35,8 @@
     font-size: large;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+
 
 
 

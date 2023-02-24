@@ -9,11 +9,13 @@
       Ce film existe déjà dans votre répertoire.
     </div>
 
-    <mat-radio-group id="groupradio" aria-label="Select an option">
-      <mat-radio-button class="radio" value="OMDB" [checked]="true" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
-      <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
-    </mat-radio-group>
-
+    <header>
+      <mat-radio-group id="groupradio" aria-label="Select an option">
+        <mat-radio-button class="radio" value="OMDB" [checked]="true" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
+        <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
+      </mat-radio-group>
+      <mat-icon id="icone" aria-hidden="false" matTooltip="besoin d'aide ?" fontIcon="help_outline"></mat-icon>
+    </header>
     <mat-form-field class="field" appearance="fill">
       <mat-label for="title">Titre</mat-label>
       <input matInput [(ngModel)]="selectedMovie" [matAutocomplete]="auto"

@@ -1,15 +1,5 @@
-//#boutons {
-//    display: inline;
-//    float: right;
-//}
-
-button {
-    margin: 30px auto 10px auto;
-    display: inline;   
-}
-
 li {
-    display: inline;
+    display: inline-block;
     list-style-type: none;
     font-family: 'Goudy Old Style',monospace; 
     font-size: 30px; 
@@ -29,25 +19,6 @@ li {
     0 0 10px rgb(65, 61, 57);
     color: white;
  
-}
-
-// #entier {
-    
-// }
-
-button {
-    transition: 0.4s;
-    background-color: rgb(39,39,39);
-    border: solid 1px;
-    margin-left: 10px;
-    border-radius: 10px;
-    color: white;
-    padding: 1px 10px 1px 10px;
-    
-    &:hover {
-        border: solid 1px orange;
-        border-radius: 10px;
-    }
 }
 
 .form-group {
@@ -96,5 +67,34 @@ button {
   input::placeholder {
     color:rgb(141, 141, 141);
   }
+
+  #butGerer {
+    color: white; 
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    &:hover {
+        color: orange;
+    }
+}
+
+.add {
+  transition: 0.4s;
+  background-color: rgb(39,39,39);
+  color: white;
+  &:hover {
+      color: orange;
+  }
+}
+
+#ajout {
+  display: inline-block;
+  margin: 10px auto auto 10px;
+  transition: 0.4s;
+  background-color: rgb(39,39,39);
+  color: white;
+  &:hover {
+      color: orange;
+  }
+}
 
   

@@ -119,3 +119,49 @@ h1 {
     margin: 20px auto;
     
 }
+
+//compteur de films
+#compteur {
+    position: absolute;
+    right: 0;
+    display:inline-block;
+    min-width: 100px;
+    box-sizing: border-box;
+    width: 10%;
+    margin: 20px 30px 15px auto;
+    padding: 5px;
+    //box-shadow: orange 4px 4px 15px;
+    border-radius: 30px;
+    background-color: rgba(212, 211, 211, 0.06);
+    align-items: center;
+}
+
+header {
+    margin : 0 auto;
+    text-align: center;
+}
+
+#icone {
+    transform: scale(1.3);
+    margin : 10px;
+    background-color: orange;
+    border-radius: 60px;
+    padding: 5px;
+    color:rgb(39,39,39);
+}
+
+  #centre {
+    margin : 0 auto;
+    text-align: center;
+  }
+  
+  #centre h2 {
+    font-size: 30px;
+    margin : 0px;
+    color: white ;
+  }
+
+  #centre p {
+    color : rgba(255, 255, 255, 0.313)
+  }
+

@@ -5,7 +5,16 @@
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <p>You have {{ numberOfFilms | async }} films.</p>
+    <!--<p>You have {{ numberOfFilms | async }} films.</p>-->
+    <div id="compteur">
+        <header>
+            <mat-icon id="icone">local_movies</mat-icon>
+        </header>
+        <article id="centre">
+            <h2>{{ numberOfFilms | async }}</h2>
+            <p>Films vus</p>
+        </article>
+    </div>
     <app-affichage-films></app-affichage-films>
 </div>
 
