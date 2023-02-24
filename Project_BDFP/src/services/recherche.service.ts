@@ -106,40 +106,6 @@ export class RechercheService {
     return this.resultFilms;
   }
 
-  // getFilmsByYear(year: string, tab: any[]){
-  //   this.resultFilms = tab;
-  //   this.api.getMoviesByYear(year).subscribe((movies: any) => {
-  //     for (let i = 0; i < movies.results.length; i++) {
-  //       this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-  //     }
-  //   })
-  //   return this.resultFilms;
-  // }
-
-  async getFilmsByYear(year: string, tab: any[]) {
-    this.resultFilms = tab;
-    this.api.getMoviesByYear(year).subscribe((movies: any) => {
-      for (let i = 0; i < movies.results.length; i++) {
-        this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-      }
-    })
-    console.log(this.resultFilms)
-    return this.resultFilms;
-  }
-
-  // getFilmsByRealisator(real: string, tab: any[]) {
-  //   this.resultFilms = tab
-  //   this.api.getPerson(real).subscribe((unReal: any) => {
-  //     this.api.getMoviesByRealisatorId(unReal.results[0].id).subscribe((movies: any) => {
-  //       for (let i = 0; i < movies.results.length; i++) {
-  //         this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-  //       }
-  //     })
-  //   })
-  //   console.log(this.resultFilms)
-  //   return this.resultFilms;
-  // }
-
   async getFilmsByRealisator(real: string) {
     try {
       const personResponse = await this.api.getPerson(real).toPromise();
@@ -150,7 +116,6 @@ export class RechercheService {
         const movie = (moviesResponse as any).results[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp);
       return temp;
     } catch (error) {
       console.error(`Error getting films by director: ${error}`);
@@ -158,136 +123,139 @@ export class RechercheService {
     }
   }
 
-  // async getFilmsByRealisator(real: string, tab: any[]) {
-  //   this.resultFilms = tab
-  //   const unReal = await this.api.getPerson(real).toPromise();
-  //   console.log(unReal)
-  //   const movies = await this.api.getMoviesByRealisatorId(unReal.results[0].id).toPromise();
-  //   // for (let i = 0; i < movies.results.length; i++) {
-  //   //   this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-  //   // }
-  //   console.log(this.resultFilms)
-  //   return this.resultFilms;
-  // }
-
-  async getFilmsByActor(actors: string, tab: any[]) {
-    this.resultFilms = tab;
-    let tab_actors = actors.split(",");
-    let promises: any[] = [];
-
-    tab_actors.forEach(actor => {
-      promises.push(this.api.getPerson(actor).toPromise());
-    });
-
-    await Promise.all(promises).then((acts: any[]) => {
-      let actors_id = "";
-      acts.forEach((act: any) => {
-        actors_id += act.results[0].id + ",";
-      });
-      actors_id = actors_id.slice(0, -1);
-      this.api.getMoviesByActorId(actors_id).subscribe((movies: any) => {
-        for (let i = 0; i < movies.results.length; i++) {
-          this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-        }
-      });
-    });
-    return this.resultFilms;
-  }
-
-  async getMoviesByActorsAndRealisator(actors: string, realisator: string, tab: any[]) {
-    this.resultFilms = tab;
-    let actorsQuery = "";
-    let realisatorId = "";
-    let promises: any[] = [];
-
-    promises.push(this.api.getPerson(realisator).toPromise());
-
-    let actorsArray = actors.split(",");
-    actorsArray.forEach(actor => {
-      promises.push(this.api.getPerson(actor).toPromise());
-    });
-
-    await Promise.all(promises).then((actorsData: any[]) => {
-      realisatorId = actorsData[0].results[0].id
-      for(let i = 1; i < actorsData.length; i++){
-        actorsQuery += actorsData[i].results[0].id + ",";
+  async getFilmsByYear(year: string) {
+    try {
+      const moviesResponse = await this.api.getMoviesByYear(year).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
       }
-      actorsQuery = actorsQuery.slice(0, -1);
-    }).then(() => {
-      return this.api.getMoviesByActorsAndRealisator(actorsQuery, realisatorId).toPromise();
-    }).then((movies: any) => {
-      this.resultFilms.push([movies.results[0].title, movies.results[0].id])
-    });
-    console.log(this.resultFilms)
-    return this.resultFilms;
-
+      console.log(temp);
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by year: ${error}`);
+      return new Map<string, number>();
+    }
   }
 
-  async getMoviesByYearAndActors(year: string, actors: string, tab: any[]) {
-    this.resultFilms = tab
-    let tab_actors = actors.split(",");
-    let promises: any[] = [];
-
-    tab_actors.forEach(actor => {
-      promises.push(this.api.getPerson(actor).toPromise());
-    });
-
-    await Promise.all(promises).then((acts: any[]) => {
+  async getFilmsByActor(actors: string) {
+    try {
+      let tab_actors = actors.split(",");
       let actors_id = "";
-      acts.forEach((act: any) => {
-        actors_id += act.results[0].id + ",";
-      });
-      actors_id = actors_id.slice(0, -1);
-      this.api.getMoviesByYearAndActors(year, actors_id).subscribe((movies: any) => {
-        for (let i = 0; i < movies.results.length; i++) {
-          this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-        }
-      });
-    });
 
-    return this.resultFilms;
-  }
-
-  getMoviesByYearAndRealisator(year: string, real: string, tab: any[]){
-    this.resultFilms = tab
-    this.api.getPerson(real).subscribe((unReal: any) => {
-      this.api.getMoviesByYearAndRealisator(year, unReal.results[0].id).subscribe((movies: any) => {
-        for (let i = 0; i < movies.results.length; i++) {
-          this.resultFilms.push([movies.results[i].title, movies.results[i].id])
-        }
-      })
-    })
-    return this.resultFilms;
-  }
-
-
-
-  async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string, tab: any[]){
-    this.resultFilms = tab;
-    let actorsQuery = "";
-    let realisatorId = "";
-    let promises: any[] = [];
-
-    promises.push(this.api.getPerson(real).toPromise());
-
-    let actorsArray = actors.split(",");
-    actorsArray.forEach(actor => {
-      promises.push(this.api.getPerson(actor).toPromise());
-    });
-
-    await Promise.all(promises).then((actorsData: any[]) => {
-      realisatorId = actorsData[0].results[0].id
-      for(let i = 1; i < actorsData.length; i++){
-        actorsQuery += actorsData[i].results[0].id + ",";
+      for (let i = 0; i < tab_actors.length; i++) {
+        const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
+        const id = (personResponse as any).results[0].id;
+        actors_id += id;
       }
-      actorsQuery = actorsQuery.slice(0, -1);
-    }).then(() => {
-      return this.api.getMoviesByYearAndActorsAndRealisator(year, actorsQuery, realisatorId).toPromise();
-    }).then((movies: any) => {
-      this.resultFilms.push([movies.results[0].title, movies.results[0].id])
-    });
-
-    return this.resultFilms;
+      const moviesResponse = await this.api.getMoviesByActorId(actors_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by actor(s): ${error}`);
+      return new Map<string, number>();
+    }
   }
 
+  async getMoviesByYearAndRealisator(year: string, real: string) {
+    try {
+      const personResponse = await this.api.getPerson(real).toPromise();
+      console.log(personResponse)
+      const realisators_id = (personResponse as any).results[0].id;
+      const moviesResponse = await this.api.getMoviesByYearAndRealisator(year, realisators_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      console.log(temp)
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by director and year: ${error}`);
+      return new Map<string, number>();
+    }
+  }
+
+  async getMoviesByYearAndActors(year: string, actors: string) {
+    try {
+      let tab_actors = actors.split(",");
+      let actors_id = "";
+
+      for (let i = 0; i < tab_actors.length; i++) {
+        const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
+        const id = (personResponse as any).results[0].id;
+        actors_id += id;
+      }
+      const moviesResponse = await this.api.getMoviesByYearAndActors(year, actors_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      console.log(temp)
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by actor(s) and year: ${error}`);
+      return new Map<string, number>();
+    }
+  }
+
+  async getMoviesByActorsAndRealisator(actors: string, real: string) {
+    try {
+      let tab_actors = actors.split(",");
+      let actors_id = "";
+
+      for (let i = 0; i < tab_actors.length; i++) {
+        const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
+        const id = (personResponse as any).results[0].id;
+        actors_id += id;
+      }
+      const personResponse = await this.api.getPerson(real).toPromise();
+      const realisators_id = (personResponse as any).results[0].id;
+      const moviesResponse = await this.api.getMoviesByActorsAndRealisator(actors_id, realisators_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      console.log(temp)
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by actor(s) and director: ${error}`);
+      return new Map<string, number>();
+    }
+  }
+
+  async getMoviesByYearAndActorsAndRealisator(year: string, actors: string, real: string) {
+    try {
+      let tab_actors = actors.split(",");
+      let actors_id = "";
+
+      for (let i = 0; i < tab_actors.length; i++) {
+        const personResponse = await this.api.getPerson(tab_actors[i]).toPromise();
+        const id = (personResponse as any).results[0].id;
+        actors_id += id;
+      }
+      const personResponse = await this.api.getPerson(real).toPromise();
+      const realisators_id = (personResponse as any).results[0].id;
+      const moviesResponse = await this.api.getMoviesByYearAndActorsAndRealisator(year, actors_id, realisators_id).toPromise();
+      const temp = new Map<string, number>();
+      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
+        const movie = (moviesResponse as any).results[i];
+        temp.set(movie.title, movie.id);
+      }
+      console.log(temp)
+      return temp;
+    } catch (error) {
+      console.error(`Error getting films by actor(s), director and year: ${error}`);
+      return new Map<string, number>();
+    }
+  }
+
+  
 }

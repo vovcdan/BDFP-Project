@@ -24,6 +24,8 @@ export class FilmsService {
 
   moviesTitles: any[] = [];
 
+  errorMessage!: string;
+
   constructor(private http: HttpClient, private crypt: CryptService, private utilService: UtilsService) {}
 
 
@@ -159,11 +161,15 @@ export class FilmsService {
     let film: EventEmitter<Film> = new EventEmitter<Film>();
 
     this.http.get<Film>('http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID).subscribe(
-      (listFilm) => {
-        film.emit(listFilm);
+      (movie) => {
+        film.emit(movie);
       },
       (error: any) => {
-        console.log(error);
+        if (error.status === 404) {
+          this.errorMessage = "La ressource demandée n'a pas été trouvée."
+        } else {
+          this.errorMessage = "Une erreur inattendue est survenue"
+        }
       }
     );
 
