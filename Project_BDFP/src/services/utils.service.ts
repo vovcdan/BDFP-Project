@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Film } from 'app/models/film.model';
 import { ListFilm } from 'app/models/listFilm.models';
+import { FilmsService } from './films.service';
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +90,6 @@ export class UtilsService {
 
   setMovie(movie: any) {
     this.movie = movie;
-    console.log(this.movie)
   }
 
   getMovie() {
@@ -120,6 +120,7 @@ export class UtilsService {
   getListeRecherche() {
     return this.listeRecherche;
   }
+
 
   setMoviesTitles(tab: string []){
     this.moviesTitles = tab;

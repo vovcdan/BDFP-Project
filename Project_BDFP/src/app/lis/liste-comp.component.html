@@ -9,7 +9,13 @@
     
     <div id="comp-liste"*ngFor="let liste of listofFilms | filter:searchText titrelist">
         <li>{{ liste.titrelist }}</li>
-        <button mat-button (click)="gererListe(liste)">Gérer la liste</button>
+        <div id="ajout">
+            <div class="add">
+                <button id="butGerer" mat-fab matTooltip="Afficher la liste" mat-fab (click)="gererListe(liste)">
+                    <mat-icon>list</mat-icon>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

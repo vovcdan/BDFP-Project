@@ -41,7 +41,7 @@ export class SingleListeComponent implements OnInit {
   title!: string;
 
   destUser!: User;
-  
+
   result: any;
 
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
@@ -196,8 +196,12 @@ export class ajouterUnFilm implements OnInit {
 
   private _filter(titre: string): Film[] {
     const filterValue = titre.toLowerCase();
-
-    return this.optionsMovie.filter(option => option.titre.toLowerCase().includes(filterValue));
+    return this.optionsMovie.filter(option => {
+      if (option && option.titre) {
+        return option.titre.toLowerCase().includes(filterValue);
+      }
+      return false;
+    });
   }
 
   onSelected() {

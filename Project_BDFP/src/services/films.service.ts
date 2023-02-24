@@ -29,7 +29,7 @@ export class FilmsService {
   constructor(private http: HttpClient, private crypt: CryptService, private utilService: UtilsService) {}
 
 
-  // Initialise la liste pour l'objet Films de l'utilisateur 
+  // Initialise la liste pour l'objet Films de l'utilisateur
   // Ne surtout pas utiliser car est appelé dans addUser
   createListFilmForUser(userId: string) {
     this.http.post('http://localhost:8080/api/movies/', {"uid": userId, "movies": []}).subscribe();
@@ -43,7 +43,7 @@ export class FilmsService {
 
   // ajoute un nouvel utilisateur (inscription)
     addUser(email: string, mdp: string) {
-     
+
     this.http.post('http://localhost:8080/api/users', {"email":email, "mdp":mdp}).subscribe((res) => {
       this.id = res;
       this.createListFilmForUser(this.id._id);
@@ -60,8 +60,8 @@ export class FilmsService {
     this.http.post<ListFilm>('http://localhost:8080/api/allLists/', {"uid": idUser, "titrelist": titrelist }).subscribe((log) => {
       list.emit(log);
   }, (error) => {
-    
-    
+
+
       console.log(error)
   });
   return list;
@@ -79,18 +79,18 @@ export class FilmsService {
   }
 
   deleteAllUsers() {
-    
+
     this.http.delete('http://localhost:8080/api/users/', {}).subscribe((log) => {
-     
+
   }, (error) => {
       console.log(error)
   });
   }
 
   deleteAllLists() {
-    
+
     this.http.delete('http://localhost:8080/api/allLists/', {}).subscribe((log) => {
-     
+
   }, (error) => {
       console.log(error)
   });
@@ -115,7 +115,7 @@ export class FilmsService {
     })
     return response;
   }
-  
+
   deleteListOfAllLists(idListe: string) {
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/allLists/' + idListe, {}).subscribe((log) => {
@@ -128,7 +128,7 @@ export class FilmsService {
 
   deleteAllMovies() {
     this.http.delete('http://localhost:8080/api/movies/', {}).subscribe((log) => {
-      
+
   }, (error) => {
       console.log(error)
   });
@@ -136,7 +136,7 @@ export class FilmsService {
 
   ModifyUserMail(userId: string, newMail: string) {
     this.http.put('http://localhost:8080/api/users/' + userId, {'email': newMail}).subscribe((log) => {
-      
+
   }, (error) => {
       console.log(error)
   });
@@ -205,7 +205,7 @@ export class FilmsService {
 
     return listes;
   }
-  
+
 
   getOneList(uid: string, titrelist: string) {
     let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
@@ -221,18 +221,18 @@ export class FilmsService {
 
     return laliste;
   }
-  
+
   shareList(destUserId: string, titrelist: string, liste: ListFilm){
     console.log(liste.movies)
       let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
-      this.http.post<ListFilm>("http://localhost:8080/api/allLists/share", {"uid": destUserId, "titrelist": titrelist + " partagee par " + this.utilService.getUserName(), "movies": liste.movies}).subscribe((res) => { 
-        laliste.emit(res) 
+      this.http.post<ListFilm>("http://localhost:8080/api/allLists/share", {"uid": destUserId, "titrelist": titrelist + " partagee par " + this.utilService.getUserName(), "movies": liste.movies}).subscribe((res) => {
+        laliste.emit(res)
     },
     (error) => {
       console.log(error)
     });
     return laliste
-  
+
   }
 
   getUserByMail(userMail: string){
@@ -268,7 +268,7 @@ export class FilmsService {
 
   modifierMail(idUser: string, email: string) {
     this.http.put('http://localhost:8080/api/users/' + idUser, {"email": email}).subscribe((log) => {
-      
+
   }, (error) => {
       console.log(error)
   });
@@ -277,7 +277,7 @@ export class FilmsService {
   modifierMDP(idUser: string, mdp: string) {
     var mdpCrypt = this.crypt.cryptMD5(mdp);
     this.http.put('http://localhost:8080/api/users/' + idUser, {"mdp": mdpCrypt}).subscribe((log) => {
-      
+
   }, (error) => {
       console.log(error)
   });

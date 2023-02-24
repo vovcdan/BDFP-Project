@@ -7,7 +7,6 @@
     </div>
     <div id="film" *ngFor="let infoMovies of movies | keyvalue | filter: searchText">
         <div id="leposter" *ngIf="infoMovies">
-
             <img src={{infoMovies.value}} id="img">
         </div>
         <div>
