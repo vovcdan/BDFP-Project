@@ -27,7 +27,7 @@ export class AffichageFilmsComponent implements OnInit {
   accompagnateursControl = new FormControl();
   resList!: Map<string, number>;
   movieExist: any[] = [];
-  movies: Map<any, string> = new Map();
+  movies: Map<any, any> = new Map();
   singleFilm: Map<any, string> = new Map();
   idActor: number = 0;
   moviesNumber: number = 0;
@@ -176,7 +176,6 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   rechercherFilm() {
-<<<<<<< Project_BDFP/src/app/affichage-films/affichage-films.component.ts
 
     if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
       this.switch_number = 1;
