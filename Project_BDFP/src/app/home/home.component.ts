@@ -59,6 +59,69 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+    this.searchMoviesTMDBTitleSearchAllPages("Ava");
+    this.seachReviewsTMDBAllPages("19995")
+    this.searchMoviesByRealisatorIdAllPages("525")
+    this.searchMoviesByActorIdAllPages("287")
+    this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
+    this.searchMoviesByYearAllPages("2020")
+    this.searchMoviesByYearAndActorsAllPages("2020","11288")
+    this.searchMoviesByYearAndRealisatorAllPages("2020","525")
+    this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
+  }
+
+  async searchMoviesTMDBTitleSearchAllPages(title:string) {
+    const tab = await this.api.getMoviesTMDBTitleSearchAllPages(title);
+    console.log("ava");
+    console.log(tab);
+  }
+
+  async seachReviewsTMDBAllPages(id:string) {
+    const tab = await this.api.getReviewsTMDBAllPages(id);
+    console.log("Revues pour le film avatar");
+    console.log(tab)
+  }
+
+  async searchMoviesByRealisatorIdAllPages(id:string){
+    const tab = await this.api.getMoviesByRealisatorIdAllPages(id);
+    console.log("Realisé par Nolan")
+    console.log(tab)
+  }
+
+  async searchMoviesByActorIdAllPages(id:string) {
+    const tab = await this.api.getMoviesByActorIdAllPages(id);
+    console.log("Joué par Brad Pitt")
+    console.log(tab)
+  }
+
+  async searchMoviesByActorsAndRealisatorAllPages(idActor:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByActorsAndRealisatorAllPages(idActor, idRealisator);
+    console.log("Realisé par Nolan et joué par robert pattinson")
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAllPages(year:string) {
+    const tab = await this.api. getMoviesByYearAllPages(year);
+    console.log("Realisé en 2020")
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndActorsAllPages(year:string, idActor:string) {
+    const tab = await this.api.getMoviesByYearAndActorsAllPages(year, idActor);
+    console.log("Realisé en 2020 avec Robert Pattinson")
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndRealisatorAllPages(year:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByYearAndRealisatorAllPages(year, idRealisator);
+    console.log("Realisé par Nolan en 2020")
+    console.log(tab)
+  }
+
+  async searchMoviesByYearAndActorsAndRealisatorAllPages(year:string, idActor:string, idRealisator:string) {
+    const tab = await this.api.getMoviesByYearAndActorsAndRealisatorAllPages(year,idActor, idRealisator);
+    console.log("Realisé par Nolan en 2020 avec Robert Pattinson")
+    console.log(tab)
   }
 
   suppFilm(titrefilm: string) {
@@ -127,7 +190,6 @@ export class ajouterFilm implements OnInit {
 
     ngOnInit(): void {
       this.OMDBInit();
-
 
     }
 
