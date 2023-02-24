@@ -171,11 +171,13 @@ export class ApiServiceService {
     let data = await response.json();
     results.push(...data.results);
 
+
     const totalPages = data.total_pages;
     for (let i = 2; i <= totalPages; i++) {
       response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=11d68f95601d6ec7858fe9a41e26fd86&primary_release_year=${query}&page=${i}`);
       data = await response.json();
       results.push(...data.results);
+      if (i == 500) break;
     }
 
     return results;
