@@ -286,13 +286,17 @@ export class HomeComponent implements OnInit {
       // })
 
       let movie = await this.api.getMovieTMDbIdAsync(value);
-      let imdb_id = (movie as any).imdb_id;
+      let data = await movie.json();
+      let imdb_id = await data.imdb_id;
       let movieDB = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), imdb_id);
-      this.movieExist.push(movieDB);
+      let data2 = await movieDB!.json();
+      console.log(data2);
+      
+      this.movieExist.push(data2);
 
     }
 
-    await this.utilService.setSearchedMovies(this.movieExist)
+    this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
   }
   

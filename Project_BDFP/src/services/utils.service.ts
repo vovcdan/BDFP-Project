@@ -132,7 +132,7 @@ export class UtilsService {
     return this.moviesTitles;
   }
 
-  async setSearchedMovies(searchedMovies: any){
+  setSearchedMovies(searchedMovies: any){
     this.searchedMovies = []
     this.searchedMovies = searchedMovies;
     console.log(this.searchedMovies)
