@@ -142,7 +142,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  rechercherFilm() {
+  async rechercherFilm() {
 
     if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
       this.switch_number = 1;
@@ -194,7 +194,8 @@ export class HomeComponent implements OnInit {
         this.getFilmsByYear(this.yearControl.value);
         break;
       case (7):
-        this.getFilmsByActors(this.actorsControl.value);
+        await this.getFilmsByActors(this.actorsControl.value);
+        this.router.navigateByUrl("home")
         break;
       default:
         this.error_message = "Vous devez remplir au moins un champ";
