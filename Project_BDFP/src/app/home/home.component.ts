@@ -279,25 +279,44 @@ export class HomeComponent implements OnInit {
     console.log(this.resList)
 
     for (const [key, value] of this.resList) {
+      console.log(`Checking movie with id: ${value}`);
+      await this.filmService.existingMovie(value).then((film: any) => {
+        console.log("Got film:", film);
+      }).catch((error: any) => {
+        console.error("Error getting film:", error);
+      });
+    }
+    // this.resList = await this.rechercheService.getFilmsByActor(actors);
+    // console.log(this.resList)
+
+    //for (const [key, value] of this.resList) {
       // this.api.getMovieTMDbId(value).subscribe((movie: any) => {
       //   this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
       //     this.movieExist.push(film)
       //   })
       // })
-
-      let movie = await this.api.getMovieTMDbIdAsync(value);
-      let data = await movie.json();
-      let imdb_id = await data.imdb_id;
-      let movieDB = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), imdb_id);
-      let data2 = await movieDB!.json();
-      console.log(data2);
+      // await this.filmService.existingMovie(value).then((film: any) => {
+      //   console.log("lala")
+      //   console.log(film)
+      // })
+      // let movie = await this.api.getMovieTMDbIdAsync(value);
+      // let data = await movie.json();
+      // if (data == undefined){
+      //   console.log(data)
+      // }
+      // console.log(data)
+      // let imdb_id = await data.imdb_id;
+      // let movieDB = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), imdb_id);
+      // let data2 = await movieDB!.json();
+      // console.log(data2);
       
-      this.movieExist.push(data2);
+      // this.movieExist.push(data2);
 
-    }
+    //}
 
-    this.utilService.setSearchedMovies(this.movieExist)
-    console.log(this.movieExist)
+    // this.utilService.setSearchedMovies(this.movieExist)
+    // console.log(this.movieExist)
+    // console.log(this.utilService.getSearchedMovies())
   }
   
   async getFilmsByYearAndRealisator(year: string, real: string) {

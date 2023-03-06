@@ -141,7 +141,6 @@ export class RechercheService {
   async getFilmsByActor(actors: string) {
     try {
       let tab_actors = actors.split(",");
-      console.log(tab_actors)
       let actors_id = "";
 
       for (let i = 0; i < tab_actors.length; i++) {
@@ -150,7 +149,6 @@ export class RechercheService {
         actors_id += id + ",";
       }
       actors_id = actors_id.slice(0, -1);
-      console.log(actors_id)
       const moviesResponse = await this.api.getMoviesByActorId(actors_id).toPromise();
       const temp = new Map<string, number>();
       for (let i = 0; i < (moviesResponse as any).results.length; i++) {

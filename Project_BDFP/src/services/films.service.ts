@@ -250,6 +250,20 @@ export class FilmsService {
 
   }
 
+  async existingMovie(id: any){
+    const uid = this.utilService.getUserId()
+    const url = `http://localhost:8080/api/movies/omdb/${uid}/${id}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data[0]);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   getUserByMail(userMail: string){
     let user: EventEmitter<User> = new EventEmitter<User>();
 
