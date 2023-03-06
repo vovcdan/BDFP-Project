@@ -95,8 +95,8 @@
      .then((data) => {
        if (data) {
         const movie = data.movies.find(m => m.omdbID === omdbID);
-        res.send(movie);
-       }
+        res.send(JSON.stringify(movie));
+       } else res.status(404).send("Aucun film trouvé avec l'id: " + omdbID);
      })
      .catch((err) => {
       if(err.status === 500)

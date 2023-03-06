@@ -73,15 +73,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
-    this.searchMoviesTMDBTitleSearchAllPages("Ava");
-    this.seachReviewsTMDBAllPages("19995")
-    this.searchMoviesByRealisatorIdAllPages("525")
-    this.searchMoviesByActorIdAllPages("287")
-    this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
-    this.searchMoviesByYearAllPages("2020")
-    this.searchMoviesByYearAndActorsAllPages("2020","11288")
-    this.searchMoviesByYearAndRealisatorAllPages("2020","525")
-    this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
+    // this.searchMoviesTMDBTitleSearchAllPages("Ava");
+    // this.seachReviewsTMDBAllPages("19995")
+    // this.searchMoviesByRealisatorIdAllPages("525")
+    // this.searchMoviesByActorIdAllPages("287")
+    // this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
+    // this.searchMoviesByYearAllPages("2020")
+    // this.searchMoviesByYearAndActorsAllPages("2020","11288")
+    // this.searchMoviesByYearAndRealisatorAllPages("2020","525")
+    // this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
   }
 
   async searchMoviesTMDBTitleSearchAllPages(title:string) {
@@ -275,31 +275,47 @@ export class HomeComponent implements OnInit {
   }
 
   async getFilmsByActors(actors: string) {
+    try {
     this.resList = await this.rechercheService.getFilmsByActor(actors);
     console.log(this.resList)
 
     for (const [key, value] of this.resList) {
+      try {
       // this.api.getMovieTMDbId(value).subscribe((movie: any) => {
       //   this.filmService.getFilmByOmdbID(this.utilService.getUserId(), movie.imdb_id).subscribe((film: any) => {
       //     this.movieExist.push(film)
       //   })
       // })
-
+      console.log(value);
+      console.log('before getMovieTMDbIdAsync');
       let movie = await this.api.getMovieTMDbIdAsync(value);
+      console.log('after getMovieTMDbIdAsync');
+      console.log(movie);
       let data = await movie.json();
+      console.log('after movie.json');
+      console.log(data);
       let imdb_id = await data.imdb_id;
+      console.log('after data.imdb_id');
+      console.log(imdb_id);
       let movieDB = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), imdb_id);
+      console.log('after getFilmByOmdbIDAsync');
+      console.log(movieDB);
       let data2 = await movieDB!.json();
+      console.log('after movieDB!.json()');
       console.log(data2);
-      
       this.movieExist.push(data2);
-
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     this.utilService.setSearchedMovies(this.movieExist)
     console.log(this.movieExist)
+  } catch (error) {
+    console.error(error)
   }
-  
+  }
+
   async getFilmsByYearAndRealisator(year: string, real: string) {
     this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real);
 
