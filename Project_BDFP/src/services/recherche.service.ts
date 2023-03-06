@@ -141,7 +141,6 @@ export class RechercheService {
   async getFilmsByActor(actors: string) {
     try {
       let tab_actors = actors.split(",");
-      console.log(tab_actors)
       let actors_id = "";
 
       for (let i = 0; i < tab_actors.length; i++) {
