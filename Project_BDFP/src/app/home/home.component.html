@@ -4,6 +4,12 @@
         <button class="butAjout" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
             <mat-icon>add</mat-icon>
         </button>
+        <button class="butAjout" mat-fab matTooltip="Rechercher un film" mat-fab (click)="affichageForm()">
+            <mat-icon>search</mat-icon>
+        </button>
+        <button class="butAjout" mat-fab matTooltip="Recharger les films" (click)="reloadFilms()">
+            <mat-icon>cached</mat-icon>
+        </button>
     </div>
     <!--<p>You have {{ numberOfFilms | async }} films.</p>-->
     <div id="compteur">
@@ -14,19 +20,6 @@
             <h2>{{ numberOfFilms | async }}</h2>
             <p>Films vus</p>
         </article>
-    </div>
-    <div id="bout">
-        <div class="bt">
-            <button class="butAjout" mat-fab matTooltip="Rechercher un film" mat-fab (click)="affichageForm()">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-
-        <div class="bt">
-            <button class="butAjout" mat-fab matTooltip="Recharger les films" (click)="reloadFilms()">
-                <mat-icon>cached</mat-icon>
-            </button>
-        </div>
     </div>
 
     <div *ngIf="showFormRecherche"  id="cherche" class="form-card">
@@ -72,9 +65,7 @@
         </form>
 
     </div>
-    <app-affichage-films></app-affichage-films>
-</div>
-
-<div id="glob">
-
+    <div id="glob">
+        <app-affichage-films></app-affichage-films>
+    </div>
 </div>
