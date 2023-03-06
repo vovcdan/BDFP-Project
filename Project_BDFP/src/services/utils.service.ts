@@ -86,7 +86,7 @@ export class UtilsService {
     this.films = films;
   }
 
-  getListOfFilms() {
+  getListOfFilms() { //renvoie la liste de films d'un utilisateur
     return this.films;
   }
 
