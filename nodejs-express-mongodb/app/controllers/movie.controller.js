@@ -93,12 +93,10 @@
  
    MovieDB.findOne(condition)
      .then((data) => {
-       if (!data) {
-        res.status(404).send({message: "Aucun film trouvé avec l'id: " + omdbID})
-       }
-       else {
+       if (data) {
         const movie = data.movies.find(m => m.omdbID === omdbID);
         res.send(JSON.stringify(movie));
+
        } else res.status(404).send("Aucun film trouvé avec l'id: " + omdbID);
      })
      .catch((err) => {
