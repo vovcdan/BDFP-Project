@@ -51,12 +51,6 @@ export class HomeComponent implements OnInit {
   numberOfFilms!: Observable<number>;
   showFormRecherche: boolean = false;
   formRecherche!: FormGroup;
-  titreControl = new FormControl();
-  realisatorControl = new FormControl();
-  yearControl = new FormControl();
-  actorsControl = new FormControl();
-  locationControl = new FormControl();
-  accompagnateursControl = new FormControl();
   resList!: Map<string, number>;
   movieExist: any[] = [];
   switch_number = -1;
@@ -73,15 +67,25 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
-    this.searchMoviesTMDBTitleSearchAllPages("Ava");
-    this.seachReviewsTMDBAllPages("19995")
-    this.searchMoviesByRealisatorIdAllPages("525")
-    this.searchMoviesByActorIdAllPages("287")
-    this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
-    this.searchMoviesByYearAllPages("2020")
-    this.searchMoviesByYearAndActorsAllPages("2020","11288")
-    this.searchMoviesByYearAndRealisatorAllPages("2020","525")
-    this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
+    // this.searchMoviesTMDBTitleSearchAllPages("Ava");
+    // this.seachReviewsTMDBAllPages("19995")
+    // this.searchMoviesByRealisatorIdAllPages("525")
+    // this.searchMoviesByActorIdAllPages("287")
+    // this.searchMoviesByActorsAndRealisatorAllPages("11288","525")
+    // this.searchMoviesByYearAllPages("2020")
+    // this.searchMoviesByYearAndActorsAllPages("2020","11288")
+    // this.searchMoviesByYearAndRealisatorAllPages("2020","525")
+    // this.searchMoviesByYearAndActorsAndRealisatorAllPages("2020","11288","525")
+
+    this.formRecherche = new FormGroup({
+      titreControl:new FormControl(),
+      realisatorControl: new FormControl(),
+      yearControl: new FormControl(),
+      actorsControl: new FormControl(),
+      locationControl: new FormControl(),
+      accompagnateursControl: new FormControl()
+    })
+
   }
 
   async searchMoviesTMDBTitleSearchAllPages(title:string) {
@@ -136,25 +140,25 @@ export class HomeComponent implements OnInit {
 
   rechercherFilm() {
 
-    if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != "" && this.actorsControl.value != undefined && this.actorsControl.value != ""){
+    if (this.formRecherche.value.yearControl != undefined && this.formRecherche.value.yearControl != "" && this.formRecherche.value.realisatorControl != undefined && this.formRecherche.value.realisatorControl != "" && this.formRecherche.value.actorsControl != undefined && this.formRecherche.value.actorsControl != ""){
       this.switch_number = 1;
     } else {
-      if (this.yearControl.value != undefined && this.yearControl.value != "" && this.actorsControl.value != "" && this.actorsControl.value != undefined){
+      if (this.formRecherche.value.yearControl != undefined && this.formRecherche.value.yearControl != "" && this.formRecherche.value.actorsControl != "" && this.formRecherche.value.actorsControl != undefined){
         this.switch_number = 2
       } else {
-        if (this.yearControl.value != undefined && this.yearControl.value != "" && this.realisatorControl.value != "" && this.realisatorControl.value != undefined){
+        if (this.formRecherche.value.yearControl != undefined && this.formRecherche.value.yearControl != "" && this.formRecherche.value.realisatorControl != "" && this.formRecherche.value.realisatorControl != undefined){
           this.switch_number = 3
         } else {
-          if(this.actorsControl.value != undefined && this.actorsControl.value != "" && this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+          if(this.formRecherche.value.actorsControl != undefined && this.formRecherche.value.actorsControl != "" && this.formRecherche.value.realisatorControl != undefined && this.formRecherche.value.realisatorControl != ""){
             this.switch_number = 4
           }else {
-            if (this.realisatorControl.value != undefined && this.realisatorControl.value != ""){
+            if (this.formRecherche.value.realisatorControl != undefined && this.formRecherche.value.realisatorControl != ""){
               this.switch_number = 5
             } else {
-              if (this.yearControl.value != undefined && this.yearControl.value != ""){
+              if (this.formRecherche.value.yearControl != undefined && this.formRecherche.value.yearControl != ""){
                 this.switch_number = 6
               } else {
-                if (this.actorsControl.value != undefined && this.actorsControl.value != ""){
+                if (this.formRecherche.value.actorsControl != undefined && this.formRecherche.value.actorsControl != ""){
                   this.switch_number = 7
                 }
               }
@@ -168,25 +172,25 @@ export class HomeComponent implements OnInit {
 
     switch (this.switch_number) {
       case (1):
-        this.getFilmsByYearAndActorsAndRealisator(this.yearControl.value, this.actorsControl.value, this.realisatorControl.value);
+        this.getFilmsByYearAndActorsAndRealisator(this.formRecherche.value.yearControl, this.formRecherche.value.actorsControl, this.formRecherche.value.realisatorControl);
         break;
       case (2):
-        this.getFilmsByYearAndActors(this.yearControl.value, this.actorsControl.value);
+        this.getFilmsByYearAndActors(this.formRecherche.value.yearControl, this.formRecherche.value.actorsControl);
         break;
       case (3):
-        this.getFilmsByYearAndRealisator(this.yearControl.value, this.realisatorControl.value);
+        this.getFilmsByYearAndRealisator(this.formRecherche.value.yearControl, this.formRecherche.value.realisatorControl);
         break;
       case (4):
-        this.getFilmsByActorsAndRealisator(this.actorsControl.value, this.realisatorControl.value);
+        this.getFilmsByActorsAndRealisator(this.formRecherche.value.actorsControl, this.formRecherche.value.realisatorControl);
         break;
       case (5):
-        this.getFilmsByRealisator(this.realisatorControl.value);
+        this.getFilmsByRealisator(this.formRecherche.value.realisatorControl);
         break;
       case (6):
-        this.getFilmsByYear(this.yearControl.value);
+        this.getFilmsByYear(this.formRecherche.value.yearControl);
         break;
       case (7):
-        this.getFilmsByActors(this.actorsControl.value);
+        this.getFilmsByActors(this.formRecherche.value.actorsControl);
         break;
       default:
         this.error_message = "Vous devez remplir au moins un champ";
@@ -277,7 +281,7 @@ export class HomeComponent implements OnInit {
     }
     console.log(this.movieExist)
   }
-  
+
   async getFilmsByYearAndRealisator(year: string, real: string) {
     this.resList = await this.rechercheService.getMoviesByYearAndRealisator(year, real);
 
