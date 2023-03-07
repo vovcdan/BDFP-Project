@@ -15,12 +15,6 @@ import { UtilsService } from 'services/utils.service';
 export class AffichageRechercheComponent implements OnInit {
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
-  titreControl = new FormControl();
-  realisatorControl = new FormControl();
-  yearControl = new FormControl();
-  actorsControl = new FormControl();
-  locationControl = new FormControl();
-  accompagnateursControl = new FormControl();
   resList!: Map<string, number>;
   movieExist: any[] = [];
   switch_number = -1;
@@ -38,6 +32,14 @@ export class AffichageRechercheComponent implements OnInit {
 
   ngOnInit() {
     this.getSearchedMovies();
+    this.formRecherche = new FormGroup({
+      titreControl: new FormControl(),
+      realisatorControl: new FormControl(),
+      yearControl: new FormControl(),
+      actorsControl: new FormControl(),
+      locationControl: new FormControl(),
+      accompagnateursControl: new FormControl(),
+    });
   }
 
   async getSearchedMovies() {
@@ -58,54 +60,54 @@ export class AffichageRechercheComponent implements OnInit {
     this.finished = false;
 
     if (
-      this.yearControl.value != undefined &&
-      this.yearControl.value != '' &&
-      this.realisatorControl.value != undefined &&
-      this.realisatorControl.value != '' &&
-      this.actorsControl.value != undefined &&
-      this.actorsControl.value != ''
+      this.formRecherche.value.yearControl != undefined &&
+      this.formRecherche.value.yearControl != '' &&
+      this.formRecherche.value.realisatorControl != undefined &&
+      this.formRecherche.value.realisatorControl != '' &&
+      this.formRecherche.value.actorsControl != undefined &&
+      this.formRecherche.value.actorsControl != ''
     ) {
       this.switch_number = 1;
     } else {
       if (
-        this.yearControl.value != undefined &&
-        this.yearControl.value != '' &&
-        this.actorsControl.value != '' &&
-        this.actorsControl.value != undefined
+        this.formRecherche.value.yearControl != undefined &&
+        this.formRecherche.value.yearControl != '' &&
+        this.formRecherche.value.actorsControl != '' &&
+        this.formRecherche.value.actorsControl != undefined
       ) {
         this.switch_number = 2;
       } else {
         if (
-          this.yearControl.value != undefined &&
-          this.yearControl.value != '' &&
-          this.realisatorControl.value != '' &&
-          this.realisatorControl.value != undefined
+          this.formRecherche.value.yearControl != undefined &&
+          this.formRecherche.value.yearControl != '' &&
+          this.formRecherche.value.realisatorControl != '' &&
+          this.formRecherche.value.realisatorControl != undefined
         ) {
           this.switch_number = 3;
         } else {
           if (
-            this.actorsControl.value != undefined &&
-            this.actorsControl.value != '' &&
-            this.realisatorControl.value != undefined &&
-            this.realisatorControl.value != ''
+            this.formRecherche.value.actorsControl != undefined &&
+            this.formRecherche.value.actorsControl != '' &&
+            this.formRecherche.value.realisatorControl != undefined &&
+            this.formRecherche.value.realisatorControl != ''
           ) {
             this.switch_number = 4;
           } else {
             if (
-              this.realisatorControl.value != undefined &&
-              this.realisatorControl.value != ''
+              this.formRecherche.value.realisatorControl != undefined &&
+              this.formRecherche.value.realisatorControl != ''
             ) {
               this.switch_number = 5;
             } else {
               if (
-                this.yearControl.value != undefined &&
-                this.yearControl.value != ''
+                this.formRecherche.value.yearControl != undefined &&
+                this.formRecherche.value.yearControl != ''
               ) {
                 this.switch_number = 6;
               } else {
                 if (
-                  this.actorsControl.value != undefined &&
-                  this.actorsControl.value != ''
+                  this.formRecherche.value.actorsControl != undefined &&
+                  this.formRecherche.value.actorsControl != ''
                 ) {
                   this.switch_number = 7;
                 }
@@ -121,59 +123,44 @@ export class AffichageRechercheComponent implements OnInit {
     switch (this.switch_number) {
       case 1:
         this.getFilmsByYearAndActorsAndRealisator(
-          this.yearControl.value,
-          this.actorsControl.value,
-          this.realisatorControl.value
+          this.formRecherche.value.yearControl,
+          this.formRecherche.value.actorsControl,
+          this.formRecherche.value.realisatorControl
         );
         break;
       case 2:
         this.getFilmsByYearAndActors(
-          this.yearControl.value,
-          this.actorsControl.value
+          this.formRecherche.value.yearControl,
+          this.formRecherche.value.actorsControl
         );
         break;
       case 3:
         this.getFilmsByYearAndRealisator(
-          this.yearControl.value,
-          this.realisatorControl.value
+          this.formRecherche.value.yearControl,
+          this.formRecherche.value.realisatorControl
         );
         break;
       case 4:
         this.getFilmsByActorsAndRealisator(
-          this.actorsControl.value,
-          this.realisatorControl.value
+          this.formRecherche.value.actorsControl,
+          this.formRecherche.value.realisatorControl
         );
         break;
       case 5:
-        this.getFilmsByRealisator(this.realisatorControl.value);
+        this.getFilmsByRealisator(this.formRecherche.value.realisatorControl);
         break;
       case 6:
-        this.getFilmsByYear(this.yearControl.value);
+        this.getFilmsByYear(this.formRecherche.value.yearControl);
         break;
       case 7:
-        await this.getFilmsByActors(this.actorsControl.value);
+        this.getFilmsByActors(this.formRecherche.value.actorsControl);
         break;
       default:
         this.error_message = 'Vous devez remplir au moins un champ';
         break;
+
+        this.finished = true;
     }
-
-    //   [];
-    // if(this.titreControl.value != undefined && this.titreControl.value != ""){
-    //   this.getFilmsByTitre(this.titreControl.value, this.resList);
-    // }
-    // if(this.locationControl.value != undefined && this.locationControl.value != ""){
-    //   this.getFilmsByLocation(this.locationControl.value, this.resList);
-    // }
-    // if(this.accompagnateursControl.value != undefined && this.accompagnateursControl.value != ""){
-    //   this.getFilmsByAccompagnateurs(this.accompagnateursControl.value, this.resList);
-    // }
-
-    // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    //   this.router.navigateByUrl('/home');
-    // });
-
-    this.finished = true;
   }
 
   getMoviesByYearAndRealisator(
