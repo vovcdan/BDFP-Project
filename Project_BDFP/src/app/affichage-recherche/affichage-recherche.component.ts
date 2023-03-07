@@ -20,6 +20,7 @@ export class AffichageRechercheComponent implements OnInit {
   switch_number = -1;
   error_message = '';
   finished = false;
+  singleFilm: Map<any, string> = new Map();
 
   constructor(
     private filmService: FilmsService,
@@ -159,8 +160,8 @@ export class AffichageRechercheComponent implements OnInit {
         this.error_message = 'Vous devez remplir au moins un champ';
         break;
 
-        this.finished = true;
     }
+    this.finished = true;
   }
 
   getMoviesByYearAndRealisator(
@@ -400,5 +401,9 @@ export class AffichageRechercheComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  clickFilm(infoFilm: any) {
+    this.router.navigateByUrl('/home/' + infoFilm.titre);
   }
 }

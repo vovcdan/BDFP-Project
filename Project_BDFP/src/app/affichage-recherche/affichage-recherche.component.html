@@ -1,38 +1,32 @@
 <div id="cherche" class="form-card">
   <form [formGroup]="formRecherche">
       <div class="form-group">
-          <mat-form-field appearance="fill" class="field" color='white'>
-              <mat-label class="lab">Titre</mat-label>
-              <input matInput formControlName="titreControl">
-            </mat-form-field>
-
-            <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Realisateur</mat-label>
-              <input matInput formControlName="realisatorControl">
-            </mat-form-field>
+        <mat-form-field appearance="fill" class="field">
+          <mat-label class="lab">Realisateur</mat-label>
+          <input matInput formControlName="realisatorControl">
+        </mat-form-field>
       </div>
       <div class="form-group">
-          <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Annee</mat-label>
-              <input matInput formControlName="yearControl">
-            </mat-form-field>
-
-          <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Acteur</mat-label>
-              <input matInput formControlName="actorsControl">
-            </mat-form-field>
+        <mat-form-field appearance="fill" class="field">
+            <mat-label class="lab">Annee</mat-label>
+            <input matInput formControlName="yearControl">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="field">
+            <mat-label class="lab">Acteur</mat-label>
+            <input matInput formControlName="actorsControl">
+        </mat-form-field>
       </div>
 
       <div class="form-group">
           <mat-form-field appearance="fill" class="field">
               <mat-label class="lab">Lieu</mat-label>
               <input matInput formControlName="locationControl">
-            </mat-form-field>
+          </mat-form-field>
 
-            <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Accompagnateurs</mat-label>
-              <input matInput formControlName="accompagnateursControl">
-            </mat-form-field>
+          <mat-form-field appearance="fill" class="field">
+            <mat-label class="lab">Accompagnateurs</mat-label>
+            <input matInput formControlName="accompagnateursControl">
+          </mat-form-field>
       </div>
 
       <div class="action-buttons">
@@ -43,10 +37,16 @@
 </div>
 
 <!-- <ng-container *ngIf="searchedMoviesNotEmpty"> -->
-<div *ngIf="finished">
+
+<!-- Resultats de la recherche  -->
+
+
+<div id="reponse" *ngIf="finished">
   <div *ngFor="let movies of movieExist">
-      <p>{{movies}}</p>
+      <h2 (click)="clickFilm(movies)">{{movies.titre}}</h2>
   </div>
 </div>
+
+
 <!-- </ng-container> -->
 
