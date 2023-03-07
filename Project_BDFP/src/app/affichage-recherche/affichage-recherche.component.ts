@@ -122,45 +122,45 @@ export class AffichageRechercheComponent implements OnInit {
 
     switch (this.switch_number) {
       case 1:
-        this.getFilmsByYearAndActorsAndRealisator(
+        await this.getFilmsByYearAndActorsAndRealisator(
           this.formRecherche.value.yearControl,
           this.formRecherche.value.actorsControl,
           this.formRecherche.value.realisatorControl
         );
         break;
       case 2:
-        this.getFilmsByYearAndActors(
+        await this.getFilmsByYearAndActors(
           this.formRecherche.value.yearControl,
           this.formRecherche.value.actorsControl
         );
         break;
       case 3:
-        this.getFilmsByYearAndRealisator(
+        await this.getFilmsByYearAndRealisator(
           this.formRecherche.value.yearControl,
           this.formRecherche.value.realisatorControl
         );
         break;
       case 4:
-        this.getFilmsByActorsAndRealisator(
+        await this.getFilmsByActorsAndRealisator(
           this.formRecherche.value.actorsControl,
           this.formRecherche.value.realisatorControl
         );
         break;
       case 5:
-        this.getFilmsByRealisator(this.formRecherche.value.realisatorControl);
+        await this.getFilmsByRealisator(this.formRecherche.value.realisatorControl);
         break;
       case 6:
-        this.getFilmsByYear(this.formRecherche.value.yearControl);
+        await this.getFilmsByYear(this.formRecherche.value.yearControl);
         break;
       case 7:
-        this.getFilmsByActors(this.formRecherche.value.actorsControl);
+        await this.getFilmsByActors(this.formRecherche.value.actorsControl);
         break;
       default:
         this.error_message = 'Vous devez remplir au moins un champ';
         break;
 
-        this.finished = true;
-    }
+      }
+      this.finished = true;
   }
 
   getMoviesByYearAndRealisator(

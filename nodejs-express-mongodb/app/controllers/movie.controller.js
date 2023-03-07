@@ -133,10 +133,12 @@
   */
  exports.update = (req, res) => {
    const uid = req.params.uid;
+   const omdbID = req.params.omdbID
  
    MovieDB.collection.findOneAndUpdate(
-     { "uid": uid },
-     { $set: {"movies": [req.body.movies],},}
+    { uid: uid },
+    { $set: { "movies.$[elem].note" : req.body.note, "movies.$[elem].accompagnateurs" : req.body.accompagnateurs, "movies.$[elem].cinema" : req.body.cinema, "movies.$[elem].avis" : req.body.avis, "movies.$[elem].dateVision" : req.body.dateVision } },
+    { arrayFilters: [ { "elem.omdbID": omdbID } ] },
    ).then((data) => {
      if (!data) {
        res.status(404).send({

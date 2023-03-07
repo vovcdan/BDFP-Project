@@ -40,10 +40,10 @@ export class SuppDialogComponent implements OnInit {
     private router: Router,
     private filmService: FilmsService,
     private snack: MatSnackBar,
-    private loc: Location) { 
+    private loc: Location) {
     this.title = data.title;
     this.message = data.message;
-    
+
   }
 
   ngOnInit(): void {
@@ -102,15 +102,13 @@ export class SuppDialogComponent implements OnInit {
       this.loc.back();
     })
   }
- 
+
   choixDelete(){
     this.switch = this.utilService.getListeOuGlobalSupp()
     if (this.switch == 1){
-      console.log("JE SUPPRIME LE FILM DE LA LISTE")
       this.deleteMovieList()
     }
     else if(this.switch == 2) {
-      console.log("JE SUPPRIME LE FILM DE PARTOUUUUUT")
       this.deleteMovieGlob()
     }
     else if(this.switch == 3){

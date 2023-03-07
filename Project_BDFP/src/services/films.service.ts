@@ -187,8 +187,8 @@ export class FilmsService {
         this.errorMessage = "Une erreur inattendue est survenue"
       }
       return null;
-    } 
-  
+    }
+
   }
 
   getListsTitles(){
@@ -250,18 +250,33 @@ export class FilmsService {
 
   }
 
-  async existingMovie(id: any){
-    const uid = this.utilService.getUserId()
-    const url = `http://localhost:8080/api/movies/omdb/${uid}/${id}`;
+  updateMovieInfo(movie: Film){
 
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data[0]);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
+    const uid = this.utilService.getUserId()
+
+    const omdbID = movie.omdbID
+
+    const url = `http://localhost:8080/api/movies/${uid}/${omdbID}`
+
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({avis: movie.avis, accompagnateurs: movie.accompagnateurs, note: movie.note, cinema: movie.cinema, dateVision: movie.dateVision})
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Data updated successfully:', data);
+    })
+    .catch(error => {
+      console.error('Error updating data:', error);
+    });
   }
 
   getUserByMail(userMail: string){
@@ -272,7 +287,7 @@ export class FilmsService {
         user.emit(result);
       },
       (error: any) => {
-        console.log(error);
+        throw new Error(error)
       }
     );
 

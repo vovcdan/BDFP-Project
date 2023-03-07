@@ -139,4 +139,10 @@ export class SingleFilmComponent implements OnInit {
       this.result = dialogResult;
     });
   }
+
+  modifyMovie(){
+    let filmModifie: Film = this.currentFilm;
+    // filmModifie.avis = avisControl ? avisControl.value : filmModifie.avis
+    this.filmService.updateMovieInfo(filmModifie)
+  }
 }
