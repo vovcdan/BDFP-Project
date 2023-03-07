@@ -21,19 +21,6 @@
             <p>Films vus</p>
         </article>
     </div>
-    <div id="bout">
-        <div class="bt">
-            <button class="butAjout" mat-fab matTooltip="Rechercher un film" mat-fab (click)="affichageForm()">
-                <mat-icon>search</mat-icon>
-            </button>
-        </div>
-
-        <div class="bt">
-            <button class="butAjout" mat-fab matTooltip="Recharger les films" (click)="reloadFilms()">
-                <mat-icon>cached</mat-icon>
-            </button>
-        </div>
-    </div>
 
 
     <div *ngIf="showFormRecherche">
@@ -41,11 +28,4 @@
     </div>
     <app-affichage-films></app-affichage-films>
 
-</div>
-
-<div id="glob">
-
-    <div id="glob">
-        <app-affichage-films></app-affichage-films>
-    </div>
 </div>
