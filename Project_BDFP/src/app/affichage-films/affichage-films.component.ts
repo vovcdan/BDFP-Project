@@ -25,6 +25,7 @@ export class AffichageFilmsComponent implements OnInit {
   moviesNumber: number = 0;
   noPoster: boolean = false;
   fromTMDB: boolean = true;
+  searchText !: any;
 
   constructor(
     private filmService: FilmsService,

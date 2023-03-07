@@ -176,6 +176,21 @@ export class FilmsService {
     return film;
   }
 
+  async getFilmByOmdbIDAsync(uid: string, omdbID: string) {
+    try {
+      const movie = await fetch('http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID);
+      return movie;
+    } catch(error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée."
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null;
+    } 
+  
+  }
+
   getListsTitles(){
     this.moviesTitles = [];
     this.http.get<Film>('http://localhost:8080/api/allLists/' + this.utilService.getUserId()).subscribe(
@@ -233,6 +248,20 @@ export class FilmsService {
     });
     return laliste
 
+  }
+
+  async existingMovie(id: any){
+    const uid = this.utilService.getUserId()
+    const url = `http://localhost:8080/api/movies/omdb/${uid}/${id}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data[0]);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   getUserByMail(userMail: string){

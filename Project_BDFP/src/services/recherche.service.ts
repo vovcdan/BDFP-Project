@@ -110,10 +110,10 @@ export class RechercheService {
     try {
       const personResponse = await this.api.getPerson(real).toPromise();
       const realisators_id = (personResponse as any).results[0].id;
-      const moviesResponse = await this.api.getMoviesByRealisatorId(realisators_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByRealisatorIdAllPages(realisators_id);
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       return temp;
@@ -125,13 +125,12 @@ export class RechercheService {
 
   async getFilmsByYear(year: string) {
     try {
-      const moviesResponse = await this.api.getMoviesByYear(year).toPromise();
+      const moviesResponse = await this.api.getMoviesByYearAllPages(year);
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp);
       return temp;
     } catch (error) {
       console.error(`Error getting films by year: ${error}`);
@@ -142,7 +141,6 @@ export class RechercheService {
   async getFilmsByActor(actors: string) {
     try {
       let tab_actors = actors.split(",");
-      console.log(tab_actors)
       let actors_id = "";
 
       for (let i = 0; i < tab_actors.length; i++) {
@@ -152,10 +150,10 @@ export class RechercheService {
       }
       actors_id = actors_id.slice(0, -1);
       console.log(actors_id)
-      const moviesResponse = await this.api.getMoviesByActorId(actors_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByActorIdAllPages(actors_id);
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       return temp;
@@ -170,10 +168,10 @@ export class RechercheService {
       const personResponse = await this.api.getPerson(real).toPromise();
       console.log(personResponse)
       const realisators_id = (personResponse as any).results[0].id;
-      const moviesResponse = await this.api.getMoviesByYearAndRealisator(year, realisators_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByYearAndRealisatorAllPages(year, realisators_id)
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       console.log(temp)
@@ -196,10 +194,10 @@ export class RechercheService {
       }
       actors_id = actors_id.slice(0, -1);
       console.log(actors_id)
-      const moviesResponse = await this.api.getMoviesByYearAndActors(year, actors_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByYearAndActorsAllPages(year, actors_id)
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       console.log(temp)
@@ -224,10 +222,10 @@ export class RechercheService {
       console.log(actors_id)
       const personResponse = await this.api.getPerson(real).toPromise();
       const realisators_id = (personResponse as any).results[0].id;
-      const moviesResponse = await this.api.getMoviesByActorsAndRealisator(actors_id, realisators_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByActorsAndRealisatorAllPages(actors_id, realisators_id)
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       console.log(temp)
@@ -252,10 +250,10 @@ export class RechercheService {
       console.log(actors_id)
       const personResponse = await this.api.getPerson(real).toPromise();
       const realisators_id = (personResponse as any).results[0].id;
-      const moviesResponse = await this.api.getMoviesByYearAndActorsAndRealisator(year, actors_id, realisators_id).toPromise();
+      const moviesResponse = await this.api.getMoviesByYearAndActorsAndRealisatorAllPages(year, actors_id, realisators_id)
       const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).results.length; i++) {
-        const movie = (moviesResponse as any).results[i];
+      for (let i = 0; i < (moviesResponse as any).length; i++) {
+        const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
       console.log(temp)
@@ -266,5 +264,5 @@ export class RechercheService {
     }
   }
 
-  
+
 }
