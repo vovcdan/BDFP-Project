@@ -143,13 +143,7 @@ export class AffichageFilmsComponent implements OnInit {
       });
   }
 
-  getActorsIdByActorsName(name: string) {
-    this.api.getActorsIdByActorsName(name).subscribe((actor: any) => {
-      this.idActor = actor['results'][0].id;
-    })
-  }
 
- 
 
-  
+
 }

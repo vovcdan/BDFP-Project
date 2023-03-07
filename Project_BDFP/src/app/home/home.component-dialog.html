@@ -1,5 +1,5 @@
 <div id="dialog">
-  <h1 mat-dialog-title>Détail du film</h1>
+  <h1 mat-dialog-title>Ajouter un film</h1>
   <div mat-dialog-content >
 
     <div *ngIf="filmError" [ngStyle]="{'color': 'red', 'font-weight': 'bold'}">
@@ -14,7 +14,8 @@
         <mat-radio-button class="radio" value="OMDB" [checked]="true" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
         <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
       </mat-radio-group>
-      <mat-icon id="icone" aria-hidden="false" matTooltip="besoin d'aide ?" fontIcon="help_outline"></mat-icon>
+      <mat-icon id="icone" aria-hidden="false" matTooltip="OMDB et TMDB sont deux bases de données en ligne qui fournissent des informations sur les films.
+      Si OMDB ne dispose pas du film que vous recherchez, vous pouvez cocher TMDB comme une autre source. " fontIcon="help_outline"></mat-icon>
     </header>
     <mat-form-field class="field" appearance="fill">
       <mat-label for="title">Titre</mat-label>

@@ -50,6 +50,11 @@ export class HomeComponent implements OnInit {
   list: any;
   numberOfFilms!: Observable<number>;
   showFormRecherche: boolean = false;
+  formRecherche!: FormGroup;
+  resList!: Map<string, number>;
+  movieExist: any[] = [];
+  switch_number = -1;
+  error_message = "";
 
   constructor(
     private filmService: FilmsService,
@@ -61,7 +66,18 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+
+    this.formRecherche = new FormGroup({
+      titreControl:new FormControl(),
+      realisatorControl: new FormControl(),
+      yearControl: new FormControl(),
+      actorsControl: new FormControl(),
+      locationControl: new FormControl(),
+      accompagnateursControl: new FormControl()
+    })
+
   }
+
 
   suppFilm(titrefilm: string) {
     this.filmService.deleteMovieDBById(titrefilm);
@@ -76,6 +92,7 @@ export class HomeComponent implements OnInit {
   affichageForm() {
     this.showFormRecherche = !this.showFormRecherche;
   }
+
 
   reloadFilms() {
     this.filmService
