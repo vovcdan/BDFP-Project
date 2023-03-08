@@ -188,7 +188,106 @@ export class FilmsService {
       }
       return null;
     } 
-  
+  }
+
+  async getFilmsOfUserByDateVision(dateVision: string){
+    let map = new Map<number, string>();
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/year/' + uid + '/' + dateVision)
+      const movies_jsoned = await movies.json()
+      for(let movie of movies_jsoned){
+        map.set(movie.omdbID, movie.titre)
+      }
+      return map
+    } catch(error: any){
+      if(error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée"
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null
+    }
+  }
+
+  async getFilmsOfUserByLocation(location: string){
+    let map = new Map<number, string>();
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/location/' + uid + '/' + location)
+      const movies_jsoned = await movies.json()
+      for(let movie of movies_jsoned){
+        map.set(movie.omdbID, movie.titre)
+      }
+      return map
+    } catch(error: any){
+      if(error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée"
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null
+    }
+  }
+
+  async getFilmsOfUserByAccompagnateurs(accompagnateurs: string){
+    let map = new Map<number, string>();
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/accompagnateurs/' + uid + '/' + accompagnateurs)
+      const movies_jsoned = await movies.json()
+      for(let movie of movies_jsoned){
+        map.set(movie.omdbID, movie.titre)
+      }
+      return map
+    } catch(error: any){
+      if(error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée"
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null
+    }
+  }
+
+  async getFilmsOfUserByNote(note: string){
+    let map = new Map<number, string>();
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/note/' + uid + '/' + note)
+      const movies_jsoned = await movies.json()
+      for(let movie of movies_jsoned){
+        map.set(movie.omdbID, movie.titre)
+      }
+      return map
+    } catch(error: any){
+      if(error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée"
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null
+    }
+  }
+
+  async getFilmsOfUserByAvis(avis: string){
+    let map = new Map<number, string>();
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/avis/' + uid + '/' + avis)
+      const movies_jsoned = await movies.json()
+      for(let movie of movies_jsoned){
+        map.set(movie.omdbID, movie.titre)
+      }
+      return map
+    } catch(error: any){
+      if(error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée"
+      } else {
+        this.errorMessage = "Une erreur inattendue est survenue"
+      }
+      return null
+    }
   }
 
   getListsTitles(){
