@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
@@ -35,6 +36,12 @@ export class SingleFilmComponent implements OnInit {
 
   result: any;
 
+  updating = true
+
+  moviesInfos!: any
+
+  formUpdateMovie!: FormGroup
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -53,6 +60,14 @@ export class SingleFilmComponent implements OnInit {
           return;
         }
       }
+    });
+
+    this.formUpdateMovie = new FormGroup({
+      noteControl: new FormControl(),
+      cinemaControl: new FormControl(),
+      dateVisionControl: new FormControl(),
+      accompagnateursControl: new FormControl(),
+      avisControl: new FormControl(),
     });
     this.getRealisateur();
     this.chercherActeurs();
