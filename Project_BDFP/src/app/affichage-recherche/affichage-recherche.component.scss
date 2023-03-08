@@ -3,6 +3,62 @@
     text-align: center;
 }
 
+h2 {
+    text-align: center;
+}
+
 #reponse h2 {
     cursor:pointer
 }
+
+.form-card {
+    min-width: 450px;
+      box-sizing: border-box;
+      width: 50%;
+      margin: 40px auto 40px auto;
+      padding: 30px;
+      border-radius: 30px;
+      background-color: rgba(212, 211, 211, 0.06)
+}
+
+.form-group {
+    margin: 20px auto auto 10px; 
+    display : inline-block;
+    width: 50%;
+    font-size: small;
+  }
+  
+  input, textarea {
+    width: 50%;
+    color: white;
+  }
+
+  button {
+    align-items: center;
+    display: block;
+    margin : auto;
+    margin-top: 20px;
+    background-color: rgb(39,39,39);
+    border-radius: 8px;
+    transition: 0.4s;
+    color: white;
+    &:hover {
+        color: orange;
+       
+    }
+    
+  }
+
+  .lab {
+    color: white;
+  }
+
+  .icone {
+    cursor:pointer;
+    display: inline;
+}
+
+#ligne {
+  margin-left: 20%;
+}
+

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'services/api-service.service';
@@ -13,6 +13,10 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./affichage-recherche.component.scss'],
 })
 export class AffichageRechercheComponent implements OnInit {
+  searchControlCarac = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?'));
+  searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
+  searchControlDate = new FormControl('', Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'));
+  searchControlNote = new FormControl('', Validators.pattern('^[0-5]'));
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
   resList!: Map<string, number>;
@@ -406,4 +410,5 @@ export class AffichageRechercheComponent implements OnInit {
   clickFilm(infoFilm: any) {
     this.router.navigateByUrl('/home/' + infoFilm.titre);
   }
+  
 }

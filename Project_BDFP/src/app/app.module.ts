@@ -74,7 +74,8 @@ import { AffichageRechercheComponent } from './affichage-recherche/affichage-rec
     MatAutocompleteModule,
     MatRadioModule,
     Ng2SearchPipeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FormsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
