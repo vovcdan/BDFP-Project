@@ -81,7 +81,7 @@
         </div>
       </div>
       <div class="action-buttons">
-          <button class="buttonR" mat-raised-button (click)="rechercherFilm()" >Recherche</button>
+          <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCarac.valid || !searchControlDate.valid || !searchControlAnnee.valid " (click)="rechercherFilm()">Recherche</button>
       </div>
   </form>
 
