@@ -38,8 +38,6 @@ export class SingleFilmComponent implements OnInit {
 
   updating = true
 
-  moviesInfos!: any
-
   formUpdateMovie!: FormGroup
 
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
@@ -153,6 +151,10 @@ export class SingleFilmComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
     });
+  }
+
+  showFormUpdateNovie() {
+    this.updating = !this.updating
   }
 
   modifyMovie(){

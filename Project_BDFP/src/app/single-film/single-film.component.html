@@ -103,8 +103,16 @@
                 matTooltip="Modifier mes informations"
                 (click)="modifyMovie()"
               >
-                <mat-icon>create</mat-icon>
+                <mat-icon>check_circle</mat-icon>
               </button>
+              <button
+              id="butModif"
+              mat-mini-fab
+              matTooltip="Modifier mes informations"
+              (click)="showFormUpdateNovie()"
+            >
+              <mat-icon>cancel</mat-icon>
+            </button>
             </form>
           </div>
 
@@ -143,7 +151,7 @@
               id="butModif"
               mat-mini-fab
               matTooltip="Modifier mes informations"
-              (click)="modifyMovie()"
+              (click)="showFormUpdateNovie()"
             >
               <mat-icon>create</mat-icon>
             </button>
