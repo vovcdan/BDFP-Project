@@ -8,9 +8,9 @@
     </div>
 </div>
 
-<ng-container *ngFor="let movie of movies | keyvalue">
+<div class="carte" *ngFor="let movie of movies | keyvalue">
   <app-movie-card [movieData]="movie"></app-movie-card>
-</ng-container>
+</div>
 
 
 <!-- <div id="images">
