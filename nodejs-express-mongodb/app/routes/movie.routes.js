@@ -22,6 +22,16 @@ module.exports = (app) => {
   // Retrieve a single movie with id
   router.get("/omdb/:uid/:omdbID", movie.findOne);
 
+  router.get("/year/:uid/:dateVision", movie.findByDateVision);
+
+  router.get("/location/:uid/:cinema", movie.findByLocation);
+
+  router.get("/accompagnateurs/:uid/:accompagnateurs", movie.findByAccompagnateurs);
+
+  router.get("note/:uid/:note", movie.findByNote);
+
+  router.get("avis/:uid/:avis", movie.findByAvis);
+
   // Update a movie with id
   router.put("/:uid/:omdbID", movie.update);
 

@@ -291,7 +291,7 @@ export class ajouterFilm implements OnInit {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
-    var IMDBid = this.selectedMovie.imdbID;
+    let IMDBid = this.selectedMovie.imdbID;
     if (IMDBid && this.selectedMovie.Title && !this.checkIfFilmExistsInList(IMDBid)) {
       this.filmService
         .addFilmToList(
@@ -330,11 +330,11 @@ export class ajouterFilm implements OnInit {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
-    var tmdbid = this.selectedMovie.id;
+    let tmdbid = this.selectedMovie.id;
     console.log(tmdbid);
     this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
       console.log(movieTMDB);
-      var imdb_id = movieTMDB.imdb_id;
+      let imdb_id = movieTMDB.imdb_id;
       if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(
             this.selectedMovie.title,
