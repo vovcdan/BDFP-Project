@@ -189,8 +189,6 @@ export class AffichageRechercheComponent implements OnInit {
 
     console.log(this.moviesInDB)
 
-    //TODO recuperer les films depuis l'API l'omdbID contenu dans la map moviesInDB
-
     this.finished = true;
   }
 
@@ -451,8 +449,8 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
 
-  clickFilm(infoFilm: any) {
-    this.router.navigateByUrl('/home/' + infoFilm.titre);
+  clickFilm(titre: any) {
+    this.router.navigateByUrl('/home/' + titre);
   } 
 
   intersectMaps(map1: Map<number, string>, map2: Map<number, string>) {

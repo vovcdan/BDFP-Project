@@ -59,7 +59,6 @@
                   <input matInput formControlName="locationControl">
               </mat-form-field>
           </div>
-=======
       </div>
       <div id="ligne">
         <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une note de 0 à 5" fontIcon="help_outline"></mat-icon>
@@ -104,8 +103,8 @@
 
 
 <div id="reponse" *ngIf="finished">
-  <div *ngFor="let movies of movieExist">
-      <h2 (click)="clickFilm(movies)">{{movies.titre}}</h2>
+  <div *ngFor="let movies of moviesInDB | keyvalue">
+      <h2 (click)="clickFilm(movies.value)">{{movies.value}}</h2>
   </div>
 </div>
 
