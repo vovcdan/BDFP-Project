@@ -6,8 +6,8 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Realisateur</mat-label>
-            <input matInput [formControl]="searchControlCarac" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlCarac.invalid && (searchControlCarac.dirty || searchControlCarac.touched)">
+            <input matInput [formControl]="searchControlCaracReal" placeholder="Rechercher">
+            <mat-error *ngIf="searchControlCaracReal.invalid && (searchControlCaracReal.dirty || searchControlCaracReal.touched)">
               forme : prenom nom  ou forme : prenom nom, prenom nom
             </mat-error>
           </mat-form-field>
@@ -31,8 +31,8 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Acteurs</mat-label>
-            <input matInput [formControl]="searchControlCarac" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlCarac.invalid && (searchControlCarac.dirty || searchControlCarac.touched)">
+            <input matInput [formControl]="searchControlCaracActors" placeholder="Rechercher">
+            <mat-error *ngIf="searchControlCaracActors.invalid && (searchControlCaracActors.dirty || searchControlCaracActors.touched)">
               forme : prenom nom  ou forme : prenom nom, prenom nom
             </mat-error>
           </mat-form-field>
@@ -85,12 +85,12 @@
         <div class="form-group">
             <mat-form-field appearance="fill" class="field">
               <mat-label class="lab">Avis</mat-label>
-              <input matInput formControlName="accompagnateursControl">
+              <input matInput formControlName="avisControl">
             </mat-form-field>
         </div>
       </div>
       <div class="action-buttons">
-          <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCarac.valid || !searchControlDate.valid || !searchControlAnnee.valid " (click)="rechercherFilm()">Recherche</button>
+          <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCaracReal.valid || !searchControlCaracActors.valid || !searchControlDate.valid || !searchControlAnnee.valid " (click)="rechercherFilm()">Recherche</button>
       </div>
   </form>
 
