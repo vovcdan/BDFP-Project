@@ -19,6 +19,7 @@ export class AffichageRechercheComponent implements OnInit {
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]'));
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
+  showFormRecherche: boolean = true;
   resList!: Map<string, number>;
   movieExist: any[] = [];
   switch_number = -1;
@@ -410,4 +411,5 @@ export class AffichageRechercheComponent implements OnInit {
   clickFilm(infoFilm: any) {
     this.router.navigateByUrl('/home/' + infoFilm.titre);
   } 
+
 }
