@@ -409,6 +409,5 @@ export class AffichageRechercheComponent implements OnInit {
 
   clickFilm(infoFilm: any) {
     this.router.navigateByUrl('/home/' + infoFilm.titre);
-  }
-  
+  } 
 }
