@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
@@ -40,7 +41,20 @@ export class SingleFilmComponent implements OnInit {
 
   formUpdateMovie!: FormGroup
 
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
+  previousUrl: string | undefined
+
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private router: Router) {
+    const currentUrl = this.router.url;
+    const previousRoute = this.router.config.find((route) => {
+      return route.path && route.path !== '**' && route.path !== '' && currentUrl.includes(route.path);
+    });
+    console.log(previousRoute);
+
+    //const previousUrl = previousRoute?.data?.previousUrl;
+    this.previousUrl = previousRoute?.path
+    console.log(this.previousUrl)
+    console.log(currentUrl);
+   }
 
   ngOnInit(): void {
     this.currentFilm = this.utilService.getMovie();
@@ -49,8 +63,14 @@ export class SingleFilmComponent implements OnInit {
     this.poster = this.currentFilm.values().next().value;
     console.log(this.poster);
 
+    console.log(this.previousUrl);
+
+
+
+
     this.currentFilm = this.currentFilm.keys().next().value;
     this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
+      console.log(listeFilm);
       this.listfilm = listeFilm[0].movies;
       for(let i = 0; i < this.listfilm.length; i++) {
         if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {

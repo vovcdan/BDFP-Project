@@ -50,6 +50,7 @@ export class SingleListeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentListe = this.utilService.getCurrentListe();
+
   }
 
   back() {
