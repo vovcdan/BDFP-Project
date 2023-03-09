@@ -39,7 +39,7 @@
         </div>
       </div>
       <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une date" fontIcon="help_outline"></mat-icon>
+        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une date forme : jj/mm/aaaa" fontIcon="help_outline"></mat-icon>
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Date de visionnage</mat-label>
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une note" fontIcon="help_outline"></mat-icon>
+        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une note de 0 à 5" fontIcon="help_outline"></mat-icon>
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Note</mat-label>
@@ -76,6 +76,15 @@
         <div class="form-group">
             <mat-form-field appearance="fill" class="field">
               <mat-label class="lab">Accompagnateurs</mat-label>
+              <input matInput formControlName="accompagnateursControl">
+            </mat-form-field>
+        </div>
+      </div>
+      <div id="ligne">
+        <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez des mots clés de vos avis." fontIcon="help_outline"></mat-icon>
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="field">
+              <mat-label class="lab">Avis</mat-label>
               <input matInput formControlName="accompagnateursControl">
             </mat-form-field>
         </div>
