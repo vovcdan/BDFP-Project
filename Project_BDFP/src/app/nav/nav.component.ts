@@ -25,7 +25,7 @@ export class NavComponent implements OnInit {
   // signale si l'utilisateur est connecté ou non
   isSign: boolean = false;
 
-  // varibale qui contient le mail utilisateur
+  // vàribale qui contient le mail utilisateur
   userName!: string;
 
   // subscriber chaque seconde

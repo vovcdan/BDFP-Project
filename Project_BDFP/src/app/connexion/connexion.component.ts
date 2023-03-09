@@ -35,9 +35,9 @@ export class ConnexionComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.token.isSessionActive()) {
-      var sessionObject = JSON.parse(this.token.getSession() || '{}');
-      var username = sessionObject.username;
-      var userID = sessionObject.userID;
+      let sessionObject = JSON.parse(this.token.getSession() || '{}');
+      let username = sessionObject.username;
+      let userID = sessionObject.userID;
       this.utilService.connect();
       this.utilService.setUserName(username);
       this.utilService.setUserId(userID);7
