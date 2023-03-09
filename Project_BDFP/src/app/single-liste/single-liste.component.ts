@@ -63,7 +63,7 @@ export class SingleListeComponent implements OnInit {
   }
 
   deleteListe() {
-    var inst = this.utilService.getCurrentListe();
+    let inst = this.utilService.getCurrentListe();
     this.filmService.deleteListOfAllLists(inst._id).subscribe(del => {
       this.openSnackBar('Liste ' + inst.titrelist + " a été supprimé")
       this.loc.back();
@@ -220,7 +220,7 @@ export class ajouterUnFilm implements OnInit {
 
   ajoutFilm() {
 
-    var imdbID: any;
+    let imdbID: any;
     if(this.filmChoisi != undefined) {
       imdbID = this.filmChoisi.omdbID;
     } else {
@@ -304,7 +304,7 @@ export class partagerListe implements OnInit {
   partagerListe() {
     this.film.getUserByMail(this.data.email).subscribe((user) => {
       this.usr = user;
-      var inst = this.utilService.getCurrentListe();
+      let inst = this.utilService.getCurrentListe();
       this.film.getOneList(this.utilService.getUserId(), inst.titrelist).subscribe((laliste) => {
         this.tempe = laliste;
         this.utilService.setCurrentListe(this.tempe[0]);

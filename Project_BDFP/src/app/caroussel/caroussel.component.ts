@@ -11,7 +11,7 @@ import { interval } from 'rxjs';
 
 export class CarousselComponent implements OnInit {
 
-  // variable contenant tous les films
+  // vàriable contenant tous les films
   allFilms: any;
 
   // subscriber chaque seconde
@@ -29,7 +29,7 @@ export class CarousselComponent implements OnInit {
 
   /*
   * requestMultiple -> récupère les films de l'API OMDB correspondant au nom "titanic" puis les ajoutes au Caroussel du menu
-  * imageCaroussel -> variable intermédiaire de stockage des données de chaque film
+  * imageCaroussel -> vàriable intermédiaire de stockage des données de chaque film
   * getMovieBySearchTerm() -> fonction du service API (expliqué dans APIService)
   */
   requestMultiple() {

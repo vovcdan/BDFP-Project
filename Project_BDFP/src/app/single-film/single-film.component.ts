@@ -80,7 +80,7 @@ export class SingleFilmComponent implements OnInit {
     } else {
       this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
         if (film['movie_results'][0]) {
-        var id = film['movie_results'][0].id;
+        let id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
           this.api.getCastTMDB(film.id).subscribe((actors: any) => {
             actors.cast.forEach((actor: any) => {
@@ -95,7 +95,7 @@ export class SingleFilmComponent implements OnInit {
   getReviews() {
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
       if (film['movie_results'][0]) {
-      var id = film['movie_results'][0].id;
+      let id = film['movie_results'][0].id;
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
         this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
           this.listeRevue = reviews
@@ -110,7 +110,7 @@ export class SingleFilmComponent implements OnInit {
   getRealisateur() {
     this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
       if(film['movie_results'].length != 0 && film['movie_results'][0]) {
-        var id = film['movie_results'][0].id;
+        let id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
           this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {
             credits.crew.forEach((crew: any) => {
