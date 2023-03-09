@@ -93,6 +93,10 @@ export class HomeComponent implements OnInit {
     this.showFormRecherche = !this.showFormRecherche;
   }
 
+  onClose() {
+    this.showFormRecherche = !this.showFormRecherche;
+  }
+
 
   reloadFilms() {
     this.filmService

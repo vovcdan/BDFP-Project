@@ -24,6 +24,9 @@
 
 
     <div *ngIf="showFormRecherche">
+            <button class="butAjout" id="close" mat-fab matTooltip="Fermer le formulaire de recherche" mat-fab (click)="onClose()">
+                <mat-icon>close</mat-icon>
+            </button>
         <app-affichage-recherche></app-affichage-recherche>
     </div>
     <app-affichage-films></app-affichage-films>
