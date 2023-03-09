@@ -33,7 +33,7 @@ module.exports = (app) => {
   router.get("avis/:uid/:avis", movie.findByAvis);
 
   // Update a movie with id
-  router.put("/:uid", movie.update);
+  router.put("/:uid/:omdbID", movie.update);
 
   // Delete a movie with id
   router.delete("/:uid/movie/:omdbID", movie.deleteMovieById);

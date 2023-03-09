@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
@@ -35,6 +36,10 @@ export class SingleFilmComponent implements OnInit {
 
   result: any;
 
+  updating = false
+
+  formUpdateMovie!: FormGroup
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -50,13 +55,25 @@ export class SingleFilmComponent implements OnInit {
       for(let i = 0; i < this.listfilm.length; i++) {
         if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
+          console.log(this.currentFilmInfos);
           return;
         }
       }
     });
+
+    this.formUpdateMovie = new FormGroup({
+      noteControl: new FormControl(),
+      cinemaControl: new FormControl(),
+      dateVisionControl: new FormControl(),
+      accompagnateursControl: new FormControl(),
+      avisControl: new FormControl(),
+    });
     this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
+    console.log(this.currentFilm);
+
+
   }
 
   back() {
@@ -138,5 +155,29 @@ export class SingleFilmComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
     });
+  }
+
+  showFormUpdateNovie() {
+    this.updating = !this.updating
+
+    this.formUpdateMovie.patchValue({
+      noteControl: this.currentFilmInfos.note,
+      cinemaControl: this.currentFilmInfos.cinema,
+      dateVisionControl: this.currentFilmInfos.dateVision,
+      accompagnateursControl: this.currentFilmInfos.accompagnateurs,
+      avisControl: this.currentFilmInfos.avis,
+    })
+  }
+
+
+  modifyMovie(){
+    let filmModifie: Film = this.currentFilmInfos;
+    filmModifie.note = this.formUpdateMovie.get('noteControl')!.value
+    filmModifie.cinema = this.formUpdateMovie.get('cinemaControl')!.value
+    filmModifie.dateVision = this.formUpdateMovie.get('dateVisionControl')!.value
+    filmModifie.accompagnateurs = this.formUpdateMovie.get('accompagnateursControl')!.value
+    filmModifie.avis = this.formUpdateMovie.get('avisControl')!.value
+    this.filmService.updateMovieInfo(filmModifie)
+    this.updating = !this.updating
   }
 }
