@@ -1,3 +1,4 @@
+<div *ngIf="showFormRecherche"> 
 <div id="cherche" class="form-card">
   <h2>Formulaire de recherche</h2>
   <form [formGroup]="formRecherche">
@@ -13,18 +14,18 @@
           </mat-form-field>
         </div>
       </div>
-      <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez l'année en numérique" fontIcon="help_outline"></mat-icon>
-        <div class="form-group">
-          <mat-form-field appearance="fill" class="field">
-            <mat-label class="lab">Annee de sortie</mat-label>
-            <input matInput [formControl]="searchControlAnnee" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlAnnee.invalid && (searchControlAnnee.dirty || searchControlAnnee.touched)">
-              Le champ de recherche doit contenir exactement 4 chiffres.
-            </mat-error>
-          </mat-form-field>
+        <div id="ligne">
+          <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez l'année en numérique" fontIcon="help_outline"></mat-icon>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="field">
+              <mat-label class="lab">Annee de sortie</mat-label>
+              <input matInput [formControl]="searchControlAnnee" placeholder="Rechercher">
+              <mat-error *ngIf="searchControlAnnee.invalid && (searchControlAnnee.dirty || searchControlAnnee.touched)">
+                Le champ de recherche doit contenir exactement 4 chiffres.
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
       <div id="ligne">
         <mat-icon class="icone" aria-hidden="false" matTooltip="1. Entrez le prénom puis le nom du premier acteur séparé par un espace
         2. Pour ajouter un 2ème : mettre une virgule suivi d'un espace suivi du prenom et du nom du deuxième." fontIcon="help_outline"></mat-icon>
@@ -50,14 +51,15 @@
           </mat-form-field>
         </div>
       </div>
-      <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez une chaine de caractères" fontIcon="help_outline"></mat-icon>
-        <div class="form-group">
-            <mat-form-field appearance="fill" class="field">
-                <mat-label class="lab">Lieu de visionnage</mat-label>
-                <input matInput formControlName="locationControl">
-            </mat-form-field>
-        </div>
+        <div id="ligne">
+          <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez une chaine de caractères" fontIcon="help_outline"></mat-icon>
+          <div class="form-group">
+              <mat-form-field appearance="fill" class="field">
+                  <mat-label class="lab">Lieu de visionnage</mat-label>
+                  <input matInput formControlName="locationControl">
+              </mat-form-field>
+          </div>
+=======
       </div>
       <div id="ligne">
         <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une note de 0 à 5" fontIcon="help_outline"></mat-icon>
@@ -70,17 +72,17 @@
             </mat-error>
           </mat-form-field>
         </div>
-      </div>
-      <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez une chaine de caractères" fontIcon="help_outline"></mat-icon>
-        <div class="form-group">
-            <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Accompagnateurs</mat-label>
-              <input matInput formControlName="accompagnateursControl">
-            </mat-form-field>
+      </div>  
+        <div id="ligne">
+          <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez une chaine de caractères" fontIcon="help_outline"></mat-icon>
+          <div class="form-group">
+              <mat-form-field appearance="fill" class="field">
+                <mat-label class="lab">Accompagnateurs</mat-label>
+                <input matInput formControlName="accompagnateursControl">
+              </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div id="ligne">
+        <div id="ligne">
         <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez des mots clés de vos avis." fontIcon="help_outline"></mat-icon>
         <div class="form-group">
             <mat-form-field appearance="fill" class="field">
@@ -88,14 +90,14 @@
               <input matInput formControlName="avisControl">
             </mat-form-field>
         </div>
-      </div>
+      </div>  
+      
       <div class="action-buttons">
           <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCaracReal.valid || !searchControlCaracActors.valid || !searchControlDate.valid || !searchControlAnnee.valid " (click)="rechercherFilm()">Recherche</button>
       </div>
   </form>
-
 </div>
-
+</div>
 <!-- <ng-container *ngIf="searchedMoviesNotEmpty"> -->
 
 <!-- Resultats de la recherche  -->

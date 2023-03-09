@@ -20,6 +20,7 @@ export class AffichageRechercheComponent implements OnInit {
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]'));
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
+  showFormRecherche = true
   resList = new Map<string, number>();
   moviesInDB = new Map<number, string>();
   movieExist: any[] = [];
