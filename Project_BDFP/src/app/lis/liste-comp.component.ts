@@ -29,6 +29,7 @@ export class ListeCompComponent implements OnInit {
 
 gererListe(laliste: ListFilm){
   this.router.navigateByUrl('/favs/' + laliste.titrelist)
+  this.utilService.setListName(laliste.titrelist);
   this.utilService.setCurrentListe(laliste);
 }
 }

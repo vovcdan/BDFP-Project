@@ -14,7 +14,7 @@ export class MovieCardComponent implements OnInit {
   constructor(private api: ApiServiceService, private utilService: UtilsService, private router: Router ) { }
 
   ngOnInit(): void {
-    console.log(this.movieData);
+    //console.log(this.movieData);
 
   }
 

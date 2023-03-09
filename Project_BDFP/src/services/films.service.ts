@@ -158,24 +158,6 @@ export class FilmsService {
     return film;
   }
 
-  // let map = new Map<number, string>();
-  //   const uid = this.utilService.getUserId()
-  //   try {
-  //     const movies = await fetch('http://localhost:8080/api/movies/location/' + uid + '/' + location)
-  //     const movies_jsoned = await movies.json()
-  //     for (let movie of movies_jsoned) {
-  //       map.set(movie.omdbID, movie.titre)
-  //     }
-  //     return map
-  //   } catch (error: any) {
-  //     if (error.status === 404) {
-  //       this.errorMessage = "La ressource demandée n'a pas été trouvée"
-  //     } else {
-  //       this.errorMessage = "Une erreur inattendue est survenue"
-  //     }
-  //     return null
-  //   }
-
   async getFilmsByUidAsync() {
     const uid = this.utilService.getUserId()
     try{
@@ -366,6 +348,17 @@ export class FilmsService {
     return laliste;
   }
 
+  async getOneListAsync(titrelist: string){
+    const uid = this.utilService.getUserId()
+    try {
+      const moviesList = await fetch('http://localhost:8080/api/allLists/' + uid + "/" + titrelist);
+      const moviesList_jsoned = await moviesList.json();
+      return moviesList_jsoned[0]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   shareList(destUserId: string, titrelist: string, liste: ListFilm) {
     console.log(liste.movies)
     let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
@@ -454,20 +447,5 @@ export class FilmsService {
     }, (error) => {
       console.log(error)
     });
-  }
-
-  async getPoster(imdbid: string) {
-    let poster = ""
-
-    let movie = await this.api.getMovieByIdAsync(imdbid);
-    let movie_jsoned = await movie.json()
-
-    if (movie_jsoned.poster != 'N/A'){
-      poster = movie_jsoned.Poster
-    } else {
-      poster = '../../assets/no-poster.png';
-    }
-    
-    return poster
   }
 }
