@@ -20,6 +20,8 @@ module.exports = (app) => {
 
   router.get("/", allLists.findAll);
 
+  router.put("/:uid/:omdbID", allLists.update)
+
   router.delete("/", allLists.deleteAll);
 
   router.delete("/:idListe", allLists.deleteOne);

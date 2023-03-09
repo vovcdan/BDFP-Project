@@ -178,6 +178,37 @@ exports.addFilmToAList = (req, res) => {
   });
 }
 
+ /**
+  * Permet de mettre à jour la base de données avec les informations fournit en paramètres
+  * @param req donne accès à tous les paramètres
+  * @param res revoie le status des requêtes
+  */
+ exports.update = (req, res) => {
+  const uid = req.params.uid;
+  const omdbID = req.params.omdbID
+
+  allListDB.collection.updateMany(
+   { uid: uid },
+   { $set: { "movies.$[elem].note" : req.body.note, "movies.$[elem].accompagnateurs" : req.body.accompagnateurs, "movies.$[elem].cinema" : req.body.cinema, "movies.$[elem].avis" : req.body.avis, "movies.$[elem].dateVision" : req.body.dateVision } },
+   { arrayFilters: [ { "elem.omdbID": omdbID } ] },
+  ).then((data) => {
+    if (!data) {
+      res.status(404).send({
+        message: `Impossible de modifier, il n'existe peut être pas`,
+      });
+    } else {
+      res.send({
+        message: "film modifié",
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: `erreur`,
+    });
+  });
+};
+
 exports.deleteMovieFromList = (req, res) => {
   const uid = req.params.uid;
   const titrelist = req.params.titrelist;
