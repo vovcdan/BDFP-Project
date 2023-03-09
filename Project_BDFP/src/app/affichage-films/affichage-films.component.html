@@ -5,8 +5,12 @@
           <mat-icon matSuffix>search</mat-icon>
           <input matInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="titre d'un film">
         </mat-form-field>
-    </div>        
+    </div>
 </div>
+
+<ng-container *ngFor="let movie of movies | keyvalue">
+  <app-movie-card [movieData]="movie"></app-movie-card>
+</ng-container>
 
 
 <!-- <div id="images">
@@ -19,5 +23,5 @@
             <img *ngIf="infoMovies" src={{infoMovies.key}} alt="{{infoMovies.value.Title}}" id="poster">
         </a>
     </div>
-    
+
 </div> -->

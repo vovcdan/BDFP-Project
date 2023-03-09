@@ -1,0 +1,6 @@
+<div id="card">
+  {{movieData.value.title}}
+  <a (click)="clickFilm()">
+    <img *ngIf="movieData" src={{movieData.value.poster}} alt="{{movieData.value.title}}" id="poster">
+  </a>
+</div>

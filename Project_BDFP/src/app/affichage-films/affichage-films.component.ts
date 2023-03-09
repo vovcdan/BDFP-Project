@@ -130,7 +130,7 @@ export class AffichageFilmsComponent implements OnInit {
         let values = {
           title: tmdbMovie_jsoned.title,
           release_date: tmdbMovie_jsoned.release_date,
-          poster: tmdbMovie_jsoned.poster_path,
+          poster: 'https://image.tmdb.org/t/p/w300/' + tmdbMovie_jsoned.poster_path,
           tmdbid: tmdbMovie_jsoned.id
         }
         this.movies.set(tmdbMovie_jsoned.imdb_id, values)
@@ -142,20 +142,11 @@ export class AffichageFilmsComponent implements OnInit {
           poster: poster,
           tmdbid: tmdbMovie_jsoned.id
         }
-        this.movies.set(tmdbMovie_jsoned.imdb_id, values)
+        this.movies.set(allMovies[i].omdbID, values)
       }
     }
 
     console.log(this.movies);
   }
 
-
-  clickFilm(infoFilm: any) {
-    let poster = infoFilm.Poster;
-    this.api.getMovieById(infoFilm.IMDBID).subscribe((filmOMDB: any) => {
-      this.singleFilm.set(filmOMDB, poster);
-      this.utilService.setMovie(this.singleFilm);
-      this.router.navigateByUrl('/home/' + filmOMDB.Title);
-    });
-  }
 }
