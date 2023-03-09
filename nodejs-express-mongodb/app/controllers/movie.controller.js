@@ -107,8 +107,114 @@ exports.findOne = (req, res) => {
           message: "Erreur pendant la récupération du film avec l'id " + err,
         });
       else res.status(404).send("Aucun film trouvé avec l'id: ");
-    });
-};
+     });
+ };
+ 
+ exports.addFilmToList = (req, res) => {
+   const uid = req.params.uid;
+ 
+   MovieDB.collection.updateOne(
+     { "uid" : uid },
+     {$push: {"movies" : req.body.movies}}
+   ).then((data) => {
+     if (!data)
+       res.status(404).send({ message: "film trouvé avec l'id: " + uid });
+     else res.send(data);
+   })
+   .catch((err) => {
+     res
+       .status(500)
+       .send({ message: "Erreur pendant la récupération du film avec l'id" + uid });
+   });
+ }
+ 
+ /**
+  * Permet de mettre à jour la base de données avec les informations fournit en paramètres
+  * @param req donne accès à tous les paramètres
+  * @param res revoie le status des requêtes
+  */
+ exports.update = (req, res) => {
+   const uid = req.params.uid;
+   const omdbID = req.params.omdbID
+ 
+   MovieDB.collection.findOneAndUpdate(
+    { uid: uid },
+    { $set: { "movies.$[elem].note" : req.body.note, "movies.$[elem].accompagnateurs" : req.body.accompagnateurs, "movies.$[elem].cinema" : req.body.cinema, "movies.$[elem].avis" : req.body.avis, "movies.$[elem].dateVision" : req.body.dateVision } },
+    { arrayFilters: [ { "elem.omdbID": omdbID } ] },
+   ).then((data) => {
+     if (!data) {
+       res.status(404).send({
+         message: `Impossible de modifier, il n'existe peut être pas`,
+       });
+     } else {
+       res.send({
+         message: "film modifié",
+       });
+     }
+   })
+   .catch((err) => {
+     res.status(500).send({
+       message: `erreur`,
+     });
+   });
+ };
+ 
+ /**
+  * supprime un film de la BD en fonction de l'id fournit en paramètres
+  * @param req donne accès à tous les paramètres
+  * @param res revoie le status des requêtes
+  */
+  exports.deleteMovieById = (req, res) => {
+   const uid = req.params.uid;
+   const omdbID = req.params.omdbID;
+ 
+   MovieDB.collection.update(
+     { "uid": uid },
+     { $pull: {"movies": {"omdbID": omdbID}}}
+   ).then((data) => {
+     if (!data) {
+       res.status(404).send({
+         message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+       });
+     } else {
+       res.send({
+         message: "le film a été supprimé",
+       });
+     }
+   })
+   .catch((err) => {
+     res.status(500).send({
+       message: `le film ${omdbID} n'a pas pu être supprimé`,
+     });
+   });
+ 
+   // db.temp.update(
+   //   { _id : "777" },
+   //   {$pull : {"someArray.0.someNestedArray" : {"name":"delete me"}}}
+   // )
+ };
+ 
+ /**
+  * Supprime tous les movies dans la BD en fonction d'un id passé en paramètres
+  * @param req donne accès à tous les paramètres
+  * @param res revoie le status des requêtes
+  */
+  exports.deleteAll = (req, res) => {
+   MovieDB.deleteMany({})
+     .then((data) => {
+       res.send({
+         message: `${data.deletedCount} movies ont été supprimés`,
+       });
+     })
+     .catch((err) => {
+       res.status(500).send({
+         message:
+           err.message ||
+           "Erreur pendant la suppression de tous les movies",
+       });
+     });
+ };
+ 
 
 exports.findByDateVision = (req, res) => {
   const uid = req.params.uid;
@@ -241,105 +347,6 @@ exports.findByAvis = (req, res) => {
       res.status(500).send({
         message:
           "Erreur pendant la récupération des films vus avec l'avis " + avis,
-      });
-    });
-};
-
-exports.addFilmToList = (req, res) => {
-  const uid = req.params.uid;
-
-  MovieDB.collection
-    .updateOne({ uid: uid }, { $push: { movies: req.body.movies } })
-    .then((data) => {
-      if (!data)
-        res.status(404).send({ message: "film trouvé avec l'id: " + uid });
-      else res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Erreur pendant la récupération du film avec l'id" + uid,
-      });
-    });
-};
-
-/**
- * Permet de mettre à jour la base de données avec les informations fournit en paramètres
- * @param req donne accès à tous les paramètres
- * @param res revoie le status des requêtes
- */
-exports.update = (req, res) => {
-  const uid = req.params.uid;
-
-  MovieDB.collection
-    .findOneAndUpdate({ uid: uid }, { $set: { movies: [req.body.movies] } })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Impossible de modifier, il n'existe peut être pas`,
-        });
-      } else {
-        res.send({
-          message: "film modifié",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: `erreur`,
-      });
-    });
-};
-
-/**
- * supprime un film de la BD en fonction de l'id fournit en paramètres
- * @param req donne accès à tous les paramètres
- * @param res revoie le status des requêtes
- */
-exports.deleteMovieById = (req, res) => {
-  const uid = req.params.uid;
-  const omdbID = req.params.omdbID;
-
-  MovieDB.collection
-    .update({ uid: uid }, { $pull: { movies: { omdbID: omdbID } } })
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({
-          message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
-        });
-      } else {
-        res.send({
-          message: "le film a été supprimé",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: `le film ${omdbID} n'a pas pu être supprimé`,
-      });
-    });
-
-  // db.temp.update(
-  //   { _id : "777" },
-  //   {$pull : {"someArray.0.someNestedArray" : {"name":"delete me"}}}
-  // )
-};
-
-/**
- * Supprime tous les movies dans la BD en fonction d'un id passé en paramètres
- * @param req donne accès à tous les paramètres
- * @param res revoie le status des requêtes
- */
-exports.deleteAll = (req, res) => {
-  MovieDB.deleteMany({})
-    .then((data) => {
-      res.send({
-        message: `${data.deletedCount} movies ont été supprimés`,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Erreur pendant la suppression de tous les movies",
       });
     });
 };
