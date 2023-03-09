@@ -36,7 +36,7 @@ export class SingleFilmComponent implements OnInit {
 
   result: any;
 
-  updating = true
+  updating = false
 
   formUpdateMovie!: FormGroup
 
@@ -55,6 +55,7 @@ export class SingleFilmComponent implements OnInit {
       for(let i = 0; i < this.listfilm.length; i++) {
         if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
           this.currentFilmInfos = this.listfilm[i];
+          console.log(this.currentFilmInfos);
           return;
         }
       }
@@ -70,6 +71,9 @@ export class SingleFilmComponent implements OnInit {
     this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
+    console.log(this.currentFilm);
+
+
   }
 
   back() {
@@ -155,11 +159,25 @@ export class SingleFilmComponent implements OnInit {
 
   showFormUpdateNovie() {
     this.updating = !this.updating
+
+    this.formUpdateMovie.patchValue({
+      noteControl: this.currentFilmInfos.note,
+      cinemaControl: this.currentFilmInfos.cinema,
+      dateVisionControl: this.currentFilmInfos.dateVision,
+      accompagnateursControl: this.currentFilmInfos.accompagnateurs,
+      avisControl: this.currentFilmInfos.avis,
+    })
   }
 
+
   modifyMovie(){
-    let filmModifie: Film = this.currentFilm;
-    // filmModifie.avis = avisControl ? avisControl.value : filmModifie.avis
+    let filmModifie: Film = this.currentFilmInfos;
+    filmModifie.note = this.formUpdateMovie.get('noteControl')!.value
+    filmModifie.cinema = this.formUpdateMovie.get('cinemaControl')!.value
+    filmModifie.dateVision = this.formUpdateMovie.get('dateVisionControl')!.value
+    filmModifie.accompagnateurs = this.formUpdateMovie.get('accompagnateursControl')!.value
+    filmModifie.avis = this.formUpdateMovie.get('avisControl')!.value
     this.filmService.updateMovieInfo(filmModifie)
+    this.updating = !this.updating
   }
 }
