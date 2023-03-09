@@ -449,8 +449,12 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
 
-  clickFilm(titre: any) {
-    this.router.navigateByUrl('/home/' + titre);
+  clickFilm(movie: any) {
+    this.api.getMovieById(movie.key).subscribe((mov : any) => {
+      this.utilService.setMovie(mov);
+      this.router.navigateByUrl('/home/' + movie.value);
+    })
+
   } 
 
   intersectMaps(map1: Map<number, string>, map2: Map<number, string>) {
