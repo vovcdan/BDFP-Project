@@ -83,7 +83,7 @@ export class SuppDialogComponent implements OnInit {
 
   deleteMovieGlob(){
     this.moviesTitles = this.utilService.getMoviesTitles();
-    var title = this.currentFilm.Title;
+    let title = this.currentFilm.Title;
     this.filmService.deleteMovieDBById(this.currentFilm.imdbID).subscribe(film => {
       this.moviesTitles.forEach((element: string) => {
         if(!element.includes("partagee par")){
@@ -96,7 +96,7 @@ export class SuppDialogComponent implements OnInit {
   }
 
   deleteListe() {
-    var inst = this.utilService.getCurrentListe();
+    let inst = this.utilService.getCurrentListe();
     this.filmService.deleteListOfAllLists(inst._id).subscribe(del => {
       this.openSnackBar('Liste ' + inst.titrelist + " a été supprimé")
       this.loc.back();
