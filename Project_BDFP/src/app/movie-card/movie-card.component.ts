@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'services/api-service.service';
-import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
 @Component({
@@ -9,14 +8,9 @@ import { UtilsService } from 'services/utils.service';
   templateUrl: './movie-card.component.html',
   styleUrls: ['./movie-card.component.scss']
 })
-export class MovieCardComponent implements OnInit {
+export class MovieCardComponent {
   @Input() movieData: any;
   constructor(private api: ApiServiceService, private utilService: UtilsService, private router: Router ) { }
-
-  ngOnInit(): void {
-    //console.log(this.movieData);
-
-  }
 
   clickFilm() {
     this.utilService.setMovie(this.movieData)
