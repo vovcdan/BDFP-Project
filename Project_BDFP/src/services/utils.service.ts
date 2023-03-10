@@ -151,4 +151,13 @@ export class UtilsService {
     return this.searchedMovies;
   }
 
+  // getResultatRecherche() {
+  //   return this.showResultatRecherche
+  // }
+
+  // setResultatRecherche(res: boolean){
+  //   this.showResultatRecherche = res;
+    
+  // }
+
 }

@@ -55,6 +55,8 @@ export class HomeComponent implements OnInit {
   movieExist: any[] = [];
   switch_number = -1;
   error_message = "";
+  // showResultatRecherche = this.utilService.getResultatRecherche()
+  showResultatRecherche = true
 
   constructor(
     private filmService: FilmsService,
@@ -91,10 +93,12 @@ export class HomeComponent implements OnInit {
 
   affichageForm() {
     this.showFormRecherche = !this.showFormRecherche;
+    this.showResultatRecherche = false
   }
 
   onClose() {
     this.showFormRecherche = !this.showFormRecherche;
+    this.showResultatRecherche = true
   }
 
 
