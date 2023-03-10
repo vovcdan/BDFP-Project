@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Film } from 'app/models/film.model';
 import { ListFilm } from 'app/models/listFilm.models';
-import { FilmsService } from './films.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +31,7 @@ export class UtilsService {
 
   searchedMovies: any[] = []
 
-  // showResultatRecherche: boolean = false;
+  listName!: string
 
   constructor() { }
 
@@ -132,6 +131,14 @@ export class UtilsService {
 
   getMoviesTitles(){
     return this.moviesTitles;
+  }
+
+  setListName(listName: string) {
+    this.listName = listName
+  }
+
+  getListName(){
+    return this.listName
   }
 
   setSearchedMovies(searchedMovies: any){
