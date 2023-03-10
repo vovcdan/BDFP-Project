@@ -20,8 +20,10 @@ import {
 } from 'rxjs';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
-import { RechercheService } from 'services/recherche.service';
 import { UtilsService } from 'services/utils.service';
+
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 export interface DialogAjoutFilm {
   title: string;
@@ -77,7 +79,17 @@ export class HomeComponent implements OnInit {
       locationControl: new FormControl(),
       accompagnateursControl: new FormControl()
     })
+  }
 
+  async getRevuesCalindex() {
+    const url = '/api/revues_indexees.php';
+    const response = await axios.get(url);
+    const $ = cheerio.load(response.data);
+    const revues: string[] = [];
+    $('.index_revue_nom').each((index, element) => {
+      revues.push($(element).text().trim());
+    });
+    return revues;
   }
 
 

@@ -109,7 +109,6 @@ export class UtilsService {
 
   setListeOuGlobalSupp(val: number){
     this.listeOuGlobalSupp = val;
-    console.log(this.listeOuGlobalSupp)
   }
 
   getListeOuGlobalSupp() {
@@ -144,7 +143,6 @@ export class UtilsService {
   setSearchedMovies(searchedMovies: any){
     this.searchedMovies = []
     this.searchedMovies = searchedMovies;
-    console.log(this.searchedMovies)
   }
 
   async getSearchedMovies(){
