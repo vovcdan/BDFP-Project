@@ -1,11 +1,6 @@
-// #entier {
-//     display : inline-block;
-//     margin-left: 13%;
-// }
-
-
 .form-group {
-    margin: 20px auto auto 35%; 
+    margin: 20px auto auto 33%; 
+    display: block;
     width: 300px;
     align-items: center;
     justify-content: space-between;
@@ -40,25 +35,6 @@
   input::placeholder {
     color:rgb(141, 141, 141);
   }
-// #poster {
-//     width: 150px;
-//     height: 200px;
-//     flex: 1;
-//     flex-grow: 1;
-//     flex-basis: auto;
-//     margin-right: 20px;
-//     margin-bottom: 15px;
-//     box-shadow: 2px 5px 7px 3px rgb(0, 0, 0);
-//     transition: 0.3s;
-//     border-radius: 6px;
-//     margin-left: 30px;
-
-//     &:hover {
-//         cursor: pointer;
-//         box-shadow: 2px 8px 10px 2px rgb(0, 0, 0);
-//         transform: translateY(-2px);
-//     }
-// }
 
 .butAjout {
     margin-right: 10px;
@@ -79,38 +55,6 @@
 #bout {
     display : inline-block
 }
-
-// #images {
-//     display: flex;
-//     flex-direction: row;
-//     flex-flow: wrap;
-// }
-
-// #description h2 {
-//     width: 140px;
-//     font-size: 16px;
-//     font-weight: bold;
-//     text-align: left;
-//     margin: 50px 0px -5px 30px;
-//     white-space: nowrap;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     color:white;
-//     transition: 0.4s;
-
-//     &:hover {
-//         cursor: pointer;
-//         color :orange;
-//     }
-// }
-
-// #description h3 {
-//     overflow: hidden;
-//     font-size: smaller;
-//     text-align: left;
-//     color :rgb(176, 171, 171);
-//     margin: 0px 0px 0px 30px;
-// }
   
 .carte {
     width : 150px;
