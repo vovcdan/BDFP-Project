@@ -8,6 +8,7 @@ import { CryptService } from './crypt.service';
 import { Router } from '@angular/router';
 import { catchError, Observable } from 'rxjs';
 import { UtilsService } from 'services/utils.service';
+import { ApiServiceService } from './api-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,90 +27,90 @@ export class FilmsService {
 
   errorMessage!: string;
 
-  constructor(private http: HttpClient, private crypt: CryptService, private utilService: UtilsService) {}
+  constructor(private http: HttpClient, private crypt: CryptService, private utilService: UtilsService, private api: ApiServiceService) { }
 
 
   // Initialise la liste pour l'objet Films de l'utilisateur
   // Ne surtout pas utiliser car est appelé dans addUser
   createListFilmForUser(userId: string) {
-    this.http.post('http://localhost:8080/api/movies/', {"uid": userId, "movies": []}).subscribe();
+    this.http.post('http://localhost:8080/api/movies/', { "uid": userId, "movies": [] }).subscribe();
   }
 
   // ajoute un film à la bd privé de l'utilisateur
   addFilmToList(titre: string, omdbID: string, tmdbID: string, userId: string, dateVision: string, cinema: string, accompagnateurs: string, avis: string, note: string): Observable<Film> {
     let lefilm: EventEmitter<Film> = new EventEmitter<Film>();
-    return this.http.post<Film>('http://localhost:8080/api/movies/' + userId, {"movies": {"titre": titre, "omdbID": omdbID, "tmdbID": tmdbID, "dateVision": dateVision, "cinema": cinema, "accompagnateurs": accompagnateurs, "avis": avis, "note": note}});
+    return this.http.post<Film>('http://localhost:8080/api/movies/' + userId, { "movies": { "titre": titre, "omdbID": omdbID, "tmdbID": tmdbID, "dateVision": dateVision, "cinema": cinema, "accompagnateurs": accompagnateurs, "avis": avis, "note": note } });
   }
 
   // ajoute un nouvel utilisateur (inscription)
-    addUser(email: string, mdp: string) {
+  addUser(email: string, mdp: string) {
 
-    this.http.post('http://localhost:8080/api/users', {"email":email, "mdp":mdp}).subscribe((res) => {
+    this.http.post('http://localhost:8080/api/users', { "email": email, "mdp": mdp }).subscribe((res) => {
       this.id = res;
       this.createListFilmForUser(this.id._id);
       return res;
     }, (error) => {
-        console.log(error)
+      console.log(error)
       return null;
-  });
-}
+    });
+  }
 
   // créé une liste pour un utilisateur pour ensuite stocker des films à l'intérieur
   addListToAllLists(idUser: string, titrelist: string,) {
     let list: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
-    this.http.post<ListFilm>('http://localhost:8080/api/allLists/', {"uid": idUser, "titrelist": titrelist }).subscribe((log) => {
+    this.http.post<ListFilm>('http://localhost:8080/api/allLists/', { "uid": idUser, "titrelist": titrelist }).subscribe((log) => {
       list.emit(log);
-  }, (error) => {
+    }, (error) => {
 
 
       console.log(error)
-  });
-  return list;
+    });
+    return list;
   }
 
   // créé une liste pour un utilisateur pour ensuite stocker des films à l'intérieur
   addFilmToAllLists(titrelist: string, titre: string, omdbID: string, uid: string, dateVision: string, cinema: string, accompagnateurs: string, avis: string, note: string) {
     let film: EventEmitter<any> = new EventEmitter<any>();
-    this.http.post<any>('http://localhost:8080/api/allLists/' + uid + '/' + titrelist, {"movies": {"titre": titre, "omdbID": omdbID, "dateVision": dateVision, "cinema": cinema, "accompagnateurs": accompagnateurs, "avis": avis, "note": note}}).subscribe((log) => {
+    this.http.post<any>('http://localhost:8080/api/allLists/' + uid + '/' + titrelist, { "movies": { "titre": titre, "omdbID": omdbID, "dateVision": dateVision, "cinema": cinema, "accompagnateurs": accompagnateurs, "avis": avis, "note": note } }).subscribe((log) => {
       film.emit(log)
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
-  return film;
+    });
+    return film;
   }
 
   deleteAllUsers() {
 
     this.http.delete('http://localhost:8080/api/users/', {}).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
   }
 
   deleteAllLists() {
 
     this.http.delete('http://localhost:8080/api/allLists/', {}).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
   }
 
   deleteMovieDBById(imdbID: string) {
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/movies/' + this.utilService.getUserId() + '/movie/' + imdbID, {}).subscribe((log) => {
       response.emit(log);
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
-  return response;
+    });
+    return response;
   }
 
-  deleteMovieFromList(titrelist: string, omdb: string){
+  deleteMovieFromList(titrelist: string, omdb: string) {
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/allLists/' + this.utilService.getUserId() + '/' + titrelist + '/' + omdb, {}).subscribe((log) => {
-    response.emit(log)
+      response.emit(log)
     }, (error) => {
       console.log(error)
     })
@@ -120,26 +121,26 @@ export class FilmsService {
     let response: EventEmitter<any> = new EventEmitter<any>();
     this.http.delete<any>('http://localhost:8080/api/allLists/' + idListe, {}).subscribe((log) => {
       response.emit(log)
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
-  return response
+    });
+    return response
   }
 
   deleteAllMovies() {
     this.http.delete('http://localhost:8080/api/movies/', {}).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
   }
 
   ModifyUserMail(userId: string, newMail: string) {
-    this.http.put('http://localhost:8080/api/users/' + userId, {'email': newMail}).subscribe((log) => {
+    this.http.put('http://localhost:8080/api/users/' + userId, { 'email': newMail }).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
   }
 
   getFilmsByUid(idUser: string) {
@@ -155,6 +156,35 @@ export class FilmsService {
     );
 
     return film;
+  }
+
+  // let map = new Map<number, string>();
+  //   const uid = this.utilService.getUserId()
+  //   try {
+  //     const movies = await fetch('http://localhost:8080/api/movies/location/' + uid + '/' + location)
+  //     const movies_jsoned = await movies.json()
+  //     for (let movie of movies_jsoned) {
+  //       map.set(movie.omdbID, movie.titre)
+  //     }
+  //     return map
+  //   } catch (error: any) {
+  //     if (error.status === 404) {
+  //       this.errorMessage = "La ressource demandée n'a pas été trouvée"
+  //     } else {
+  //       this.errorMessage = "Une erreur inattendue est survenue"
+  //     }
+  //     return null
+  //   }
+
+  async getFilmsByUidAsync() {
+    const uid = this.utilService.getUserId()
+    try{
+      const movies = await fetch('http://localhost:8080/api/movies/' + uid)
+      const movies_jsoned = await movies.json()
+      return movies_jsoned
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   getFilmByOmdbID(uid: string, omdbID: string) {
@@ -180,28 +210,28 @@ export class FilmsService {
     try {
       const movie = await fetch('http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID);
       return movie;
-    } catch(error: any) {
+    } catch (error: any) {
       if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée."
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
       }
       return null;
-    } 
+    }
   }
 
-  async getFilmsOfUserByDateVision(dateVision: string){
+  async getFilmsOfUserByDateVision(dateVision: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId()
     try {
       const movies = await fetch('http://localhost:8080/api/movies/year/' + uid + '/' + dateVision)
       const movies_jsoned = await movies.json()
-      for(let movie of movies_jsoned){
+      for (let movie of movies_jsoned) {
         map.set(movie.omdbID, movie.titre)
       }
       return map
-    } catch(error: any){
-      if(error.status === 404) {
+    } catch (error: any) {
+      if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée"
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
@@ -210,18 +240,18 @@ export class FilmsService {
     }
   }
 
-  async getFilmsOfUserByLocation(location: string){
+  async getFilmsOfUserByLocation(location: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId()
     try {
       const movies = await fetch('http://localhost:8080/api/movies/location/' + uid + '/' + location)
       const movies_jsoned = await movies.json()
-      for(let movie of movies_jsoned){
+      for (let movie of movies_jsoned) {
         map.set(movie.omdbID, movie.titre)
       }
       return map
-    } catch(error: any){
-      if(error.status === 404) {
+    } catch (error: any) {
+      if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée"
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
@@ -230,18 +260,18 @@ export class FilmsService {
     }
   }
 
-  async getFilmsOfUserByAccompagnateurs(accompagnateurs: string){
+  async getFilmsOfUserByAccompagnateurs(accompagnateurs: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId()
     try {
       const movies = await fetch('http://localhost:8080/api/movies/accompagnateurs/' + uid + '/' + accompagnateurs)
       const movies_jsoned = await movies.json()
-      for(let movie of movies_jsoned){
+      for (let movie of movies_jsoned) {
         map.set(movie.omdbID, movie.titre)
       }
       return map
-    } catch(error: any){
-      if(error.status === 404) {
+    } catch (error: any) {
+      if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée"
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
@@ -250,18 +280,18 @@ export class FilmsService {
     }
   }
 
-  async getFilmsOfUserByNote(note: string){
+  async getFilmsOfUserByNote(note: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId()
     try {
       const movies = await fetch('http://localhost:8080/api/movies/note/' + uid + '/' + note)
       const movies_jsoned = await movies.json()
-      for(let movie of movies_jsoned){
+      for (let movie of movies_jsoned) {
         map.set(movie.omdbID, movie.titre)
       }
       return map
-    } catch(error: any){
-      if(error.status === 404) {
+    } catch (error: any) {
+      if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée"
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
@@ -270,18 +300,18 @@ export class FilmsService {
     }
   }
 
-  async getFilmsOfUserByAvis(avis: string){
+  async getFilmsOfUserByAvis(avis: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId()
     try {
       const movies = await fetch('http://localhost:8080/api/movies/avis/' + uid + '/' + avis)
       const movies_jsoned = await movies.json()
-      for(let movie of movies_jsoned){
+      for (let movie of movies_jsoned) {
         map.set(movie.omdbID, movie.titre)
       }
       return map
-    } catch(error: any){
-      if(error.status === 404) {
+    } catch (error: any) {
+      if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée"
       } else {
         this.errorMessage = "Une erreur inattendue est survenue"
@@ -290,7 +320,7 @@ export class FilmsService {
     }
   }
 
-  getListsTitles(){
+  getListsTitles() {
     this.moviesTitles = [];
     this.http.get<Film>('http://localhost:8080/api/allLists/' + this.utilService.getUserId()).subscribe(
       (listFilm: any) => {
@@ -336,20 +366,20 @@ export class FilmsService {
     return laliste;
   }
 
-  shareList(destUserId: string, titrelist: string, liste: ListFilm){
+  shareList(destUserId: string, titrelist: string, liste: ListFilm) {
     console.log(liste.movies)
-      let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
-      this.http.post<ListFilm>("http://localhost:8080/api/allLists/share", {"uid": destUserId, "titrelist": titrelist + " partagee par " + this.utilService.getUserName(), "movies": liste.movies}).subscribe((res) => {
-        laliste.emit(res)
+    let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
+    this.http.post<ListFilm>("http://localhost:8080/api/allLists/share", { "uid": destUserId, "titrelist": titrelist + " partagee par " + this.utilService.getUserName(), "movies": liste.movies }).subscribe((res) => {
+      laliste.emit(res)
     },
-    (error) => {
-      console.log(error)
-    });
+      (error) => {
+        console.log(error)
+      });
     return laliste
 
   }
 
-  updateMovieInfo(movie: Film){
+  updateMovieInfo(movie: Film) {
 
     const uid = this.utilService.getUserId()
 
@@ -362,23 +392,23 @@ export class FilmsService {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({avis: movie.avis, accompagnateurs: movie.accompagnateurs, note: movie.note, cinema: movie.cinema, dateVision: movie.dateVision})
+      body: JSON.stringify({ avis: movie.avis, accompagnateurs: movie.accompagnateurs, note: movie.note, cinema: movie.cinema, dateVision: movie.dateVision })
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Data updated successfully:', data);
-    })
-    .catch(error => {
-      console.error('Error updating data:', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data updated successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error updating data:', error);
+      });
   }
 
-  getUserByMail(userMail: string){
+  getUserByMail(userMail: string) {
     let user: EventEmitter<User> = new EventEmitter<User>();
 
     this.http.get<User>('http://localhost:8080/api/users/mail/' + userMail).subscribe(
@@ -410,19 +440,34 @@ export class FilmsService {
   }
 
   modifierMail(idUser: string, email: string) {
-    this.http.put('http://localhost:8080/api/users/' + idUser, {"email": email}).subscribe((log) => {
+    this.http.put('http://localhost:8080/api/users/' + idUser, { "email": email }).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
   }
 
   modifierMDP(idUser: string, mdp: string) {
     let mdpCrypt = this.crypt.cryptMD5(mdp);
-    this.http.put('http://localhost:8080/api/users/' + idUser, {"mdp": mdpCrypt}).subscribe((log) => {
+    this.http.put('http://localhost:8080/api/users/' + idUser, { "mdp": mdpCrypt }).subscribe((log) => {
 
-  }, (error) => {
+    }, (error) => {
       console.log(error)
-  });
+    });
+  }
+
+  async getPoster(imdbid: string) {
+    let poster = ""
+
+    let movie = await this.api.getMovieByIdAsync(imdbid);
+    let movie_jsoned = await movie.json()
+
+    if (movie_jsoned.poster != 'N/A'){
+      poster = movie_jsoned.Poster
+    } else {
+      poster = '../../assets/no-poster.png';
+    }
+    
+    return poster
   }
 }

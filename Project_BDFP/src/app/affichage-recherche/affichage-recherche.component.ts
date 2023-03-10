@@ -13,14 +13,8 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./affichage-recherche.component.scss'],
 })
 export class AffichageRechercheComponent implements OnInit {
-  searchControlCaracReal = new FormControl(
-    '',
-    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?')
-  );
-  searchControlCaracActors = new FormControl(
-    '',
-    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?')
-  );
+  searchControlCaracReal = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?'));
+  searchControlCaracActors = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}'));
   searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
   searchControlDate = new FormControl(
     '',

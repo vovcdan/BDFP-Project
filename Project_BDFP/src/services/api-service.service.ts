@@ -22,6 +22,10 @@ export class ApiServiceService {
     return this.http.get(`https://www.omdbapi.com/?apikey=d3f6c0ee&i=${query}`);
   }
 
+  async getMovieByIdAsync(query: any){
+    return await fetch(`https://www.omdbapi.com/?apikey=d3f6c0ee&i=${query}`);
+  }
+
   // API TheMovieDb
 
   // attribut "original_title"
@@ -36,6 +40,10 @@ export class ApiServiceService {
   // permet de recuperer aussi l'id TMDB
   getMovieTMDBByIMDBID(query: any) {
     return this.http.get(`https://api.themoviedb.org/3/find/${query}?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&external_source=imdb_id`)
+  }
+
+  async getMovieTMDBByIMDBIDAsync(query: any){
+    return await fetch(`https://api.themoviedb.org/3/find/${query}?api_key=11d68f95601d6ec7858fe9a41e26fd86&language=en-US&external_source=imdb_id`)
   }
 
   getMoviesTMDBTitleSearch(query: any) {

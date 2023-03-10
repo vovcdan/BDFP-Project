@@ -103,8 +103,8 @@
 
 
 <div id="reponse" *ngIf="finished">
-  <div *ngFor="let movies of moviesInDB | keyvalue">
-      <h2 (click)="clickFilm(movies.value)">{{movies.value}}</h2>
+  <div *ngFor="let movie of moviesInDB | keyvalue">
+      <h2 (click)="clickFilm(movie)">{{movie.value}}</h2>
   </div>
 </div>
 
