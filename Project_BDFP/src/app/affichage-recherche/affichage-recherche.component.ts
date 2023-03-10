@@ -50,7 +50,6 @@ export class AffichageRechercheComponent implements OnInit {
 
   async getSearchedMovies() {
     this.searchedMovies = await this.utilService.getSearchedMovies();
-    console.log(this.searchedMovies)
   }
 
   searchedMoviesNotEmpty() {
