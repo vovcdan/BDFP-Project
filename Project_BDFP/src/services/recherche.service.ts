@@ -116,6 +116,7 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
+      console.log(temp);
       return temp;
     } catch (error) {
       console.error(`Error getting films by director: ${error}`);
@@ -131,6 +132,8 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
+      console.log(temp);
+
       return temp;
     } catch (error) {
       console.error(`Error getting films by year: ${error}`);
@@ -156,6 +159,8 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
+      console.log(temp);
+
       return temp;
     } catch (error) {
       console.error(`Error getting films by actor(s): ${error}`);

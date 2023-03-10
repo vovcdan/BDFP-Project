@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
+import { InitService } from 'services/init.service';
 import { RechercheService } from 'services/recherche.service';
 import { UtilsService } from 'services/utils.service';
 
@@ -32,6 +33,7 @@ export class AffichageRechercheComponent implements OnInit {
   error_message = '';
   finished = false;
   singleFilm: Map<any, string> = new Map();
+  finalMovieResults: any;
 
   constructor(
     private filmService: FilmsService,
@@ -39,7 +41,8 @@ export class AffichageRechercheComponent implements OnInit {
     private api: ApiServiceService,
     private utilService: UtilsService,
     private router: Router,
-    private rechercheService: RechercheService
+    private rechercheService: RechercheService,
+    private init: InitService
   ) {}
 
   ngOnInit() {
@@ -211,6 +214,12 @@ export class AffichageRechercheComponent implements OnInit {
     }
 
     console.log(this.moviesInDB);
+    console.log(this.moviesInDBByAPI)
+
+    this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB)
+
+    console.log(this.finalMovieResults);
+
 
     this.finished = true;
     //this.utilService.setResultatRecherche(true)

@@ -1,4 +1,4 @@
-<div *ngIf="showFormRecherche"> 
+<div *ngIf="showFormRecherche">
 <div id="cherche" class="form-card">
   <h2>Formulaire de recherche</h2>
   <form [formGroup]="formRecherche">
@@ -71,7 +71,7 @@
             </mat-error>
           </mat-form-field>
         </div>
-      </div>  
+      </div>
         <div id="ligne">
           <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez une chaine de caractères" fontIcon="help_outline"></mat-icon>
           <div class="form-group">
@@ -89,8 +89,8 @@
               <input matInput formControlName="avisControl">
             </mat-form-field>
         </div>
-      </div>  
-      
+      </div>
+
       <div class="action-buttons">
           <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCaracReal.valid || !searchControlCaracActors.valid || !searchControlDate.valid || !searchControlAnnee.valid" (click)="rechercherFilm()">Recherche</button>
       </div>
@@ -103,7 +103,7 @@
 
 
 <div id="reponse" *ngIf="finished">
-  <div *ngFor="let movie of searchedMovies | keyvalue">
+  <div *ngFor="let movie of finalMovieResults | keyvalue">
     <app-movie-card [movieData]="movie"></app-movie-card>
       <!-- <h2 (click)="clickFilm(movie)">{{movie.value}}</h2> -->
   </div>
