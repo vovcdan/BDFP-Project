@@ -97,17 +97,19 @@
   </form>
 </div>
 </div>
-<!-- <ng-container *ngIf="searchedMoviesNotEmpty"> -->
+
 
 <!-- Resultats de la recherche  -->
 
 
 <div id="reponse" *ngIf="finished">
-  <div *ngFor="let movie of moviesInDB | keyvalue">
-      <h2 (click)="clickFilm(movie)">{{movie.value}}</h2>
+  <div *ngFor="let movie of searchedMovies | keyvalue">
+    <app-movie-card [movieData]="movie"></app-movie-card>
+      <!-- <h2 (click)="clickFilm(movie)">{{movie.value}}</h2> -->
   </div>
 </div>
 
-
-<!-- </ng-container> -->
+<!-- <div class="carte" *ngFor="let movie of movies | keyvalue">
+  <app-movie-card [movieData]="movie"></app-movie-card>
+</div> -->
 

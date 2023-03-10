@@ -1,5 +1,5 @@
   import { Location } from '@angular/common';
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
 import { ListFilm } from 'app/models/listFilm.models';
@@ -13,7 +13,6 @@ import {ExportService} from 'services/export.service';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
-import {MatIconModule} from '@angular/material/icon';
 
 export interface DialogAjoutFilmListe {
   title: string;

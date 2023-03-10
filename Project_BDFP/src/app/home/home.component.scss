@@ -1,13 +1,5 @@
-#logo {
-    display: inline;
-    top : 0px;
-    position : relative;
-}
-
-img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.logo {
+    text-align: center;
 }
 
 .bt{
@@ -32,6 +24,13 @@ img {
     &:hover {
         color: orange;
     }
+}
+
+#recherche {
+    margin: 50px auto auto 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: orange;
 }
 
 
@@ -262,5 +261,12 @@ header {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+#boutonclose {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
 }
 

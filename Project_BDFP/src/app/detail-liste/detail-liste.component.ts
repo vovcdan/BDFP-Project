@@ -7,6 +7,7 @@ import { ListFilm } from 'app/models/listFilm.models';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
+import { InitService } from 'services/init.service';
 import { UtilsService } from 'services/utils.service';
 
 @Component({
@@ -19,11 +20,11 @@ export class DetailListeComponent implements OnInit {
 
   filmsWithAPI: any[] = [];
 
-  curList!: any;
+  listName!: any;
 
   temp!: any;
 
-  movies!: Map<any, string>;
+  movies: Map<any, any> = new Map();
 
   singleFilm: Map<any, string> = new Map();
   result: any;
@@ -32,6 +33,7 @@ export class DetailListeComponent implements OnInit {
 
   constructor(
     private filmService: FilmsService,
+    private init: InitService,
     private utilService: UtilsService,
     private api: ApiServiceService,
     private router: Router,
@@ -40,37 +42,13 @@ export class DetailListeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.movies = new Map();
-    this.curList = this.utilService.getCurrentListe();
-    this.filmService
-      .getOneList(this.utilService.getUserId(), this.curList.titrelist)
-      .subscribe((onelist) => {
-        this.temp = onelist;
-        this.films = this.temp[0].movies;
-        for (let i = 0; i < this.films.length; i++) {
-          this.api.getMovieTMDBByIMDBID(this.films[i].omdbID).subscribe((filmAPI: any) => {
-            if (filmAPI['movie_results'][0]) {
-              let poster_path = filmAPI['movie_results'][0].poster_path;
-              let poster = "";
-              if (poster_path !== null) {
-                poster = 'https://image.tmdb.org/t/p/w300/' + poster_path;
-              } else {
-                poster = '../../assets/no-poster.png';
-              }
-              this.api.getMovieById(this.films[i].omdbID).subscribe((film: any) => {
-                this.movies.set(film, poster);
-            })}
-            else {
-              this.api.getMovieById(this.films[i].omdbID).subscribe((filmAPI: any) => {
-                let poster;
-                filmAPI.Poster != "N/A" ? poster = filmAPI.Poster : poster = "../../assets/no-poster.png";
-                  this.movies.set(filmAPI, poster);
-              })
-            };
-          })
-        }
-      });
+    this.initialisation();
   }
+
+  async initialisation(){
+    this.movies = await this.init.initDetailListe();
+  }
+  
 
   openSnackBar(message: string) {
     this.snack.open(message,"", {
@@ -78,40 +56,16 @@ export class DetailListeComponent implements OnInit {
     });
   }
 
-  // deleteMovie(imdbID: string, titre: string) {
-  //   this.filmService.deleteMovieFromList(this.curList.titrelist, imdbID).subscribe(res => {
-  //     this.openSnackBar(titre + ' a été supprimé de la liste ' + res.titrelist)
-  //     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-  //       this.router.navigateByUrl('/favs/' + res.titrelist);
-  //     })
-  //   })
-  // }
-
   afficherFilm(imdbID: string) {
-    this.api.getMovieTMDBByIMDBID(imdbID).subscribe((film: any) => {
-      if (film['movie_results'][0]) {
-        let poster_path = film['movie_results'][0].poster_path;
-        let poster = "";
-        if (poster_path !== null) {
-          poster = 'https://image.tmdb.org/t/p/w300/' + poster_path;
-        } else {
-          poster = '../../assets/no-poster.png';
-        }
-        this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
-          this.singleFilm.set(filmAPI, poster);
-          this.utilService.setMovie(this.singleFilm);
-          this.router.navigateByUrl('/home/' + filmAPI.Title);
-        })
-      } else {
-        this.api.getMovieById(imdbID).subscribe((filmAPI: any) => {
-          let poster;
-          filmAPI.Poster != "N/A" ? poster = filmAPI.Poster : poster = "../../assets/no-poster.png";
-          this.singleFilm.set(filmAPI, poster);
-          this.utilService.setMovie(this.singleFilm);
-          this.router.navigateByUrl('/home/' + filmAPI.Title);
-        })
+    let movie = new Map<any, any>()
+    for(const [key, value] of this.movies){
+      if(key == imdbID){
+        movie.set(key, value)
+        break
       }
-  })
+    }
+    this.utilService.setMovie(movie)
+    this.router.navigateByUrl('/home/' + movie.values().next().value.title)
   }
 
   suppDialog(omdbID: string): void {

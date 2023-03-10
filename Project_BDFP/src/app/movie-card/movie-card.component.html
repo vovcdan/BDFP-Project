@@ -1,0 +1,11 @@
+<div id="entier">  
+  <div id="card">
+    <a (click)="clickFilm()">
+      <a id="description">
+        <h2>{{movieData.value.title}}</h2>
+        <h3>{{movieData.value.release_date.toString().split("-")[0]}}</h3>
+      </a>
+      <img *ngIf="movieData" src={{movieData.value.poster}} alt="{{movieData.value.title}}" id="poster">
+    </a>
+  </div>
+</div>

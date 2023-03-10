@@ -44,6 +44,7 @@ export class AffichageRechercheComponent implements OnInit {
 
   ngOnInit() {
     this.getSearchedMovies();
+    console.log(this.getSearchedMovies)
     this.formRecherche = new FormGroup({
       locationControl: new FormControl(),
       accompagnateursControl: new FormControl(),
@@ -212,6 +213,7 @@ export class AffichageRechercheComponent implements OnInit {
     console.log(this.moviesInDB);
 
     this.finished = true;
+    //this.utilService.setResultatRecherche(true)
   }
 
   // parti du formulaire de recherche

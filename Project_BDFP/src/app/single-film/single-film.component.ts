@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,15 +20,9 @@ export class SingleFilmComponent implements OnInit {
 
   poster!: string;
 
-  listfilm: Film[] = [];
-
   currentFilmInfos: any;
 
   actors: Map<string, string> = new Map();
-
-  realisator!: string;
-
-  moviesTitles: string[] = [];
 
   review !: any;
 
@@ -43,23 +37,7 @@ export class SingleFilmComponent implements OnInit {
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.currentFilm = this.utilService.getMovie();
-    console.log(this.currentFilm);
-
-    this.poster = this.currentFilm.values().next().value;
-    console.log(this.poster);
-
-    this.currentFilm = this.currentFilm.keys().next().value;
-    this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
-      this.listfilm = listeFilm[0].movies;
-      for(let i = 0; i < this.listfilm.length; i++) {
-        if(this.listfilm[i].omdbID == this.currentFilm.imdbID) {
-          this.currentFilmInfos = this.listfilm[i];
-          console.log(this.currentFilmInfos);
-          return;
-        }
-      }
-    });
+    this.init();
 
     this.formUpdateMovie = new FormGroup({
       noteControl: new FormControl(),
@@ -68,12 +46,35 @@ export class SingleFilmComponent implements OnInit {
       accompagnateursControl: new FormControl(),
       avisControl: new FormControl(),
     });
-    this.getRealisateur();
+
+    // this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
     console.log(this.currentFilm);
 
+  }
 
+  async init() {
+    this.currentFilm = this.utilService.getMovie();
+    console.log(this.currentFilm);
+
+    let user_id = this.utilService.getUserId();
+    const movie_imdb_id = this.currentFilm.key;
+
+    let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
+    this.currentFilmInfos = await movieFromDB_data!.json()
+
+    let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
+    let movieFromOMDB = await movieFromOMDB_data!.json()
+    console.log(movieFromOMDB);
+
+    this.currentFilmInfos['release_date'] = movieFromOMDB.Year
+    this.currentFilmInfos['Actors'] = movieFromOMDB.Actors
+    this.currentFilmInfos['Runtime'] = movieFromOMDB.Runtime
+    this.currentFilmInfos['Genre'] = movieFromOMDB.Genre
+    this.currentFilmInfos['Director'] = movieFromOMDB.Director
+    this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
+    console.log(this.currentFilmInfos);
   }
 
   back() {
@@ -88,14 +89,14 @@ export class SingleFilmComponent implements OnInit {
 
   chercherActeurs() {
     //TODO: Verifier que le premier if marche
-    if(this.currentFilm.tmdbID) {
-      this.api.getCastTMDB(this.currentFilm.tmdbID).subscribe((actors: any) => {
+    if(this.currentFilm.value.tmdbid) {
+      this.api.getCastTMDB(this.currentFilm.value.tmdbid).subscribe((actors: any) => {
         actors.cast.forEach((actor: any) => {
           this.actors.set(actor.name, actor.character)
         })
       })
     } else {
-      this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+      this.api.getMovieTMDBByIMDBID(this.currentFilm.key).subscribe((film: any) => {
         if (film['movie_results'][0]) {
         let id = film['movie_results'][0].id;
         this.api.getMovieTMDbId(id).subscribe((film: any) => {
@@ -110,7 +111,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
   getReviews() {
-    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+    this.api.getMovieTMDBByIMDBID(this.currentFilm.key).subscribe((film: any) => {
       if (film['movie_results'][0]) {
       let id = film['movie_results'][0].id;
       this.api.getMovieTMDbId(id).subscribe((film: any) => {
@@ -124,22 +125,22 @@ export class SingleFilmComponent implements OnInit {
     })
   }
 
-  getRealisateur() {
-    this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
-      if(film['movie_results'].length != 0 && film['movie_results'][0]) {
-        let id = film['movie_results'][0].id;
-        this.api.getMovieTMDbId(id).subscribe((film: any) => {
-          this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {
-            credits.crew.forEach((crew: any) => {
-              if(crew.job == "Director") {
-                this.realisator = crew.name;
-              }
-            })
-          })
-        })
-      }
-    })
-  }
+  // getRealisateur() {
+  //   this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
+  //     if(film['movie_results'].length != 0 && film['movie_results'][0]) {
+  //       let id = film['movie_results'][0].id;
+  //       this.api.getMovieTMDbId(id).subscribe((film: any) => {
+  //         this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {
+  //           credits.crew.forEach((crew: any) => {
+  //             if(crew.job == "Director") {
+  //               this.realisator = crew.name;
+  //             }
+  //           })
+  //         })
+  //       })
+  //     }
+  //   })
+  // }
 
   suppDialog(omdbID: string): void {
     this.utilService.setMovie(this.currentFilm);

@@ -33,6 +33,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AffichageRechercheComponent } from './affichage-recherche/affichage-recherche.component';
+import { MovieCardComponent } from './movie-card/movie-card.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { AffichageRechercheComponent } from './affichage-recherche/affichage-rec
     DetailListeComponent,
     SuppDialogComponent,
     AffichageRechercheComponent,
+    MovieCardComponent,
   ],
   imports: [
     BrowserModule,

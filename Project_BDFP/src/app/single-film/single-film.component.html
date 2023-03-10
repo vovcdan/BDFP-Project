@@ -17,20 +17,19 @@
       'linear-gradient(
     rgba(40, 40, 40, 0.9),
     rgba(40, 40, 40, 0.9)), url(' +
-      this.poster +
+      currentFilm.value.poster +
       ')',
     'background-repeat': 'repeat'
   }"
 >
   <div id="leposter">
-    <img src="{{ this.poster }}" alt="{{currentFilm.Title}" id="images" />
+    <img src="{{ currentFilm.value.poster }}" alt="{{ currentFilm.value.title }}" id="images" />
   </div>
 
   <div id="infos" *ngIf="currentFilmInfos">
-    <div id="titre">{{ currentFilm.Title }}</div>
+    <div id="titre">{{ currentFilmInfos.titre }}</div>
     <p id="soustitre">
-      ( {{ currentFilm.Year }} ) - {{ currentFilm.Genre }} -
-      {{ currentFilm.Runtime }}
+      {{ currentFilmInfos.release_date }} - {{ currentFilmInfos.Genre }} - {{ currentFilmInfos.Runtime }}
     </p>
     <div id="details">
       <h2>Informations personnelles</h2>
@@ -163,7 +162,7 @@
       <div id="wrapper2">
         <div>
             <mat-icon class="icone">movie_creation</mat-icon>
-            <p><span class="bold">Acteurs :</span> {{ currentFilm.Actors }}</p>
+            <p><span class="bold">Acteurs :</span> {{ currentFilmInfos.Actors }}</p>
             <details>
               <summary>
                 <p id="texte">voir plus</p>
@@ -178,20 +177,12 @@
           <div class="partie">
             <mat-icon class="icone">rate_review</mat-icon>
             <p>
-              <span class="bold">Réalisateurs :</span> {{ this.realisator }}
+              <span class="bold">Réalisateurs :</span> {{ currentFilmInfos.Actors }}
             </p>
           </div>
           <div class="partie">
-            <mat-icon class="icone">calendar_month</mat-icon>
-            <p><span class="bold">Année :</span> {{ currentFilm.Year }}</p>
-          </div>
-          <div class="partie">
-            <mat-icon class="icone">access_time</mat-icon>
-            <p><span class="bold">Durée :</span> {{ currentFilm.Runtime }}</p>
-          </div>
-          <div class="partie">
             <mat-icon class="icone">event_note</mat-icon>
-            <p><span class="bold">Synopsis : </span> {{ currentFilm.Plot }}</p>
+            <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
           </div>
           <div>
             <mat-icon class="icone">stars</mat-icon>

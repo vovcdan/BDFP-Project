@@ -1,5 +1,5 @@
+<div class="logo"><img src="../../assets/3.png" alt="logo"></div>
 <div id="ajout">
-    <div id="logo"><img src="../../assets/3.png" alt="logo"></div>
     <div class="bt">
         <button class="butAjout" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
             <mat-icon>add</mat-icon>
@@ -22,16 +22,19 @@
         </article>
     </div>
 
-    <div>
-        <pre>{{ data }}</pre>
-    </div>
-
+</div>
+<div id="recherche">
     <div *ngIf="showFormRecherche">
+        <div id="boutonclose">
             <button class="butAjout" id="close" mat-fab matTooltip="Fermer le formulaire de recherche" mat-fab (click)="onClose()">
                 <mat-icon>close</mat-icon>
             </button>
+        </div>
         <app-affichage-recherche></app-affichage-recherche>
     </div>
-    <app-affichage-films></app-affichage-films>
-
+    <div *ngIf="showResultatRecherche">
+        <app-affichage-films></app-affichage-films>
+    </div>
 </div>
+
+

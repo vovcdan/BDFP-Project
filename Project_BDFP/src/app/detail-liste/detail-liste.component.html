@@ -7,19 +7,19 @@
     </div>
     <div id="film" *ngFor="let infoMovies of movies | keyvalue | filter: searchText">
         <div id="leposter" *ngIf="infoMovies">
-            <img src={{infoMovies.value}} id="img">
+            <img src={{infoMovies.value.poster}} id="img">
         </div>
         <div>
 
             <div class="infos" *ngIf="infoMovies">
-                <p><span class="bold">Titre: </span>  {{infoMovies.key.Title}}</p>
-                <p><span class="bold">Année de sortie:</span>  {{infoMovies.key.Year}}</p>
+                <p><span class="bold">Titre: </span>  {{infoMovies.value.title}}</p>
+                <p><span class="bold">Année de sortie:</span>  {{infoMovies.value.release_date}}</p>
                 <p><span class="bold">Acteurs:</span>  {{infoMovies.key.Actors}}</p>
                 <p><span class="bold">Durée du film:</span> {{infoMovies.key.Runtime}}</p>
                 <p><span class="bold">Synopsys:</span> {{infoMovies.key.Plot}}</p>
             </div>
-            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key.imdbID)">Details</button>
-            <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key.imdbID)">Supprimer le film</button>
+            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
+            <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key)">Supprimer le film</button>
             </div>
     </div>
 </div>
