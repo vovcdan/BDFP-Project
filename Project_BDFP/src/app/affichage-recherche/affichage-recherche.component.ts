@@ -190,6 +190,7 @@ export class AffichageRechercheComponent implements OnInit {
     console.log(this.moviesInDB)
 
     this.finished = true;
+    //this.utilService.setResultatRecherche(true)
   }
 
   // parti du formulaire de recherche

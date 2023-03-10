@@ -32,6 +32,8 @@ export class UtilsService {
 
   searchedMovies: any[] = []
 
+  // showResultatRecherche: boolean = false;
+
   constructor() { }
 
   connect() {
@@ -141,5 +143,14 @@ export class UtilsService {
   async getSearchedMovies(){
     return this.searchedMovies;
   }
+
+  // getResultatRecherche() {
+  //   return this.showResultatRecherche
+  // }
+
+  // setResultatRecherche(res: boolean){
+  //   this.showResultatRecherche = res;
+    
+  // }
 
 }
