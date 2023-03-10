@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup,Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'services/api-service.service';
@@ -16,13 +16,17 @@ export class AffichageRechercheComponent implements OnInit {
   searchControlCaracReal = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?'));
   searchControlCaracActors = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}'));
   searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
-  searchControlDate = new FormControl('', Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$'));
-  searchControlNote = new FormControl('', Validators.pattern('^[0-5]'));
+  searchControlDate = new FormControl(
+    '',
+    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+  );
+  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
-  showFormRecherche = true
+  showFormRecherche = true;
   resList = new Map<string, number>();
   moviesInDB = new Map<number, string>();
+  moviesInDBByAPI = new Map<number, string>();
   movieExist: any[] = [];
   switch_number = -1;
   error_message = '';
@@ -61,7 +65,41 @@ export class AffichageRechercheComponent implements OnInit {
 
   async rechercherFilm() {
     this.moviesInDB.clear();
+    this.moviesInDBByAPI.clear();
     this.finished = false;
+
+    if (
+      this.searchControlDate.value != undefined &&
+      this.searchControlDate.value != ''
+    ) {
+      await this.getFilmsByDateVision(this.searchControlDate.value);
+    }
+    if (
+      this.formRecherche.value.accompagnateursControl != undefined &&
+      this.formRecherche.value.accompagnateursControl != ''
+    ) {
+      await this.getFilmsByAccompagnateurs(
+        this.formRecherche.value.accompagnateursControl
+      );
+    }
+    if (
+      this.formRecherche.value.locationControl != undefined &&
+      this.formRecherche.value.locationControl != ''
+    ) {
+      await this.getFilmsByLocation(this.formRecherche.value.locationControl);
+    }
+    if (
+      this.formRecherche.value.avisControl != undefined &&
+      this.formRecherche.value.avisControl != ''
+    ) {
+      await this.getFilmsByAvis(this.formRecherche.value.avisControl);
+    }
+    if (
+      this.searchControlNote.value != undefined &&
+      this.searchControlNote.value != ''
+    ) {
+      await this.getFilmsByNote(this.searchControlNote.value);
+    }
 
     if (
       this.searchControlAnnee.value != undefined &&
@@ -128,7 +166,7 @@ export class AffichageRechercheComponent implements OnInit {
       case 2:
         await this.getFilmsByYearAndActors(
           this.searchControlAnnee.value!,
-          this.searchControlCaracActors.value!,
+          this.searchControlCaracActors.value!
         );
         break;
       case 3:
@@ -154,40 +192,24 @@ export class AffichageRechercheComponent implements OnInit {
         break;
     }
 
+    // console.log(this.moviesInDBByAPI)
+    // console.log(this.moviesInDB)
+
     if (
       this.searchControlAnnee.value != undefined &&
-      this.searchControlAnnee.value != ''
+      this.searchControlAnnee.value != '' ||
+      this.searchControlCaracReal.value != undefined &&
+      this.searchControlCaracReal.value != '' ||
+      this.searchControlCaracActors.value != undefined &&
+      this.searchControlCaracActors.value != ''
     ) {
-      await this.getFilmsByDateVision(this.searchControlAnnee.value);
-    }
-    if (
-      this.formRecherche.value.accompagnateursControl != undefined &&
-      this.formRecherche.value.accompagnateursControl != ''
-    ) {
-      await this.getFilmsByAccompagnateurs(
-        this.formRecherche.value.accompagnateursControl
+      this.moviesInDB = this.intersectMaps(
+        this.moviesInDB,
+        this.moviesInDBByAPI
       );
     }
-    if (
-      this.formRecherche.value.locationControl != undefined &&
-      this.formRecherche.value.locationControl != ''
-    ) {
-      await this.getFilmsByLocation(this.formRecherche.value.locationControl);
-    }
-    if (
-      this.formRecherche.value.avisControl != undefined &&
-      this.formRecherche.value.avisControl != ''
-    ) {
-      await this.getFilmsByAvis(this.formRecherche.value.avisControl);
-    }
-    if (
-      this.searchControlNote.value != undefined &&
-      this.searchControlNote.value != ''
-    ) {
-      await this.getFilmsByNote(this.searchControlNote.value);
-    }
 
-    console.log(this.moviesInDB)
+    console.log(this.moviesInDB);
 
     this.finished = true;
   }
@@ -203,9 +225,11 @@ export class AffichageRechercheComponent implements OnInit {
         if (this.moviesInDB.size === 0) {
           this.moviesInDB = res!;
         } else {
-          this.moviesInDB = this.intersectMaps(this.moviesInDB, res)
+          this.moviesInDB = this.intersectMaps(this.moviesInDB, res);
         }
-      } 
+      } else {
+        this.moviesInDB = new Map<number, string>();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -218,9 +242,11 @@ export class AffichageRechercheComponent implements OnInit {
         if (this.moviesInDB.size === 0) {
           this.moviesInDB = res!;
         } else {
-          this.moviesInDB = this.intersectMaps(this.moviesInDB, res)
+          this.moviesInDB = this.intersectMaps(this.moviesInDB, res);
         }
-      } 
+      } else {
+        this.moviesInDB = new Map<number, string>();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -233,9 +259,11 @@ export class AffichageRechercheComponent implements OnInit {
         if (this.moviesInDB.size === 0) {
           this.moviesInDB = res!;
         } else {
-          this.moviesInDB = this.intersectMaps(this.moviesInDB, res)
+          this.moviesInDB = this.intersectMaps(this.moviesInDB, res);
         }
-      } 
+      } else {
+        this.moviesInDB = new Map<number, string>();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -248,9 +276,11 @@ export class AffichageRechercheComponent implements OnInit {
         if (this.moviesInDB.size === 0) {
           this.moviesInDB = res!;
         } else {
-          this.moviesInDB = this.intersectMaps(this.moviesInDB, res)
+          this.moviesInDB = this.intersectMaps(this.moviesInDB, res);
         }
-      } 
+      } else {
+        this.moviesInDB = new Map<number, string>();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -263,9 +293,11 @@ export class AffichageRechercheComponent implements OnInit {
         if (this.moviesInDB.size === 0) {
           this.moviesInDB = res!;
         } else {
-          this.moviesInDB = this.intersectMaps(this.moviesInDB, res)
+          this.moviesInDB = this.intersectMaps(this.moviesInDB, res);
         }
-      } 
+      } else {
+        this.moviesInDB = new Map<number, string>();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -287,12 +319,12 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movie_db!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
-      this.utilService.setSearchedMovies(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
@@ -301,7 +333,6 @@ export class AffichageRechercheComponent implements OnInit {
   async getFilmsByActors(actors: string) {
     try {
       this.resList = await this.rechercheService.getFilmsByActor(actors);
-      console.log(this.resList);
 
       for (const [key, value] of this.resList) {
         try {
@@ -313,14 +344,13 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movieDB!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
 
-      this.utilService.setSearchedMovies(this.moviesInDB);
-      console.log(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
@@ -343,13 +373,12 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movieDB!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
-      this.utilService.setSearchedMovies(this.moviesInDB);
-      console.log(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
@@ -372,13 +401,12 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movieDB!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
-      this.utilService.setSearchedMovies(this.moviesInDB);
-      console.log(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
@@ -401,13 +429,12 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movieDB!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
-      this.utilService.setSearchedMovies(this.moviesInDB);
-      console.log(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
@@ -436,30 +463,24 @@ export class AffichageRechercheComponent implements OnInit {
             imdb_id
           );
           let movie_jsoned = await movieDB!.json();
-          this.moviesInDB.set(movie_jsoned.omdbID, movie_jsoned.titre);
+          this.moviesInDBByAPI.set(movie_jsoned.omdbID, movie_jsoned.titre);
         } catch (error) {
           console.error(error);
         }
       }
-      this.utilService.setSearchedMovies(this.moviesInDB);
-      console.log(this.moviesInDB);
+      this.utilService.setSearchedMovies(this.moviesInDBByAPI);
     } catch (error) {
       console.error(error);
     }
   }
 
-
-  clickFilm(movie: any) {
-    this.api.getMovieById(movie.key).subscribe((mov : any) => {
-      this.utilService.setMovie(mov);
-      this.router.navigateByUrl('/home/' + movie.value);
-    })
-
-  } 
+  clickFilm(titre: any) {
+    this.router.navigateByUrl('/home/' + titre);
+  }
 
   intersectMaps(map1: Map<number, string>, map2: Map<number, string>) {
     const result = new Map<any, any>();
-    if(map1.size === 0 || map2.size === 0){
+    if (map1.size === 0 || map2.size === 0) {
       return result;
     }
     for (const [key, value] of map1.entries()) {

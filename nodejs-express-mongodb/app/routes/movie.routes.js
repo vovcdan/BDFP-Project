@@ -28,9 +28,9 @@ module.exports = (app) => {
 
   router.get("/accompagnateurs/:uid/:accompagnateurs", movie.findByAccompagnateurs);
 
-  router.get("note/:uid/:note", movie.findByNote);
+  router.get("/note/:uid/:note", movie.findByNote);
 
-  router.get("avis/:uid/:avis", movie.findByAvis);
+  router.get("/avis/:uid/:avis", movie.findByAvis);
 
   // Update a movie with id
   router.put("/:uid/:omdbID", movie.update);
