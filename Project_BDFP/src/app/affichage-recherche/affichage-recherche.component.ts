@@ -258,7 +258,7 @@ export class AffichageRechercheComponent implements OnInit {
     console.log(this.moviesInDB);
     console.log(this.moviesInDBByAPI)
 
-    this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB)
+    this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!)
 
     console.log(this.finalMovieResults);
 
