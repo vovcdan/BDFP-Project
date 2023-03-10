@@ -12,13 +12,14 @@ h2 {
 }
 
 .form-card {
-    min-width: 450px;
+      min-width: 450px;
       box-sizing: border-box;
-      width: 50%;
+      width: 450px;
       margin: 40px auto 40px auto;
       padding: 30px;
       border-radius: 30px;
-      background-color: rgba(212, 211, 211, 0.06)
+      background-color: rgba(212, 211, 211, 0.06);
+      text-align : center;
 }
 
 .form-group {
@@ -58,7 +59,10 @@ h2 {
     display: inline;
 }
 
-#ligne {
-  margin-left: 20%;
-}
+// #ligne {
+//   margin-left: 20%;
+// }
 
+#cherche {
+  display: block;
+}

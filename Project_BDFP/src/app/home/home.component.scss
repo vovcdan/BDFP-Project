@@ -26,6 +26,13 @@
     }
 }
 
+#recherche {
+    margin: 50px auto auto 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: orange;
+}
+
 
 .butAjout {
     display: inline;
@@ -254,5 +261,12 @@ header {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+#boutonclose {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
 }
 

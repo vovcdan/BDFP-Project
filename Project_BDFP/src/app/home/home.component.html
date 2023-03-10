@@ -22,11 +22,14 @@
         </article>
     </div>
 
-
+</div>
+<div id="recherche">
     <div *ngIf="showFormRecherche">
+        <div id="boutonclose">
             <button class="butAjout" id="close" mat-fab matTooltip="Fermer le formulaire de recherche" mat-fab (click)="onClose()">
                 <mat-icon>close</mat-icon>
             </button>
+        </div>
         <app-affichage-recherche></app-affichage-recherche>
     </div>
 </div>
