@@ -105,12 +105,12 @@ export class HomeComponent implements OnInit {
 
   affichageForm() {
     this.showFormRecherche = !this.showFormRecherche;
-    this.showResultatRecherche = false
+    this.showResultatRecherche = !this.showResultatRecherche
   }
 
   onClose() {
     this.showFormRecherche = !this.showFormRecherche;
-    this.showResultatRecherche = true
+    this.showResultatRecherche = !this.showResultatRecherche
   }
 
 

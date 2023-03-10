@@ -20,7 +20,7 @@ export class InitService {
     for(let movie of results[0].movies){
       omdbIDS.push(movie.omdbID)
     }
-    
+
     this.movies = await this.getMapWithInfoAndPoster(omdbIDS)
     return this.movies
   }
@@ -35,6 +35,18 @@ export class InitService {
     }
     this.movies = await this.getMapWithInfoAndPoster(omdbIDS)
     return this.movies
+  }
+
+  async initDetailListe2(movies: Map<any, any>) {
+    let omdbIDS = []
+    for (const [key, value] of movies) {
+      omdbIDS.push(key)
+    }
+
+    let res = new Map<any, any>();
+    res = await this.getMapWithInfoAndPoster(omdbIDS);
+
+    return res;
   }
 
    async getMapWithInfoAndPoster(omdbIDS: any){
