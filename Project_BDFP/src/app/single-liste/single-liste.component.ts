@@ -108,9 +108,8 @@ export class SingleListeComponent implements OnInit {
     })
   }
 
-  suppDialog(omdbID: string): void {
+  suppDialog(): void {
     this.utilService.setMovie(this.currentListe);
-    console.log(this.currentListe)
     const message = `Êtes-vous sûr de vouloir supprimer cette liste ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
     this.utilService.setListeOuGlobalSupp(3)
