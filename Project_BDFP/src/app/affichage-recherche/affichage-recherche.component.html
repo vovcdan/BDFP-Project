@@ -14,18 +14,6 @@
           </mat-form-field>
         </div>
       </div>
-        <div id="ligne">
-          <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez l'année en numérique" fontIcon="help_outline"></mat-icon>
-          <div class="form-group">
-            <mat-form-field appearance="fill" class="field">
-              <mat-label class="lab">Annee de sortie</mat-label>
-              <input matInput [formControl]="searchControlAnnee" placeholder="Rechercher">
-              <mat-error *ngIf="searchControlAnnee.invalid && (searchControlAnnee.dirty || searchControlAnnee.touched)">
-                Le champ de recherche doit contenir exactement 4 chiffres.
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
       <div id="ligne">
         <mat-icon class="icone" aria-hidden="false" matTooltip="1. Entrez le prénom puis le nom du premier acteur séparé par un espace
         2. Pour ajouter un 2ème : mettre une virgule suivi d'un espace suivi du prenom et du nom du deuxième." fontIcon="help_outline"></mat-icon>
@@ -35,6 +23,21 @@
             <input matInput [formControl]="searchControlCaracActors" placeholder="Rechercher">
             <mat-error *ngIf="searchControlCaracActors.invalid && (searchControlCaracActors.dirty || searchControlCaracActors.touched)">
               forme : prenom nom  ou forme : prenom nom, prenom nom
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div id="ligne" *ngIf="(this.searchControlCaracActors.value != undefined &&
+      this.searchControlCaracActors.value != '') ||
+      (this.searchControlCaracReal.value != undefined &&
+      this.searchControlCaracReal.value != '')">
+        <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez l'année en numérique" fontIcon="help_outline"></mat-icon>
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="field">
+            <mat-label class="lab">Annee de sortie</mat-label>
+            <input matInput [formControl]="searchControlAnnee" placeholder="Rechercher">
+            <mat-error *ngIf="searchControlAnnee.invalid && (searchControlAnnee.dirty || searchControlAnnee.touched)">
+              Le champ de recherche doit contenir exactement 4 chiffres.
             </mat-error>
           </mat-form-field>
         </div>
