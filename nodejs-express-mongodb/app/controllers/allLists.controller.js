@@ -15,6 +15,7 @@ exports.create = (req, res) => {
   allListDB.create({
     uid: req.body.uid,
     titrelist: req.body.titrelist,
+    shared: false,
     movies: [],
   })
     .then((data) => {
@@ -42,6 +43,7 @@ exports.createShare = (req, res) => {
   allListDB.create({
     uid: req.body.uid,
     titrelist: req.body.titrelist,
+    shared: true,
     movies: req.body.movies,
   })
     .then((data) => {
@@ -210,7 +212,7 @@ exports.deleteMovieFromAllLists = (req, res) => {
   const omdbID = req.params.omdbID;
 
   allListDB.collection.updateMany(
-    { "uid": uid },
+    { "uid": uid, shared: false },
     { $pull: {"movies": {"omdbID": omdbID}}}
   ).then((data) => {
     if (!data) {

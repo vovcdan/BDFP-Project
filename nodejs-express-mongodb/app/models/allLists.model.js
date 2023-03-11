@@ -9,6 +9,7 @@
       mongoose.Schema({
         uid: String,
         titrelist: String,
+        shared: Boolean,
         "movies": [{
           titre: String,
           omdbID: String,
