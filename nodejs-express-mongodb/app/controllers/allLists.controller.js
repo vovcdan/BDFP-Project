@@ -15,6 +15,7 @@ exports.create = (req, res) => {
   allListDB.create({
     uid: req.body.uid,
     titrelist: req.body.titrelist,
+    shared: false,
     movies: [],
   })
     .then((data) => {
@@ -42,6 +43,7 @@ exports.createShare = (req, res) => {
   allListDB.create({
     uid: req.body.uid,
     titrelist: req.body.titrelist,
+    shared: true,
     movies: req.body.movies,
   })
     .then((data) => {
@@ -183,7 +185,7 @@ exports.deleteMovieFromList = (req, res) => {
   const titrelist = req.params.titrelist;
   const omdbID = req.params.omdbID;
 
-  allListDB.collection.update(
+  allListDB.collection.updateOne(
     { "uid": uid, "titrelist": titrelist},
     { $pull: {"movies": {"omdbID": omdbID}}}
   ).then((data) => {
@@ -195,6 +197,31 @@ exports.deleteMovieFromList = (req, res) => {
       res.send({
         message: "Le film a été supprimé",
         titrelist: titrelist,
+      });
+    }
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message: `Le film ${omdbID} n'a pas pu être supprimé`,
+    });
+  });
+}
+
+exports.deleteMovieFromAllLists = (req, res) => {
+  const uid = req.params.uid;
+  const omdbID = req.params.omdbID;
+
+  allListDB.collection.updateMany(
+    { "uid": uid, shared: false },
+    { $pull: {"movies": {"omdbID": omdbID}}}
+  ).then((data) => {
+    if (!data) {
+      res.status(404).send({
+        message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+      });
+    } else {
+      res.send({
+        message: "Le film a été supprimé",
       });
     }
   })

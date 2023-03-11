@@ -125,24 +125,7 @@ export class SingleFilmComponent implements OnInit {
     })
   }
 
-  // getRealisateur() {
-  //   this.api.getMovieTMDBByIMDBID(this.currentFilm.imdbID).subscribe((film: any) => {
-  //     if(film['movie_results'].length != 0 && film['movie_results'][0]) {
-  //       let id = film['movie_results'][0].id;
-  //       this.api.getMovieTMDbId(id).subscribe((film: any) => {
-  //         this.api.getCreditsTMDB(film.id).subscribe((credits: any) => {
-  //           credits.crew.forEach((crew: any) => {
-  //             if(crew.job == "Director") {
-  //               this.realisator = crew.name;
-  //             }
-  //           })
-  //         })
-  //       })
-  //     }
-  //   })
-  // }
-
-  suppDialog(omdbID: string): void {
+  suppDialog(): void {
     this.utilService.setMovie(this.currentFilm);
     console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;

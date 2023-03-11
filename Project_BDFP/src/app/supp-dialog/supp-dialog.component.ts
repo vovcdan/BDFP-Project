@@ -8,14 +8,12 @@ import { FilmsService } from 'services/films.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 
-
 @Component({
   selector: 'app-supp-dialog',
   templateUrl: './supp-dialog.component.html',
-  styleUrls: ['./supp-dialog.component.scss']
+  styleUrls: ['./supp-dialog.component.scss'],
 })
 export class SuppDialogComponent implements OnInit {
-
   title: string;
   message: string;
   films: Film[] = [];
@@ -32,29 +30,23 @@ export class SuppDialogComponent implements OnInit {
   switch!: any;
   moviesTitles: string[] = [];
 
-
-  constructor(public dialogRef: MatDialogRef<SuppDialogComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<SuppDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SuppDialogModel,
     private utilService: UtilsService,
     private api: ApiServiceService,
     private router: Router,
     private filmService: FilmsService,
     private snack: MatSnackBar,
-    private loc: Location) {
+    private loc: Location
+  ) {
     this.title = data.title;
     this.message = data.message;
-
   }
 
   ngOnInit(): void {
     this.curList = this.utilService.getCurrentListe();
     this.currentFilm = this.utilService.getMovie();
-    console.log(this.curList);
-    console.log("Le film ::::: " + this.currentFilm.Title);
-    this.imdbIdAndMovieTitle = this.utilService.getImdbIdAndMovieTitle();
-    this.filmService.getFilmsByUid(this.utilService.getUserId()).subscribe((listeFilm) => {
-      this.listfilm = listeFilm[0].movies;
-    });
   }
 
   back() {
@@ -66,59 +58,75 @@ export class SuppDialogComponent implements OnInit {
   }
 
   openSnackBar(message: string) {
-    this.snack.open(message,"", {
+    this.snack.open(message, '', {
       duration: 3000,
     });
   }
 
-  deleteMovieList() {
-    this.filmService.deleteMovieFromList(this.curList.titrelist, this.currentFilm.imdbID).subscribe(res => {
-      this.openSnackBar(this.currentFilm.Title + ' a été supprimé de la liste ' + res.titrelist)
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigateByUrl('/favs/' + res.titrelist);
+  deleteMovieFromList() {
+    let movie = this.currentFilm;
+
+    this.filmService
+      .deleteMovieByIdAsync(this.currentFilm.key)
+      .then(() => {
+        this.openSnackBar(movie.value.title + ' à été supprimé');
+        this.back();
       })
-    })
-    this.dialogRef.close(false)
+      .catch((error) => {
+        console.error(
+          `Erreur lors de la suppression du film ${movie.value.title}`,
+          error
+        );
+      });
   }
 
-  deleteMovieGlob(){
-    this.moviesTitles = this.utilService.getMoviesTitles();
-    let title = this.currentFilm.Title;
-    this.filmService.deleteMovieDBById(this.currentFilm.imdbID).subscribe(film => {
-      this.moviesTitles.forEach((element: string) => {
-        if(!element.includes("partagee par")){
-          this.filmService.deleteMovieFromList(element, this.currentFilm.imdbID).subscribe(films => {})
-        }
+  deleteMovieGlob() {
+    let movie = this.currentFilm;
+
+    this.filmService
+      .deleteMovieByIdAsync(this.currentFilm.key)
+      .then(() => {
+        this.filmService
+          .deleteMovieFromAllLists(this.currentFilm.key)
+          .then(() => {
+            this.openSnackBar(movie.value.title + ' à été supprimé');
+            this.back();
+          })
+          .catch((error) => {
+            console.error(
+              `Erreur lors de la suppression du film ${movie.value.title}`,
+              error
+            );
+          });
       })
-      this.openSnackBar(title + ' à été supprimé')
-      this.back();
-    })
+      .catch((error) => {
+        console.error(
+          `Erreur lors de la suppression du film ${movie.value.title}`,
+          error
+        );
+      });
   }
 
   deleteListe() {
     let inst = this.utilService.getCurrentListe();
-    this.filmService.deleteListOfAllLists(inst._id).subscribe(del => {
-      this.openSnackBar('Liste ' + inst.titrelist + " a été supprimé")
+    this.filmService.deleteListOfAllLists(inst._id).subscribe((del) => {
+      this.openSnackBar('Liste ' + inst.titrelist + ' a été supprimé');
       this.loc.back();
-    })
+    });
   }
 
-  choixDelete(){
-    this.switch = this.utilService.getListeOuGlobalSupp()
-    if (this.switch == 1){
-      this.deleteMovieList()
-    }
-    else if(this.switch == 2) {
-      this.deleteMovieGlob()
-    }
-    else if(this.switch == 3){
-      this.deleteListe()
+  choixDelete() {
+    this.switch = this.utilService.getListeOuGlobalSupp();
+    if (this.switch == 1) {
+      this.deleteMovieFromList();
+    } else if (this.switch == 2) {
+      this.deleteMovieGlob();
+    } else if (this.switch == 3) {
+      this.deleteListe();
     }
   }
 }
 
 export class SuppDialogModel {
-  constructor(public title: string, public message: string) {
+  constructor(public title: string, public message: string) {}
 }
-}
-

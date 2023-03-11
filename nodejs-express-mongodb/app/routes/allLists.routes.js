@@ -24,6 +24,8 @@ module.exports = (app) => {
 
   router.delete("/:idListe", allLists.deleteOne);
 
+  router.delete("/:uid/:omdbID", allLists.deleteMovieFromAllLists);
+
   router.delete("/:uid/:titrelist/:omdbID", allLists.deleteMovieFromList);
 
   app.use("/api/allLists", router);

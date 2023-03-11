@@ -180,7 +180,7 @@ exports.deleteMovieById = (req, res) => {
   const omdbID = req.params.omdbID;
 
   MovieDB.collection
-    .update({ uid: uid }, { $pull: { movies: { omdbID: omdbID } } })
+    .updateOne({ uid: uid }, { $pull: { movies: { omdbID: omdbID } } })
     .then((data) => {
       if (!data) {
         res.status(404).send({
