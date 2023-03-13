@@ -39,11 +39,12 @@
               <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
-
         </ng-container>
       </mat-autocomplete>
+      <div *ngIf="messError" [ngStyle]="{'color': 'red','margin-top': 0}">
+        Aucun résultat.
+      </div>
     </mat-form-field>
-
     <mat-form-field class="field" appearance="fill">
       <mat-label for="dat">Date de visionnage</mat-label>
       <input matInput [(ngModel)]="data.dateVision" type="dat" placeholder="15/09/2022">
