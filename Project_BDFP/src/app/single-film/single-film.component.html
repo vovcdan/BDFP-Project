@@ -25,12 +25,6 @@
   <div id="leposter">
     <img src="{{ currentFilm.value.poster }}" alt="{{ currentFilm.value.title }}" id="images" />
   </div>
-
-
-
-  <!-- {{scrapeCritiques("scream-vi")}} -->
-
-
   
   <div id="infos" *ngIf="currentFilmInfos">
     <div id="titre">{{ currentFilmInfos.titre }}</div>
@@ -212,7 +206,9 @@
                         </li>
                         <li>
                           <span class="bold">en savoir + : </span
-                          ><a href="{{ rev.url }}">{{ rev.url }}</a>
+                          >
+                          {{scrapeCritiques("scream-vi")}}
+                          <a href="{{ rev.url }}">{{ rev.url }}</a>
                         </li>
                       </ul>
                     </li>

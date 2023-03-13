@@ -169,24 +169,35 @@ export class SingleFilmComponent implements OnInit {
 
   
   async scrapeCritiques(titreFilm: string) {
-    // En utilisant un proxy pour éviter les problèmes de CORS.
+    // Utilisation d'un proxy pour éviter les problèmes de CORS.
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     const url = `https://www.critikat.com/actualite-cine/critique/${titreFilm}`;
-    
-    // fetch HTML content from URL using proxy
+  
+    // Récupération du contenu HTML de l'URL en utilisant le proxy.
     const response = await fetch(proxyUrl + url);
     const htmlString = await response.text();
   
-    // parse HTML string into DOM object
+    // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
+
+    console.log(htmlDOM)
   
-    // extract critiques from DOM object
-    const critiques = Array.from(htmlDOM.querySelectorAll('.review-content'))
-                            .map(review => review.textContent?.trim());
+    // Extraction de la critique du film "Scream VI" de l'objet DOM.
+    // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
+    // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
+    const critiques = htmlDOM.querySelectorAll('.review-content');
+    let critique: string | undefined;
+
+    critiques.forEach((c) => {
+      // if (c.querySelector(`h1:contains("${titreFilm}")`)) {
+      //   critique = c.textContent?.trim();
+      // }
+    });
   
-    console.log('Critiques :', critiques);
-    
-  }   
+    console.log('Critique :', critique);
+  }
+  
+ 
   
 }
