@@ -46,11 +46,7 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="dat">Date de visionnage</mat-label>
-      <input matInput [formControl]="searchControlDate">
-      <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
-        forme : jjmmaaaa ex : 12092022
-      </mat-error>
-      <input matInput [(ngModel)]="data.dateVision" type="dat" placeholder="15092022">
+      <input matInput [(ngModel)]="data.dateVision" type="dat" placeholder="15/09/2022">
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
@@ -65,11 +61,7 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="note">Note/5</mat-label>
-      <input matInput [formControl]="searchControlNote">
-      <mat-error *ngIf="searchControlNote.invalid && (searchControlNote.dirty || searchControlNote.touched)">
-        Entrez un nombre de 1 à 5
-      </mat-error>
-      <input matInput [(ngModel)]="data.note" type="note">
+      <input matInput [(ngModel)]="data.note" type="note" placeholder="3">
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
