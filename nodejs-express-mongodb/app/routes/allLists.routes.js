@@ -22,6 +22,8 @@ module.exports = (app) => {
 
   router.get("/isShared/:uid/:titrelist", allLists.isSharedList)
 
+  router.get("/:uid/:titrelist/:omdbID", allLists.findMovieFromOneList)
+
   router.put("/:uid/:omdbID", allLists.update)
 
   router.delete("/", allLists.deleteAll);

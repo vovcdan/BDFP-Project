@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+    this.utilService.setisListShared(false);
 
     this.formRecherche = new FormGroup({
       titreControl:new FormControl(),

@@ -545,6 +545,10 @@ export class FilmsService {
     return laliste;
   }
 
+
+
+
+
   updateMovieInfo(movie: Film) {
     const uid = this.utilService.getUserId();
 
@@ -662,8 +666,28 @@ export class FilmsService {
       );
   }
 
-  async isListShared(user_id: string, list_title: string) {
-    const url = `http://localhost:8080/api/allLists/isShared/${user_id}/${list_title}`
+  async getMovieFromOneList(omdbID: string) {
+    const uid = this.utilService.getUserId();
+    const list_title = this.utilService.getCurrentListeName();
+    const url = `http://localhost:8080/api/allLists/${uid}/${list_title}/${omdbID}`;
+
+    try {
+      let data = await fetch(url);
+      let movie = data.json();
+      return movie;
+    }catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return null;
+    }
+  }
+
+  async isListShared(list_title: string) {
+    const uid = this.utilService.getUserId();
+    const url = `http://localhost:8080/api/allLists/isShared/${uid}/${list_title}`
 
     try {
     let data = await fetch(url);

@@ -113,6 +113,37 @@ exports.isSharedList = (req, res) => {
  * @param req donne accès à tous les paramètres
  * @param res revoie le status des requêtes
  */
+exports.findMovieFromOneList = (req, res) => {
+  const uid = req.params.uid;
+  const titrelist = req.params.titrelist;
+  const omdbID = req.params.omdbID;
+
+  var condition = uid && titrelist
+    ? { uid: uid, titrelist: titrelist, movies: { $elemMatch: { omdbID: omdbID } } }
+    : {};
+
+  allListDB.find(condition)
+    .then((data) => {
+      if (!data)
+        res.status(404).send({ message: "Liste de films non trouvée " + uid });
+      else {
+        const movie = data[0].movies.find((m) => m.omdbID === omdbID);
+        res.send(movie);
+      }
+        
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ message: "Erreur pendant la récupération de la liste " + uid });
+    });
+};
+
+/**
+ * Récupère un utilisateur en fonction de l'id fournit en paramètre depuis la BD
+ * @param req donne accès à tous les paramètres
+ * @param res revoie le status des requêtes
+ */
  exports.findById = (req, res) => {
   const uid = req.params.uid;
   
@@ -145,7 +176,7 @@ exports.update = (req, res) => {
 
   allListDB.collection
     .updateMany(
-      { uid: uid },
+      { uid: uid, shared: false },
       {
         $set: {
           "movies.$[elem].note": req.body.note,

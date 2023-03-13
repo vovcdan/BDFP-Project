@@ -50,8 +50,6 @@ export class SingleFilmComponent implements OnInit {
     // this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
-    console.log(this.currentFilm);
-
   }
 
   async init() {
@@ -64,8 +62,8 @@ export class SingleFilmComponent implements OnInit {
     const isListShared = this.utilService.getIsListShared();
 
     if (isListShared) {
-      let movieFromDB_data = await this.filmService.getOneListAsync(this.utilService.getCurrentListeName());
-      this.currentFilmInfos = await movieFromDB_data!
+      this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
+      console.log(this.currentFilmInfos);
     } else {
       let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
       this.currentFilmInfos = await movieFromDB_data!.json();
@@ -73,7 +71,6 @@ export class SingleFilmComponent implements OnInit {
 
     let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
     let movieFromOMDB = await movieFromOMDB_data!.json()
-    console.log(movieFromOMDB);
 
     this.currentFilmInfos['release_date'] = movieFromOMDB.Year
     this.currentFilmInfos['Actors'] = movieFromOMDB.Actors
