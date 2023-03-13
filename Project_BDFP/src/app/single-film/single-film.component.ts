@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
@@ -34,15 +34,21 @@ export class SingleFilmComponent implements OnInit {
 
   formUpdateMovie!: FormGroup
 
+  searchControlDate = new FormControl(
+    '',
+    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+  );
+  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.init();
 
     this.formUpdateMovie = new FormGroup({
-      noteControl: new FormControl(),
+      noteControl: new FormControl('', Validators.pattern('^[0-5]$')),
       cinemaControl: new FormControl(),
-      dateVisionControl: new FormControl(),
+      dateVisionControl: new FormControl('',Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')),
       accompagnateursControl: new FormControl(),
       avisControl: new FormControl(),
     });

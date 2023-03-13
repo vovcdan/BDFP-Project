@@ -43,13 +43,13 @@
         </div>
       </div>
       <div id="ligne">
-        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une date forme : jj/mm/aaaa" fontIcon="help_outline"></mat-icon>
+        <mat-icon class="icone" aria-hidden="false" matTooltip="entrez une date forme : jjmmaaaa" fontIcon="help_outline"></mat-icon>
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Date de visionnage</mat-label>
             <input matInput [formControl]="searchControlDate" placeholder="Rechercher">
             <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
-              forme : jj/mm/aaaa ex: 23/03/2022
+              forme : jjmmaaaa ex: 23032022
             </mat-error>
           </mat-form-field>
         </div>
