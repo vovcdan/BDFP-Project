@@ -20,6 +20,7 @@ export class AffichageFilmsComponent implements OnInit {
   noPoster: boolean = false;
   fromTMDB: boolean = true;
   searchText!: any;
+  spinner : boolean = false
 
   
 
@@ -32,8 +33,9 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   async initialisation(){
+    this.spinner = true 
     this.movies = await this.init.initAffichageFilms()
-
+    this.spinner = false
   }
 
   get filteredMovies() {
