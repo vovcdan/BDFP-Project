@@ -247,7 +247,6 @@ export class ajouterFilm implements OnInit {
       if (data['Search'] == undefined) {
         this.messError = true
         this.filteredMoviesOMDB = [];
-        console.log(this.messError)
       } else {
         this.messError = false
         this.filteredMoviesOMDB = data['Search'];
@@ -289,6 +288,7 @@ export class ajouterFilm implements OnInit {
       }
       //console.log(this.filteredMoviesTMDB);
     });
+    this.messError = false
   }
 
   onSelected() {
