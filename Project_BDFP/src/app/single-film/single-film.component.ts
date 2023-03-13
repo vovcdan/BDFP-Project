@@ -175,10 +175,11 @@ export class SingleFilmComponent implements OnInit {
       return;
     }
     this.test=true;
-    const titreFilmSansEspaces = titreFilm.replace(/%20/g, '');
+    const str = titreFilm.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+    console.log(str)
     // Utilisation d'un proxy pour éviter les problèmes de CORS.
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const url = `https://www.critikat.com/actualite-cine/critique/${titreFilmSansEspaces}`;
+    const url = `https://www.critikat.com/actualite-cine/critique/${str}`;
   
     // Récupération du contenu HTML de l'URL en utilisant le proxy.
     const response = await fetch(proxyUrl + url);
@@ -187,6 +188,7 @@ export class SingleFilmComponent implements OnInit {
     // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
+
   
     // Extraction de la critique du film de l'objet DOM.
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
