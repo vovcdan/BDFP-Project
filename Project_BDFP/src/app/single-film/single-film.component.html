@@ -205,9 +205,8 @@
                           >{{ rev.content }}
                         </li>
                         <li>
-                          <span class="bold">en savoir + : </span
-                          >
-                          {{scrapeCritiques("scream-vi")}}
+                          {{scrapeCritiques(currentFilm.value.title)}}
+                          <span class="bold">en savoir + : </span>
                           <a href="{{ rev.url }}">{{ rev.url }}</a>
                         </li>
                       </ul>

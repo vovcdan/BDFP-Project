@@ -36,6 +36,8 @@ export class SingleFilmComponent implements OnInit {
 
   formUpdateMovie!: FormGroup
 
+  test: boolean = false;
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -169,9 +171,14 @@ export class SingleFilmComponent implements OnInit {
 
   
   async scrapeCritiques(titreFilm: string) {
+    if (this.test) {
+      return;
+    }
+    this.test=true;
+    const titreFilmSansEspaces = titreFilm.replace(/%20/g, '');
     // Utilisation d'un proxy pour éviter les problèmes de CORS.
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const url = `https://www.critikat.com/actualite-cine/critique/${titreFilm}`;
+    const url = `https://www.critikat.com/actualite-cine/critique/${titreFilmSansEspaces}`;
   
     // Récupération du contenu HTML de l'URL en utilisant le proxy.
     const response = await fetch(proxyUrl + url);
@@ -180,21 +187,17 @@ export class SingleFilmComponent implements OnInit {
     // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
-
-    console.log(htmlDOM)
   
-    // Extraction de la critique du film "Scream VI" de l'objet DOM.
+    // Extraction de la critique du film de l'objet DOM.
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
     // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
-    const critiques = htmlDOM.querySelectorAll('.review-content');
+    const critiques = htmlDOM.querySelectorAll('.labeur');
     let critique: string | undefined;
 
-    critiques.forEach((c) => {
-      // if (c.querySelector(`h1:contains("${titreFilm}")`)) {
-      //   critique = c.textContent?.trim();
-      // }
-    });
-  
+    if(critiques) {
+      critique = critiques[0].textContent?.trim();
+    }
+    
     console.log('Critique :', critique);
   }
   
