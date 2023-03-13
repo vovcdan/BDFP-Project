@@ -19,7 +19,7 @@
                 <p><span class="bold">Synopsys:</span> {{infoMovies.value.Plot}}</p>
             </div>
             <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
-            <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key)">Supprimer le film</button>
+            <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key, infoMovies.value.title)">Supprimer le film</button>
             </div>
     </div>
 </div>
