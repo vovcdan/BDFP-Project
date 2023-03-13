@@ -95,6 +95,27 @@ exports.findByMail = (req, res) => {
     });
 };
 
+exports.findByMailAndPassword = (req, res) => {
+  const userMail = req.params.userMail;
+  const password = req.params.password;
+
+  var condition = userMail && password
+    ? { email: userMail, mdp: password }
+    : {};
+
+  UserDB.find(condition)
+    .then((data) => {
+      if (!data)
+        res.status(404).send({ message: `Aucun utilisateur trouvé avec les informations ${userMail} ${password}` });
+      else res.send(data);
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ message: "Erreur pendant la récupération de l'utilisateur " + userMail });
+    });
+};
+
 /**
  * Met à jour un utilisateur dans la BD en fonction d'un id passé en paramètres
  * @param req donne accès à tous les paramètres
