@@ -180,9 +180,9 @@ export class FilmsService {
     return response;
   }
 
-  async deleteMovieByIdAsync(omdbID: string){
-    const uid = this.utilService.getUserId()
-    const url = `http://localhost:8080/api/movies/${uid}/movie/${omdbID}`
+  async deleteMovieByIdAsync(omdbID: string) {
+    const uid = this.utilService.getUserId();
+    const url = `http://localhost:8080/api/movies/${uid}/movie/${omdbID}`;
 
     fetch(url, {
       method: 'DELETE',
@@ -220,21 +220,22 @@ export class FilmsService {
     return response;
   }
 
-  async deleteMovieFromListAsync(omdbID: string, titrelist: string){
-    const uid = this.utilService.getUserId()
+  async deleteMovieFromListAsync(omdbID: string, titrelist: string) {
+    const uid = this.utilService.getUserId();
 
-    const url = `http://localhost:8080/api/allLists/${uid}/${titrelist}/${omdbID}`
+    const url = `http://localhost:8080/api/allLists/${uid}/${titrelist}/${omdbID}`;
 
     fetch(url, {
       method: 'DELETE',
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
     })
-    .catch((error) => {
-      console.error('Error updating data:', error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
   }
 
   async deleteMovieFromAllLists(omdbID: string) {
@@ -595,6 +596,21 @@ export class FilmsService {
     return user;
   }
 
+  async getUserByEmailAndPassword(usermail: string, password: string) {
+
+    const url = `http://localhost:8080/api/users/mail/${usermail}/password/${password}`
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        console.error(error);
+        return false
+      });
+  }
+
   getUsers() {
     let users: EventEmitter<User[]> = new EventEmitter<User[]>();
 
@@ -611,7 +627,7 @@ export class FilmsService {
   }
 
   modifierMail(email: string) {
-    const uid = this.utilService.getUserId()
+    const uid = this.utilService.getUserId();
     this.http
       .put('http://localhost:8080/api/users/' + uid, { email: email })
       .subscribe(
@@ -623,7 +639,7 @@ export class FilmsService {
   }
 
   modifierMDP(mdp: string) {
-    const uid = this.utilService.getUserId()
+    const uid = this.utilService.getUserId();
     let mdpCrypt = this.crypt.cryptMD5(mdp);
     this.http
       .put('http://localhost:8080/api/users/' + uid, { mdp: mdpCrypt })

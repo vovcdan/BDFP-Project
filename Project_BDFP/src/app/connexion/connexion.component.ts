@@ -10,10 +10,9 @@ import { UtilsService } from 'services/utils.service';
 @Component({
   selector: 'app-connexion',
   templateUrl: './connexion.component.html',
-  styleUrls: ['./connexion.component.scss']
+  styleUrls: ['./connexion.component.scss'],
 })
 export class ConnexionComponent implements OnInit {
-
   // message d'erreur si identifiants incorrects
   errorMess: boolean = false;
 
@@ -26,12 +25,13 @@ export class ConnexionComponent implements OnInit {
   // formulaire de l'identifiant (mail)
   idForm = new FormControl();
 
-  constructor(private crypt: CryptService,
-              private filmService: FilmsService,
-              private router: Router,
-              private token: TokenService,
-              private utilService: UtilsService,
-              ) { }
+  constructor(
+    private crypt: CryptService,
+    private filmService: FilmsService,
+    private router: Router,
+    private token: TokenService,
+    private utilService: UtilsService
+  ) {}
 
   ngOnInit(): void {
     if (this.token.isSessionActive()) {
@@ -40,48 +40,42 @@ export class ConnexionComponent implements OnInit {
       let userID = sessionObject.userID;
       this.utilService.connect();
       this.utilService.setUserName(username);
-      this.utilService.setUserId(userID);7
-      this.router.navigateByUrl('home')
+      this.utilService.setUserId(userID);
+      7;
+      this.router.navigateByUrl('home');
     }
   }
 
   // redirectSign() -> renvoie à la page d'inscription
-    redirectSign() {
-      this.router.navigateByUrl('signIn');
+  redirectSign() {
+    this.router.navigateByUrl('signIn');
+  }
+
+  /* connexion() -> traite la demande de connexion utilisateur
+   * currMdp -> stocke le mot de passe utilisateur crypté
+   * getUsers() ->> fonction récupérant les utilisateurs actuels
+   * forloop -> boucle sur les utilisateurs actuels pour savoir si les identifiants sont corrects
+   * Si ok -> connecte l'utilisateur -> enregistre sont mail -> renvoie l'utilisateur au home
+   * Sinon affiche un message d'erreur et efface les formulaires
+   */
+  async connexion() {
+    this.errorMess = false;
+    let currMdp = this.crypt.cryptMD5(this.passForm.value);
+
+    let user = await this.filmService.getUserByEmailAndPassword(
+      this.idForm.value,
+      currMdp
+    );
+    if (user[0] != undefined) {
+      this.utilService.connect();
+      this.utilService.setUserName(user[0].email);
+      this.utilService.setUserId(user[0]._id);
+      this.token.login();
+      this.router.navigateByUrl('home');
     }
 
-    /* connexion() -> traite la demande de connexion utilisateur
-    * currMdp -> stocke le mot de passe utilisateur crypté
-    * getUsers() ->> fonction récupérant les utilisateurs actuels
-    * forloop -> boucle sur les utilisateurs actuels pour savoir si les identifiants sont corrects
-    * Si ok -> connecte l'utilisateur -> enregistre sont mail -> renvoie l'utilisateur au home
-    * Sinon affiche un message d'erreur et efface les formulaires
-    */
-    connexion() {
-      this.errorMess = false;
-      let currMdp = this.crypt.cryptMD5(this.passForm.value);
-     this.filmService.getUsers().subscribe((allUser) =>{
-      this.allUsers = allUser;
-
-      for(let i = 0; i < this.allUsers.length; i++) {
-        if(this.allUsers[i].email == this.idForm.value && currMdp == this.allUsers[i].mdp) {
-          this.utilService.connect();
-          this.utilService.setUserName(this.allUsers[i].email);
-          this.utilService.setUserId(this.allUsers[i]._id);
-          this.token.login();
-          this.router.navigateByUrl('home');
-          break;
-        }
-      }
-
-      this.idForm.setValue(null);
-      this.passForm.setValue(null);
-      this.errorMess = true;
-      });
-
-
-    }
-
+    this.idForm.setValue(null);
+    this.passForm.setValue(null);
+    this.errorMess = true;
+  }
 }
-
-

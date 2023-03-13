@@ -14,11 +14,11 @@ module.exports = (app) => {
 
   router.get("/:id", users.findOne);
 
+  router.get("/mail/:userMail/password/:password", users.findByMailAndPassword);
+
   router.get("/mail/:userMail", users.findByMail);
 
   router.put("/:id", users.modifyMail);
-
-  //router.put("/:uid", users.modfifyMDP);
 
   router.delete("/:id", users.delete);
 
