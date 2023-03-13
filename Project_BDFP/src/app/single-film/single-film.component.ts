@@ -8,6 +8,8 @@ import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialo
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-single-film',
@@ -34,7 +36,7 @@ export class SingleFilmComponent implements OnInit {
 
   formUpdateMovie!: FormGroup
 
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.init();
@@ -164,4 +166,27 @@ export class SingleFilmComponent implements OnInit {
     this.filmService.updateMovieInfo(filmModifie)
     this.updating = !this.updating
   }
+
+  
+  async scrapeCritiques(titreFilm: string) {
+    // En utilisant un proxy pour éviter les problèmes de CORS.
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const url = `https://www.critikat.com/actualite-cine/critique/${titreFilm}`;
+    
+    // fetch HTML content from URL using proxy
+    const response = await fetch(proxyUrl + url);
+    const htmlString = await response.text();
+  
+    // parse HTML string into DOM object
+    const parser = new DOMParser();
+    const htmlDOM = parser.parseFromString(htmlString, 'text/html');
+  
+    // extract critiques from DOM object
+    const critiques = Array.from(htmlDOM.querySelectorAll('.review-content'))
+                            .map(review => review.textContent?.trim());
+  
+    console.log('Critiques :', critiques);
+    
+  }   
+  
 }
