@@ -43,6 +43,8 @@ export class SingleListeComponent implements OnInit {
 
   result: any;
 
+  isListShared!: boolean
+
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
     ,private exportService: ExportService) { }
@@ -58,9 +60,9 @@ export class SingleListeComponent implements OnInit {
 
   async isSharedList() {
     let isShared = await this.filmService.isListShared(this.currentListe.titrelist);
-    let isShared_json = await isShared!.json();
-    console.log(isShared_json);
-    this.utilService.setisListShared(isShared_json);
+    this.isListShared = await isShared!.json();
+    console.log(this.isListShared);
+    this.utilService.setisListShared(this.isListShared);
   }
 
   openSnackBar(message: string) {

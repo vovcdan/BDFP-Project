@@ -32,6 +32,8 @@ export class SingleFilmComponent implements OnInit {
 
   updating = false
 
+  isListShared!: boolean
+
   formUpdateMovie!: FormGroup
 
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
@@ -59,9 +61,9 @@ export class SingleFilmComponent implements OnInit {
     let user_id = this.utilService.getUserId();
     const movie_imdb_id = this.currentFilm.key;
 
-    const isListShared = this.utilService.getIsListShared();
+    this.isListShared = this.utilService.getIsListShared();
 
-    if (isListShared) {
+    if (this.isListShared) {
       this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
       console.log(this.currentFilmInfos);
     } else {
