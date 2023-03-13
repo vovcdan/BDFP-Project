@@ -79,7 +79,7 @@ exports.findByMail = (req, res) => {
   const userMail = req.params.userMail;
 
   var condition = userMail
-    ? { email: { $regex: new RegExp(userMail), $options: "i" } }
+    ? { email: userMail }
     : {};
 
   UserDB.find(condition)

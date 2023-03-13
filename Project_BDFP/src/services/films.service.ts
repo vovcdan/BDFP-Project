@@ -631,7 +631,34 @@ export class FilmsService {
     return laliste;
   }
 
+  async shareListAsync(dest_id: string, list: ListFilm){
+    const uid = this.utilService.getUserId()
 
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        uid: dest_id,
+        titrelist: list.titrelist + ' partagee par ' + this.utilService.getUserName(),
+        movies: list.movies,
+      })
+    };
+
+    const url = "http://localhost:8080/api/allLists/share";
+
+    fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
 
 
 
@@ -712,6 +739,20 @@ export class FilmsService {
     return user;
   }
 
+  async getUserByMailAsync(usermail: string) {
+
+    const url = `http://localhost:8080/api/users/mail/${usermail}`
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   async getUserByEmailAndPassword(usermail: string, password: string) {
 
     const url = `http://localhost:8080/api/users/mail/${usermail}/password/${password}`
@@ -723,7 +764,6 @@ export class FilmsService {
       })
       .catch(error => {
         console.error(error);
-        return false
       });
   }
 

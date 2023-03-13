@@ -288,6 +288,8 @@ export class partagerListe implements OnInit {
 
   tempe: any;
 
+  error_message!: string
+
 
   constructor(
     public dialogRef: MatDialogRef<partagerListe>, private film: FilmsService, private api: ApiServiceService, private utilService: UtilsService, private snack: MatSnackBar,
@@ -308,20 +310,19 @@ export class partagerListe implements OnInit {
     });
   }
 
-  partagerListe() {
-    this.film.getUserByMail(this.data.email).subscribe((user) => {
-      this.usr = user;
-      let inst = this.utilService.getCurrentListe();
-      this.film.getOneList(this.utilService.getUserId(), inst.titrelist).subscribe((laliste) => {
-        this.tempe = laliste;
-        this.utilService.setCurrentListe(this.tempe[0]);
-        this.film.shareList(this.usr[0]._id, this.tempe[0].titrelist, this.tempe[0]).subscribe(res => {
-        this.openSnackBar("La liste " + inst.titrelist + " a été partagée à " + this.data.email)
-      });
-    });
+  async partagerListe() {
+    const dest = await this.film.getUserByMailAsync(this.data.email)
+    console.log(dest)
+    if(dest[0] == undefined){
+      this.error_message = `Le destinataire ${this.data.email} n'existe pas`
+    } else {
+      const list_title = this.utilService.getCurrentListeName()
+      const list = await this.film.getOneListAsync(list_title)
+      await this.film.shareListAsync(dest[0]._id, list)
+      this.openSnackBar("La liste " + list.titrelist + " a été partagée à " + this.data.email)
+    }
 
-  });
-
+    console.log(this.error_message)
   }
 
 
