@@ -8,6 +8,6 @@
     </div>
 </div>
 
-<div class="carte" *ngFor="let movie of movies | keyvalue">
+<div class="carte" *ngFor="let movie of filteredMovies | keyvalue">
   <app-movie-card [movieData]="movie"></app-movie-card>
 </div>
