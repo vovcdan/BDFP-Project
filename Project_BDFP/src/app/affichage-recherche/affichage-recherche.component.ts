@@ -35,6 +35,7 @@ export class AffichageRechercheComponent implements OnInit {
   singleFilm: Map<any, string> = new Map();
   finalMovieResults: any;
   spinner : boolean = false
+  noResult = false
 
   constructor(
     private filmService: FilmsService,
@@ -261,7 +262,12 @@ export class AffichageRechercheComponent implements OnInit {
     console.log(this.moviesInDB);
     console.log(this.moviesInDBByAPI)
 
+    this.noResult = false
     this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!)
+    if (this.finalMovieResults.size == 0){
+      this.noResult = true
+      this.finalMovieResults = "Vous n'avez pas de résultats qui correspondent à cette recherche"
+    }
 
     console.log(this.finalMovieResults);
 

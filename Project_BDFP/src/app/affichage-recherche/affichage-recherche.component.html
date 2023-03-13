@@ -105,11 +105,12 @@
 <!-- Resultats de la recherche  -->
 <h2>Résultats de la recherche :</h2>
 <div id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
-<div id="reponse" *ngIf="finished">
-  <div *ngFor="let movie of finalMovieResults | keyvalue">
+<div *ngIf="finished">
+  <section *ngIf="noResult"><p id="noResult">{{finalMovieResults}}</p></section>
+  <section id="reponse" *ngFor="let movie of finalMovieResults | keyvalue">
     <app-movie-card [movieData]="movie"></app-movie-card>
       <!-- <h2 (click)="clickFilm(movie)">{{movie.value}}</h2> -->
-  </div>
+  </section>
 </div>
 
 <!-- <div class="carte" *ngFor="let movie of movies | keyvalue">

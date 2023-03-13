@@ -56,10 +56,6 @@ h2 {
     display: inline;
 }
 
-// #ligne {
-//   margin-left: 20%;
-// }
-
 #cherche {
   display: block;
 }
@@ -69,5 +65,9 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  color : #ffa500
+}
+
+#noResult {
+  text-align: center;
+  color : white;
 }
