@@ -34,6 +34,7 @@ import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AffichageRechercheComponent } from './affichage-recherche/affichage-recherche.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     MatRadioModule,
     Ng2SearchPipeModule,
     MatTooltipModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

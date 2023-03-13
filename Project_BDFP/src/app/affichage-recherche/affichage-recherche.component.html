@@ -103,8 +103,8 @@
 
 
 <!-- Resultats de la recherche  -->
-
 <h2>Résultats de la recherche :</h2>
+<div id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
 <div id="reponse" *ngIf="finished">
   <div *ngFor="let movie of finalMovieResults | keyvalue">
     <app-movie-card [movieData]="movie"></app-movie-card>

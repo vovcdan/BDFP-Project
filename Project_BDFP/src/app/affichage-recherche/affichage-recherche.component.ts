@@ -34,6 +34,7 @@ export class AffichageRechercheComponent implements OnInit {
   finished = false;
   singleFilm: Map<any, string> = new Map();
   finalMovieResults: any;
+  spinner : boolean = false
 
   constructor(
     private filmService: FilmsService,
@@ -59,6 +60,7 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
   searchedMoviesNotEmpty() {
+    this.spinner = true
     if (this.moviesInDB) {
       return true;
     } else {
@@ -68,6 +70,7 @@ export class AffichageRechercheComponent implements OnInit {
 
   async rechercherFilm() {
     this.finished = false;
+    this.spinner = true
 
     if(this.moviesInDB != undefined) {
       this.moviesInDB = undefined;
@@ -264,6 +267,7 @@ export class AffichageRechercheComponent implements OnInit {
 
 
     this.finished = true;
+    this.spinner = false
   }
 
   // parti du formulaire de recherche

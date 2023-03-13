@@ -63,3 +63,11 @@ h2 {
 #cherche {
   display: block;
 }
+
+#spinner {
+  transform: scale(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color : #ffa500
+}
