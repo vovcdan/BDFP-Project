@@ -39,6 +39,31 @@ export class FilmsService {
       .subscribe();
   }
 
+  async createListFilmForuserAsync(){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({uid: uid, movies: []})
+    };
+
+    const url = "http://localhost:8080/api/movies";
+
+    fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
   // ajoute un film à la bd privé de l'utilisateur
   addFilmToList(
     titre: string,
@@ -66,6 +91,40 @@ export class FilmsService {
     });
   }
 
+  addFilmToListAsync(titre: string, omdbID: string, tmdbID: string, dateVision: string, cinema: string, accompagnateurs: string, avis: string, note: string){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({uid: uid, movies: {
+        titre: titre,
+        omdbID: omdbID,
+        tmdbID: tmdbID,
+        dateVision: dateVision,
+        cinema: cinema,
+        accompagnateurs: accompagnateurs,
+        avis: avis,
+        note: note,
+      }})
+    };
+
+    const url = `http://localhost:8080/api/movies/${uid}`;
+
+    fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
   // ajoute un nouvel utilisateur (inscription)
   addUser(email: string, mdp: string) {
     this.http
@@ -81,6 +140,33 @@ export class FilmsService {
           return null;
         }
       );
+  }
+
+  async addUserAsync(email: string, mdp: string){
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({email: email, mdp: mdp})
+    };
+
+    const url = `http://localhost:8080/api/users`;
+
+    fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    }).then(data => {
+      if(data) {
+        //this.createListFilmForUser(this.id._id);
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
   }
 
   // créé une liste pour un utilisateur pour ensuite stocker des films à l'intérieur
