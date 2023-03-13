@@ -177,6 +177,7 @@ export class ajouterFilm implements OnInit {
   films: Film[] = [];
   val: boolean = false;
   omdbSelected: boolean = true;
+  messError: boolean = false
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
@@ -244,8 +245,10 @@ export class ajouterFilm implements OnInit {
     )
     .subscribe((data: any) => {
       if (data['Search'] == undefined) {
+        this.messError = true
         this.filteredMoviesOMDB = [];
       } else {
+        this.messError = false
         this.filteredMoviesOMDB = data['Search'];
       }
       //console.log(this.filteredMoviesOMDB);
@@ -277,12 +280,15 @@ export class ajouterFilm implements OnInit {
         )
       ).subscribe((data: any) => {
       if (data['results'] == undefined) {
+        this.messError = true
         this.filteredMoviesTMDB = [];
       } else {
+        this.messError = false
         this.filteredMoviesTMDB = data['results'];
       }
       //console.log(this.filteredMoviesTMDB);
     });
+    this.messError = false
   }
 
   onSelected() {
@@ -297,6 +303,7 @@ export class ajouterFilm implements OnInit {
     this.selectedMovie = '';
     this.filteredMoviesOMDB = [];
     this.filteredMoviesTMDB = [];
+    this.messError = false
   }
 
   onNoClick(): void {
