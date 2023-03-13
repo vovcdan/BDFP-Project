@@ -525,7 +525,6 @@ export class FilmsService {
   }
 
   shareList(destUserId: string, titrelist: string, liste: ListFilm) {
-    console.log(liste.movies);
     let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
     this.http
       .post<ListFilm>('http://localhost:8080/api/allLists/share', {

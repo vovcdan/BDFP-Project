@@ -61,7 +61,6 @@ export class SingleListeComponent implements OnInit {
   async isSharedList() {
     let isShared = await this.filmService.isListShared(this.currentListe.titrelist);
     this.isListShared = await isShared!.json();
-    console.log(this.isListShared);
     this.utilService.setisListShared(this.isListShared);
   }
 

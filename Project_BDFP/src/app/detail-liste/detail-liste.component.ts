@@ -56,7 +56,6 @@ export class DetailListeComponent implements OnInit {
       this.movies.get(key).Runtime = movieFromOMDB.Runtime;
       this.movies.get(key).release_date = movieFromOMDB.Year;
     }
-    console.log(this.movies);
   }
 
 
