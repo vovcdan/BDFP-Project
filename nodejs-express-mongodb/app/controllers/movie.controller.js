@@ -286,7 +286,7 @@ exports.findByAccompagnateurs = (req, res) => {
   MovieDB.aggregate([
     { $match: { uid: uid } },
     { $unwind: "$movies" },
-    { $match: { "movies.accompagnateurs": accompagnateurs } },
+    { $match: { "movies.accompagnateurs": { $in: [new RegExp(`.*${accompagnateurs}.*`, "i")] } } },
   ])
     .then((data) => {
       if (!data || data.length === 0) {
@@ -341,7 +341,7 @@ exports.findByAvis = (req, res) => {
   MovieDB.aggregate([
     { $match: { uid: uid } },
     { $unwind: "$movies" },
-    { $match: { "movies.avis": avis } },
+    { $match: { "movies.avis": { $in: [new RegExp(`.*${avis}.*`, "i")] }} },
   ])
     .then((data) => {
       if (!data || data.length === 0) {
