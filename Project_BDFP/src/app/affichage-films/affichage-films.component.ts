@@ -22,7 +22,7 @@ export class AffichageFilmsComponent implements OnInit {
   searchText!: any;
   spinner : boolean = false
 
-  
+
 
   constructor(
     private init: InitService,
@@ -33,10 +33,12 @@ export class AffichageFilmsComponent implements OnInit {
   }
 
   async initialisation(){
-    this.spinner = true 
+    this.spinner = true
     this.movies = await this.init.initAffichageFilms()
     this.spinner = false
   }
+
+  get spinnerStyle() { return {color: 'Orange'} }
 
   get filteredMovies() {
     if (!this.searchText) {
@@ -48,5 +50,5 @@ export class AffichageFilmsComponent implements OnInit {
       return titleMatch || releaseDateMatch;
     }));
   }
-  
+
 }
