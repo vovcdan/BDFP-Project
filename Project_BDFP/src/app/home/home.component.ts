@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit {
   error_message = "";
   // showResultatRecherche = this.utilService.getResultatRecherche()
   showResultatRecherche = true
-
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
@@ -178,6 +177,11 @@ export class ajouterFilm implements OnInit {
   films: Film[] = [];
   val: boolean = false;
   omdbSelected: boolean = true;
+  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
+  searchControlDate = new FormControl(
+    '',
+    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+  );
 
   constructor(
     public dialogRef: MatDialogRef<ajouterFilm>, private filmService: FilmsService, private api: ApiServiceService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
