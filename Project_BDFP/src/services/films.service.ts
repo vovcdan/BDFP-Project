@@ -220,6 +220,23 @@ export class FilmsService {
     return response;
   }
 
+  async deleteMovieFromListAsync(omdbID: string, titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    const url = `http://localhost:8080/api/allLists/${uid}/${titrelist}/${omdbID}`
+
+    fetch(url, {
+      method: 'DELETE',
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error);
+    });
+  }
+
   async deleteMovieFromAllLists(omdbID: string) {
     const uid = this.utilService.getUserId();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Film } from 'app/models/film.model';
 import { InitService } from 'services/init.service';
 import { UtilsService } from 'services/utils.service';
@@ -22,6 +22,8 @@ export class AffichageFilmsComponent implements OnInit {
   searchText!: any;
   spinner : boolean = false
 
+  
+
   constructor(
     private init: InitService,
   ) {}
@@ -35,4 +37,16 @@ export class AffichageFilmsComponent implements OnInit {
     this.movies = await this.init.initAffichageFilms()
     this.spinner = false
   }
+
+  get filteredMovies() {
+    if (!this.searchText) {
+      return this.movies;
+    }
+    return new Map([...this.movies].filter(([key, movie]) => {
+      const titleMatch = movie.title.toLowerCase().includes(this.searchText.toLowerCase());
+      const releaseDateMatch = movie.release_date.includes(this.searchText);
+      return titleMatch || releaseDateMatch;
+    }));
+  }
+  
 }

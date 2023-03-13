@@ -47,8 +47,22 @@ export class DetailListeComponent implements OnInit {
 
   async initialisation(){
     this.movies = await this.init.initDetailListe();
+
+    let OMDBIDS = []
+
+    for (const [key, value] of this.movies) {
+      let movieFromOMDB_Data = await this.api.getMovieByIdAsync(key);
+      let movieFromOMDB = await movieFromOMDB_Data!.json();
+      this.movies.get(key).Plot = movieFromOMDB.Plot;
+      this.movies.get(key).Actors = movieFromOMDB.Actors;
+      this.movies.get(key).Runtime = movieFromOMDB.Runtime;
+      this.movies.get(key).release_date = movieFromOMDB.Year;
+
+    }
+
+
   }
-  
+
 
   openSnackBar(message: string) {
     this.snack.open(message,"", {
@@ -57,31 +71,33 @@ export class DetailListeComponent implements OnInit {
   }
 
   afficherFilm(imdbID: string) {
-    let movie = new Map<any, any>()
+    let movie;
     for(const [key, value] of this.movies){
       if(key == imdbID){
-        movie.set(key, value)
+        movie = {key: key, value: value}
         break
       }
     }
     this.utilService.setMovie(movie)
-    this.router.navigateByUrl('/home/' + movie.values().next().value.title)
+    this.router.navigateByUrl('/home/' + movie?.value.title)
   }
 
-  suppDialog(omdbID: string): void {
-    this.api.getMovieById(omdbID).subscribe((film) => {
-      this.utilService.setMovie(film);
-      const message = `Êtes-vous sûr de vouloir supprimer ce film de la liste ?`;
-      const dialogData = new SuppDialogModel("Suppression", message);
-      this.utilService.setListeOuGlobalSupp(1)
-      const dialogRef = this.dialog.open(SuppDialogComponent, {
-        maxWidth: "600px",
-        data: dialogData
-      });
+  suppDialog(omdbID: string, title: string): void {
+    let value = {
+      title: title
+    }
+    let movie = {key: omdbID, value: value}
+    this.utilService.setMovie(movie);
+    const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
+    const dialogData = new SuppDialogModel("Suppression", message);
+    this.utilService.setListeOuGlobalSupp(1)
+    const dialogRef = this.dialog.open(SuppDialogComponent, {
+      maxWidth: "600px",
+      data: dialogData
+    });
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        this.result = dialogResult;
-      });
-    })
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+    });
   }
 }

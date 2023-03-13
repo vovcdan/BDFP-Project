@@ -67,10 +67,15 @@ export class SuppDialogComponent implements OnInit {
     let movie = this.currentFilm;
 
     this.filmService
-      .deleteMovieByIdAsync(this.currentFilm.key)
+      .deleteMovieFromListAsync(this.currentFilm.key, this.curList.titrelist)
       .then(() => {
         this.openSnackBar(movie.value.title + ' à été supprimé');
-        this.back();
+        this.closeFenetre()
+        this.router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this.router.navigateByUrl('/favs/' + this.curList.titrelist);
+          });
       })
       .catch((error) => {
         console.error(

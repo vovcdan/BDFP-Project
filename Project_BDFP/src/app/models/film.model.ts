@@ -10,4 +10,5 @@ export class Film {
     accompagnateurs!: string;
     avis!: string;
     note!: string;
+  release_date: any;
 }
