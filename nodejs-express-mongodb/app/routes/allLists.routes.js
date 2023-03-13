@@ -20,6 +20,10 @@ module.exports = (app) => {
 
   router.get("/", allLists.findAll);
 
+  router.get("/isShared/:uid/:titrelist", allLists.isSharedList)
+
+  router.put("/:uid/:omdbID", allLists.update)
+
   router.delete("/", allLists.deleteAll);
 
   router.delete("/:idListe", allLists.deleteOne);

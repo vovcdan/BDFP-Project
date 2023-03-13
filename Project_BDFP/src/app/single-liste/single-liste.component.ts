@@ -49,10 +49,18 @@ export class SingleListeComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentListe = this.utilService.getCurrentListe();
+    this.isSharedList();
   }
 
   back() {
     this.loc.back();
+  }
+
+  async isSharedList() {
+    let isShared = await this.filmService.isListShared(this.utilService.getUserId(), this.currentListe.titrelist);
+    let isShared_json = await isShared!.json();
+    console.log(isShared_json);
+    this.utilService.setisListShared(isShared_json);
   }
 
   openSnackBar(message: string) {

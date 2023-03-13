@@ -61,8 +61,15 @@ export class SingleFilmComponent implements OnInit {
     let user_id = this.utilService.getUserId();
     const movie_imdb_id = this.currentFilm.key;
 
-    let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
-    this.currentFilmInfos = await movieFromDB_data!.json()
+    const isListShared = this.utilService.getIsListShared();
+
+    if (isListShared) {
+      let movieFromDB_data = await this.filmService.getOneListAsync(this.utilService.getCurrentListeName());
+      this.currentFilmInfos = await movieFromDB_data!
+    } else {
+      let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
+      this.currentFilmInfos = await movieFromDB_data!.json();
+    }
 
     let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
     let movieFromOMDB = await movieFromOMDB_data!.json()

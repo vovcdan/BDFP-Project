@@ -552,7 +552,34 @@ export class FilmsService {
 
     const url = `http://localhost:8080/api/movies/${uid}/${omdbID}`;
 
+    const url2 = `http://localhost:8080/api/allLists/${uid}/${omdbID}`;
+
     fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        avis: movie.avis,
+        accompagnateurs: movie.accompagnateurs,
+        note: movie.note,
+        cinema: movie.cinema,
+        dateVision: movie.dateVision,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then((data) => {
+        console.log('Data updated successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+
+    fetch(url2, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -634,4 +661,24 @@ export class FilmsService {
         }
       );
   }
+
+  async isListShared(user_id: string, list_title: string) {
+    const url = `http://localhost:8080/api/allLists/isShared/${user_id}/${list_title}`
+
+    try {
+    let data = await fetch(url);
+    return data;
+
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return null;
+    }
+
+
+  }
+
 }

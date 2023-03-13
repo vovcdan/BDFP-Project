@@ -33,6 +33,8 @@ export class UtilsService {
 
   listName!: string
 
+  isListShared!: boolean;
+
   constructor() { }
 
   connect() {
@@ -149,13 +151,21 @@ export class UtilsService {
     return this.searchedMovies;
   }
 
+  setisListShared(isShared: boolean) {
+    this.isListShared = isShared;
+  }
+
+  getIsListShared() {
+    return this.isListShared;
+  }
+
   // getResultatRecherche() {
   //   return this.showResultatRecherche
   // }
 
   // setResultatRecherche(res: boolean){
   //   this.showResultatRecherche = res;
-    
+
   // }
 
 }
