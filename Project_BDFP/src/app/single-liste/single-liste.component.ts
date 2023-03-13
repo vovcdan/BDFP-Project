@@ -43,16 +43,25 @@ export class SingleListeComponent implements OnInit {
 
   result: any;
 
+  isListShared!: boolean
+
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
     ,private exportService: ExportService) { }
 
   ngOnInit(): void {
     this.currentListe = this.utilService.getCurrentListe();
+    this.isSharedList();
   }
 
   back() {
     this.loc.back();
+  }
+
+  async isSharedList() {
+    let isShared = await this.filmService.isListShared(this.currentListe.titrelist);
+    this.isListShared = await isShared!.json();
+    this.utilService.setisListShared(this.isListShared);
   }
 
   openSnackBar(message: string) {

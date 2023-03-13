@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+    this.utilService.setisListShared(false);
 
     this.formRecherche = new FormGroup({
       titreControl:new FormControl(),
@@ -251,7 +252,6 @@ export class ajouterFilm implements OnInit {
         this.messError = false
         this.filteredMoviesOMDB = data['Search'];
       }
-      //console.log(this.filteredMoviesOMDB);
     });
   }
 
@@ -286,7 +286,6 @@ export class ajouterFilm implements OnInit {
         this.messError = false
         this.filteredMoviesTMDB = data['results'];
       }
-      //console.log(this.filteredMoviesTMDB);
     });
     this.messError = false
   }
@@ -355,16 +354,13 @@ export class ajouterFilm implements OnInit {
   }
 
   ajoutFilmFromTMDB() {
-    console.log(this.selectedMovie);
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
     let tmdbid = this.selectedMovie.id;
-    console.log(tmdbid);
     this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
-      console.log(movieTMDB);
       let imdb_id = movieTMDB.imdb_id;
       if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(

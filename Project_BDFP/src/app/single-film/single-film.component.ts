@@ -32,6 +32,8 @@ export class SingleFilmComponent implements OnInit {
 
   updating = false
 
+  isListShared!: boolean
+
   formUpdateMovie!: FormGroup
 
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
@@ -50,23 +52,25 @@ export class SingleFilmComponent implements OnInit {
     // this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
-    console.log(this.currentFilm);
-
   }
 
   async init() {
     this.currentFilm = this.utilService.getMovie();
-    console.log(this.currentFilm);
 
     let user_id = this.utilService.getUserId();
     const movie_imdb_id = this.currentFilm.key;
 
-    let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
-    this.currentFilmInfos = await movieFromDB_data!.json()
+    this.isListShared = this.utilService.getIsListShared();
+
+    if (this.isListShared) {
+      this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
+    } else {
+      let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
+      this.currentFilmInfos = await movieFromDB_data!.json();
+    }
 
     let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
     let movieFromOMDB = await movieFromOMDB_data!.json()
-    console.log(movieFromOMDB);
 
     this.currentFilmInfos['release_date'] = movieFromOMDB.Year
     this.currentFilmInfos['Actors'] = movieFromOMDB.Actors
@@ -74,7 +78,6 @@ export class SingleFilmComponent implements OnInit {
     this.currentFilmInfos['Genre'] = movieFromOMDB.Genre
     this.currentFilmInfos['Director'] = movieFromOMDB.Director
     this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
-    console.log(this.currentFilmInfos);
   }
 
   back() {
@@ -127,7 +130,6 @@ export class SingleFilmComponent implements OnInit {
 
   suppDialog(): void {
     this.utilService.setMovie(this.currentFilm);
-    console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
     this.utilService.setListeOuGlobalSupp(2)

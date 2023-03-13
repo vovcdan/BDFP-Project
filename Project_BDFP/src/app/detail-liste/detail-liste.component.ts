@@ -48,8 +48,6 @@ export class DetailListeComponent implements OnInit {
   async initialisation(){
     this.movies = await this.init.initDetailListe();
 
-    let OMDBIDS = []
-
     for (const [key, value] of this.movies) {
       let movieFromOMDB_Data = await this.api.getMovieByIdAsync(key);
       let movieFromOMDB = await movieFromOMDB_Data!.json();
@@ -57,10 +55,7 @@ export class DetailListeComponent implements OnInit {
       this.movies.get(key).Actors = movieFromOMDB.Actors;
       this.movies.get(key).Runtime = movieFromOMDB.Runtime;
       this.movies.get(key).release_date = movieFromOMDB.Year;
-
     }
-
-
   }
 
 
