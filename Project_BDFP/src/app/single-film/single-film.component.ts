@@ -177,16 +177,16 @@ export class SingleFilmComponent implements OnInit {
       return;
     }
     this.test=true;
+
     const str = titreFilm.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 
     console.log("https://www.critikat.com/actualite-cine/critique/"+str);
 
+    //PROXY 1
+
     // Utilisation d'un proxy pour éviter les problèmes de CORS.
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-    const url = `https://www.critikat.com/actualite-cine/critique/${str}`;
-  
-    // Récupération du contenu HTML de l'URL en utilisant le proxy.
-    const response = await fetch(proxyUrl + url);
+    const url = `https://www.critikat.com/actualite-cine/critique/${str}`
+    const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
     const htmlString = await response.text();
   
     // Parsage de la chaîne HTML en objet DOM.
@@ -200,13 +200,14 @@ export class SingleFilmComponent implements OnInit {
     const critiques = htmlDOM.querySelectorAll('.labeur');
     let critique: string | undefined;
 
-    if(critiques) {
+    if(critiques.length > 0) {
       critique = critiques[0].textContent?.trim();
+    } else {
+      critique = "Aucune critiques disponibles pour ce film"
     }
     
     console.log('Critique :', critique);
   }
-  
  
   
 }
