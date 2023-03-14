@@ -134,14 +134,6 @@ p {
 }
 
 
-
-.wrapper {
-    display: grid;
-    grid-template-columns: 400px 400px;
-    grid-auto-rows: minmax(30px, auto);
-    row-gap: 2em;
-  }
-
 hr {
     margin: 40px 0px 40px 0px;
     width: 100%;
@@ -176,10 +168,10 @@ a {
 }
 
 .partie {
-    padding : 5px;
-    overflow: hidden;
-    margin : 20px;
-}
+    display: inline-block;
+    width: 50%;
+    margin-top : 50px
+  }
 
 #butModif {
     border-radius: 60px;
@@ -221,4 +213,12 @@ input, textarea {
 #boutons p {
     color : red;
     display: inline-block;
+}
+
+#avis input{
+    height: 50px;
+}
+
+#avis mat-form-field {
+    height : 50px;
 }
