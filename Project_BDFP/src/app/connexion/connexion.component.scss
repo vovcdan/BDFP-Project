@@ -109,3 +109,20 @@ h2 {
 #head {
   margin : 0 auto;
 }
+
+.change{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+mat-label {
+  color: white;
+}
+
+span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
