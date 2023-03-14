@@ -162,8 +162,14 @@
           <mat-icon class="icone">event_note</mat-icon>
           <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
         </div>
-        {{lienCritique}}
-        {{critique}}
+        <div>
+          <mat-icon class="icone">stars</mat-icon>
+          <p>
+            <span class="bold">Critiques Critikat :</span>
+          </p>
+          <button mat-button (click)="openDialog()">Voir plus</button>
+          <p><span class="bold">Source : </span> {{lienCritique}} </p>
+        </div>
         <div>
           <mat-icon class="icone">stars</mat-icon>
           <p id="ligne">

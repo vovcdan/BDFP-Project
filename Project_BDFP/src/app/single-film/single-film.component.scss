@@ -222,3 +222,10 @@ input, textarea {
 #avis mat-form-field {
     height : 50px;
 }
+
+#texte {
+    width:70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}

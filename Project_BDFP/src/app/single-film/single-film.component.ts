@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
@@ -193,6 +193,7 @@ export class SingleFilmComponent implements OnInit {
     const url = `https://www.critikat.com/actualite-cine/critique/${str}`
     const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
     const htmlString = await response.text();
+    console.log(htmlString)
   
     // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
@@ -210,6 +211,32 @@ export class SingleFilmComponent implements OnInit {
       this.critique = "Aucune critiques disponibles pour ce film"
     }
   }
- 
+
+  openDialog() {
+    const dialogRef = this.dialog.open(CritiqueDialogComponent, {
+      data: {
+        critique: this.critique!,
+        lienCritique: this.lienCritique!
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+}
+
+@Component({
+  selector: 'app-critique-dialog',
+  templateUrl: './critique-dialog.html',
+  styleUrls: ['./critique-dialog.scss']
+})
+export class CritiqueDialogComponent implements OnInit {
   
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any){}
+
+  ngOnInit(){
+    console.log(this.data)
+  }
+
 }
