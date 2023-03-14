@@ -8,6 +8,8 @@ import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialo
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-single-film',
@@ -32,15 +34,11 @@ export class SingleFilmComponent implements OnInit {
 
   updating = false
 
+  isListShared!: boolean
+
   formUpdateMovie!: FormGroup
 
-  searchControlDate = new FormControl(
-    '',
-    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
-  );
-  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
-
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog) { }
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.init();
@@ -56,23 +54,25 @@ export class SingleFilmComponent implements OnInit {
     // this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
-    console.log(this.currentFilm);
-
   }
 
   async init() {
     this.currentFilm = this.utilService.getMovie();
-    console.log(this.currentFilm);
 
     let user_id = this.utilService.getUserId();
     const movie_imdb_id = this.currentFilm.key;
 
-    let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
-    this.currentFilmInfos = await movieFromDB_data!.json()
+    this.isListShared = this.utilService.getIsListShared();
+
+    if (this.isListShared) {
+      this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
+    } else {
+      let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
+      this.currentFilmInfos = await movieFromDB_data!.json();
+    }
 
     let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
     let movieFromOMDB = await movieFromOMDB_data!.json()
-    console.log(movieFromOMDB);
 
     this.currentFilmInfos['release_date'] = movieFromOMDB.Year
     this.currentFilmInfos['Actors'] = movieFromOMDB.Actors
@@ -80,7 +80,6 @@ export class SingleFilmComponent implements OnInit {
     this.currentFilmInfos['Genre'] = movieFromOMDB.Genre
     this.currentFilmInfos['Director'] = movieFromOMDB.Director
     this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
-    console.log(this.currentFilmInfos);
   }
 
   back() {
@@ -133,7 +132,6 @@ export class SingleFilmComponent implements OnInit {
 
   suppDialog(): void {
     this.utilService.setMovie(this.currentFilm);
-    console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
     this.utilService.setListeOuGlobalSupp(2)
@@ -170,4 +168,42 @@ export class SingleFilmComponent implements OnInit {
     this.filmService.updateMovieInfo(filmModifie)
     this.updating = !this.updating
   }
+
+  async scrapeCritiques(titreFilm: string) {
+    if (this.test) {
+      return;
+    }
+    this.test=true;
+    const str = titreFilm.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+
+    console.log("https://www.critikat.com/actualite-cine/critique/"+str);
+
+    // Utilisation d'un proxy pour éviter les problèmes de CORS.
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const url = `https://www.critikat.com/actualite-cine/critique/${str}`;
+  
+    // Récupération du contenu HTML de l'URL en utilisant le proxy.
+    const response = await fetch(proxyUrl + url);
+    const htmlString = await response.text();
+  
+    // Parsage de la chaîne HTML en objet DOM.
+    const parser = new DOMParser();
+    const htmlDOM = parser.parseFromString(htmlString, 'text/html');
+
+  
+    // Extraction de la critique du film " " de l'objet DOM.
+    // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
+    // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
+    const critiques = htmlDOM.querySelectorAll('.labeur');
+    let critique: string | undefined;
+
+    if(critiques) {
+      critique = critiques[0].textContent?.trim();
+    }
+    
+    console.log('Critique :', critique);
+  }
+  
+ 
+  
 }

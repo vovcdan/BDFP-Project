@@ -612,7 +612,6 @@ export class FilmsService {
   }
 
   shareList(destUserId: string, titrelist: string, liste: ListFilm) {
-    console.log(liste.movies);
     let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
     this.http
       .post<ListFilm>('http://localhost:8080/api/allLists/share', {
@@ -632,6 +631,37 @@ export class FilmsService {
     return laliste;
   }
 
+  async shareListAsync(dest_id: string, list: ListFilm){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        uid: dest_id,
+        titrelist: list.titrelist + ' partagee par ' + this.utilService.getUserName(),
+        movies: list.movies,
+      })
+    };
+
+    const url = "http://localhost:8080/api/allLists/share";
+
+    fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
+
+
   updateMovieInfo(movie: Film) {
     const uid = this.utilService.getUserId();
 
@@ -639,7 +669,34 @@ export class FilmsService {
 
     const url = `http://localhost:8080/api/movies/${uid}/${omdbID}`;
 
+    const url2 = `http://localhost:8080/api/allLists/${uid}/${omdbID}`;
+
     fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        avis: movie.avis,
+        accompagnateurs: movie.accompagnateurs,
+        note: movie.note,
+        cinema: movie.cinema,
+        dateVision: movie.dateVision,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then((data) => {
+        console.log('Data updated successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+
+    fetch(url2, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -682,6 +739,20 @@ export class FilmsService {
     return user;
   }
 
+  async getUserByMailAsync(usermail: string) {
+
+    const url = `http://localhost:8080/api/users/mail/${usermail}`
+
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        return data
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   async getUserByEmailAndPassword(usermail: string, password: string) {
 
     const url = `http://localhost:8080/api/users/mail/${usermail}/password/${password}`
@@ -693,7 +764,6 @@ export class FilmsService {
       })
       .catch(error => {
         console.error(error);
-        return false
       });
   }
 
@@ -736,4 +806,44 @@ export class FilmsService {
         }
       );
   }
+
+  async getMovieFromOneList(omdbID: string) {
+    const uid = this.utilService.getUserId();
+    const list_title = this.utilService.getCurrentListeName();
+    const url = `http://localhost:8080/api/allLists/${uid}/${list_title}/${omdbID}`;
+
+    try {
+      let data = await fetch(url);
+      let movie = data.json();
+      return movie;
+    }catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return null;
+    }
+  }
+
+  async isListShared(list_title: string) {
+    const uid = this.utilService.getUserId();
+    const url = `http://localhost:8080/api/allLists/isShared/${uid}/${list_title}`
+
+    try {
+    let data = await fetch(url);
+    return data;
+
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return null;
+    }
+
+
+  }
+
 }
