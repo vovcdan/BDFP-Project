@@ -8,7 +8,6 @@ import { NavComponent } from './nav/nav.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { HomeComponent  } from './home/home.component';
 import { NgImageSliderModule } from 'ng-image-slider';
-import { InscrireComponent } from './inscrire/inscrire.component';
 import { DialogOverviewExampleDialog, ListesComponent } from './listes/listes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -41,7 +40,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NavComponent,
     ConnexionComponent,
     HomeComponent,
-    InscrireComponent,
     ListesComponent,
     DialogOverviewExampleDialog,
     ListeCompComponent,

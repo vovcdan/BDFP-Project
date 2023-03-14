@@ -153,7 +153,7 @@ export class FilmsService {
 
     const url = `http://localhost:8080/api/users`;
 
-    fetch(url, options).then(response => {
+    await fetch(url, options).then(response => {
       if(response.ok){
         return response.json()
       } else {
@@ -161,7 +161,10 @@ export class FilmsService {
       }
     }).then(data => {
       if(data) {
-        //this.createListFilmForUser(this.id._id);
+        this.createListFilmForUser(data._id);
+        this.utilService.connect();
+        this.utilService.setUserName(data.email);
+        this.utilService.setUserId(data._id);
       }
     })
     .catch(error => {
