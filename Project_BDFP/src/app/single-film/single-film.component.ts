@@ -38,6 +38,8 @@ export class SingleFilmComponent implements OnInit {
 
   formUpdateMovie!: FormGroup
 
+  test: boolean = false
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
