@@ -11,7 +11,7 @@
     </div>
     <div id="bout">
 
-        <div class="bt">
+        <div class="bt" *ngIf="!isListShared">
             <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
                 <mat-icon>add</mat-icon>
             </button>
@@ -22,7 +22,7 @@
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
-        
+
         <div class="bt">
             <button class="bt" mat-fab matTooltip="Partager la liste" mat-fab (click)="dialogShare()">
                 <mat-icon>share</mat-icon>

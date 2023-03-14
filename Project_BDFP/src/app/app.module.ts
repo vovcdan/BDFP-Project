@@ -7,7 +7,6 @@ import { HttpClientModule} from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { HomeComponent  } from './home/home.component';
-import { CarousselComponent } from './caroussel/caroussel.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { InscrireComponent } from './inscrire/inscrire.component';
 import { DialogOverviewExampleDialog, ListesComponent } from './listes/listes.component';
@@ -42,7 +41,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     NavComponent,
     ConnexionComponent,
     HomeComponent,
-    CarousselComponent,
     InscrireComponent,
     ListesComponent,
     DialogOverviewExampleDialog,
@@ -84,6 +82,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   providers: [AuthService],
   bootstrap: [AppComponent],
   entryComponents: [ajouterFilm, SuppDialogComponent],
-  
+
 })
 export class AppModule { }
