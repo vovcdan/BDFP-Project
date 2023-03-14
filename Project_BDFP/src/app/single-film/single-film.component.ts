@@ -9,6 +9,7 @@ import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 import { HttpClient } from '@angular/common/http';
+import wtf from 'wtf_wikipedia';
 
 
 @Component({
@@ -171,7 +172,13 @@ export class SingleFilmComponent implements OnInit {
     this.updating = !this.updating
   }
 
-  
+  async translateTitle(title: string) {
+    let doc = await wtf.fetch(title, {lang: 'fr'});
+    let text = (doc as any).title()
+    return text;
+  }
+
+
   async scrapeCritiques(titreFilm: string) {
     if (this.test) {
       return;
@@ -188,12 +195,12 @@ export class SingleFilmComponent implements OnInit {
     const url = `https://www.critikat.com/actualite-cine/critique/${str}`
     const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
     const htmlString = await response.text();
-  
+
     // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
 
-  
+
     // Extraction de la critique du film " " de l'objet DOM.
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
     // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
@@ -205,9 +212,9 @@ export class SingleFilmComponent implements OnInit {
     } else {
       critique = "Aucune critiques disponibles pour ce film"
     }
-    
+
     console.log('Critique :', critique);
   }
- 
-  
+
+
 }
