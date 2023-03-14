@@ -40,7 +40,7 @@
                   <mat-form-field appearance="fill" class="field">
                     <mat-label class="lab">Note : </mat-label>
                     <input matInput formControlName="noteControl" placeholder="Rechercher">
-                    <mat-error *ngIf="searchControlNote.invalid && (searchControlNote.dirty || searchControlNote.touched)">
+                    <mat-error *ngIf="formUpdateMovie.get('noteControl')?.invalid && formUpdateMovie.get('noteControl')?.touched">
                       forme :  chiffre de 0 à 5
                     </mat-error>
                   </mat-form-field>
@@ -50,10 +50,9 @@
                 <div class="form-group">
                   <p><span class="bold">Date de visionnage</span></p>
                   <mat-form-field appearance="fill" class="field">
-                    <mat-label class="lab">Date de visionnage : </mat-label>
                     <input matInput formControlName="dateVisionControl" placeholder="Rechercher">
-                    <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
-                      forme : jjmmaaaa
+                    <mat-error *ngIf="formUpdateMovie.get('dateVisionControl')?.invalid && formUpdateMovie.get('dateVisionControl')?.touched">
+                      forme :  jjmmaaaa ex : 12032022
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -86,9 +85,10 @@
               </div>
           </div>
           <div id="boutons">
-            <button id="butModif" mat-mini-fab matTooltip="Valider" (click)="modifyMovie()">
+            <button id="butModif" mat-mini-fab matTooltip="Valider" [disabled]="formUpdateMovie.get('dateVisionControl')?.invalid || formUpdateMovie.get('noteControl')?.invalid" (click)="modifyMovie()">
               <mat-icon>check_circle</mat-icon>
             </button>
+            <p *ngIf="formUpdateMovie.get('dateVisionControl')?.invalid || formUpdateMovie.get('noteControl')?.invalid">Veuillez modifier les erreurs</p>
             <button id="butModif" mat-mini-fab matTooltip="Annuler" (click)="showFormUpdateNovie()">
               <mat-icon>cancel</mat-icon>
             </button>
@@ -152,13 +152,13 @@
             </ul>
           </details>
         </div>
-        <div class="partie">
+        <div>
           <mat-icon class="icone">rate_review</mat-icon>
           <p>
             <span class="bold">Réalisateurs :</span> {{ currentFilmInfos.Director }}
           </p>
         </div>
-        <div class="partie">
+        <div>
           <mat-icon class="icone">event_note</mat-icon>
           <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
         </div>
