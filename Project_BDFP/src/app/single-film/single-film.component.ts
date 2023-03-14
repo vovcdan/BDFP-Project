@@ -226,7 +226,21 @@ export class SingleFilmComponent implements OnInit {
     const critiques = htmlDOM.querySelectorAll('.labeur');
 
     if(critiques.length > 0) {
-      this.critique = critiques[0].textContent?.trim();
+      let critique!: string | undefined
+      critique = critiques[0].textContent?.trim();
+      const regex = /jQuery\(.*}\);./gi;
+      const newStr = critique!.replace(regex, "");
+      console.log(newStr)
+      if(newStr.includes("function")) {
+        const index = newStr.indexOf('function');
+        const newStr2 = newStr.substring(0, index);
+        this.critique = newStr2
+        console.log(newStr2);
+      } else {
+        this.critique = newStr
+        console.log(newStr);
+      }
+            
     } else {
       this.critique = "Aucune critiques disponibles pour ce film"
     }
