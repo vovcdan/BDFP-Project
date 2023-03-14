@@ -20,7 +20,10 @@
             </div>
             <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
             <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key, infoMovies.value.title)">Supprimer le film</button>
-            </div>
+            <ng-container *ngIf="!infoMovies.value.isInDB">
+                <button id="supp" mat-raised-button (click)="addMovieFromSharedListToUser(infoMovies.key, infoMovies.value.tmdbID, infoMovies.value.title)">Ajouter ce film</button>
+            </ng-container>
+        </div>
     </div>
 </div>
 

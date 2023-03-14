@@ -34,6 +34,7 @@ export class ListeCompComponent implements OnInit {
     this.router.navigateByUrl('/favs/' + laliste.titrelist);
     this.utilService.setListName(laliste.titrelist);
     this.utilService.setCurrentListe(laliste);
+    this.utilService.setisListShared(laliste.shared);
   }
 
   async addSharedListToUserLists(list: ListFilm) {

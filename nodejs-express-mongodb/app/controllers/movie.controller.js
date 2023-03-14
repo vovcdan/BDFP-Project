@@ -98,15 +98,20 @@ exports.findOne = (req, res) => {
     .then((data) => {
       if (data) {
         const movie = data.movies.find((m) => m.omdbID === omdbID);
-        res.send(JSON.stringify(movie));
-      } else res.status(404).send("Aucun film trouvé avec l'id: " + omdbID);
+        if (movie) {
+          res.send(JSON.stringify(movie));
+        } else {
+          res.send([]);
+        }
+      } else {
+        res.send([]);
+      }
     })
     .catch((err) => {
       if (err.status === 500)
         res.status(500).send({
           message: "Erreur pendant la récupération du film avec l'id " + err,
         });
-      else res.status(404).send("Aucun film trouvé avec l'id: ");
     });
 };
 
