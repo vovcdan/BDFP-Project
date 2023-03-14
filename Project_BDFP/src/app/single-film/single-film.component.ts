@@ -9,6 +9,7 @@ import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 import { HttpClient } from '@angular/common/http';
+import wtf from 'wtf_wikipedia';
 
 
 @Component({
@@ -177,13 +178,33 @@ export class SingleFilmComponent implements OnInit {
     this.updating = !this.updating
   }
 
+  async translateTitle(title: string) {
+    try {
+    let doc = await wtf.fetch(title, {lang: 'fr'});
+    let text = (doc as any).title()
+    return text;
+    } catch (error) {
+      throw new Error("Tranduction du titre du film impossible");
+    }
+  }
+
   async scrapeCritiques(titreFilm: string) {
     if (this.test) {
       return;
     }
     this.test=true;
 
-    const str = titreFilm.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+    try {
+    const titreFR = await this.translateTitle(titreFilm);
+
+    console.log(titreFilm);
+
+    console.log(titreFR);
+
+      // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
+      // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
+      // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
+    const str = titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 
     this.lienCritique = "https://www.critikat.com/actualite-cine/critique/"+str
 
@@ -193,12 +214,12 @@ export class SingleFilmComponent implements OnInit {
     const url = `https://www.critikat.com/actualite-cine/critique/${str}`
     const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
     const htmlString = await response.text();
-  
+
     // Parsage de la chaîne HTML en objet DOM.
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
 
-  
+
     // Extraction de la critique du film " " de l'objet DOM.
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
     // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
@@ -209,7 +230,10 @@ export class SingleFilmComponent implements OnInit {
     } else {
       this.critique = "Aucune critiques disponibles pour ce film"
     }
+  } catch (error) {
+    throw new Error("Recuperation des revues échouée")
   }
- 
-  
+  }
+
+
 }
