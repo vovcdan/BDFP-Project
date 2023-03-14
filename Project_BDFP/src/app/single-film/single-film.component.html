@@ -129,7 +129,6 @@
             <mat-icon class="icone"> local_movies</mat-icon>
             <p><span class="bold">Avis :</span> {{ currentFilmInfos.avis }}</p>
           </div>
-          <!-- {{scrapeCritiques(currentFilm.value.title)}} -->
           <button id="butModif" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
             <mat-icon>create</mat-icon>
           </button>
@@ -163,6 +162,8 @@
           <mat-icon class="icone">event_note</mat-icon>
           <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
         </div>
+        {{lienCritique}}
+        {{critique}}
         <div>
           <mat-icon class="icone">stars</mat-icon>
           <p id="ligne">

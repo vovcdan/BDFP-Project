@@ -40,6 +40,10 @@ export class SingleFilmComponent implements OnInit {
 
   test: boolean = false
 
+  critique?: string
+
+  lienCritique?: string
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -82,6 +86,8 @@ export class SingleFilmComponent implements OnInit {
     this.currentFilmInfos['Genre'] = movieFromOMDB.Genre
     this.currentFilmInfos['Director'] = movieFromOMDB.Director
     this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
+
+    this.scrapeCritiques(this.currentFilm.value.title)
   }
 
   back() {
@@ -179,7 +185,7 @@ export class SingleFilmComponent implements OnInit {
 
     const str = titreFilm.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 
-    console.log("https://www.critikat.com/actualite-cine/critique/"+str);
+    this.lienCritique = "https://www.critikat.com/actualite-cine/critique/"+str
 
     //PROXY 1
 
@@ -197,15 +203,12 @@ export class SingleFilmComponent implements OnInit {
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
     // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
     const critiques = htmlDOM.querySelectorAll('.labeur');
-    let critique: string | undefined;
 
     if(critiques.length > 0) {
-      critique = critiques[0].textContent?.trim();
+      this.critique = critiques[0].textContent?.trim();
     } else {
-      critique = "Aucune critiques disponibles pour ce film"
+      this.critique = "Aucune critiques disponibles pour ce film"
     }
-    
-    console.log('Critique :', critique);
   }
  
   
