@@ -178,6 +178,7 @@ a {
 .partie {
     padding : 5px;
     overflow: hidden;
+    margin : 20px;
 }
 
 #butModif {
@@ -195,4 +196,29 @@ a {
 h2 {
     color : orange;
     margin-left: 100px;
+}
+
+#texte {
+    cursor:pointer
+}
+
+.form-group {
+  margin: 20px auto auto 10px; 
+  display : inline-block;
+  width: 50%;
+  font-size: small;
+}
+
+input, textarea {
+  width: 50%;
+  color: white;
+}
+
+#boutons {
+    display: block;
+}
+
+#boutons p {
+    color : red;
+    display: inline-block;
 }
