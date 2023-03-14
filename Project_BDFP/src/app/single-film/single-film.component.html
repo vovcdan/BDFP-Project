@@ -21,11 +21,10 @@
       ')',
     'background-repeat': 'repeat'
   }"
->
+> 
   <div id="leposter">
     <img src="{{ currentFilm.value.poster }}" alt="{{ currentFilm.value.title }}" id="images" />
   </div>
-
   <div id="infos" *ngIf="currentFilmInfos">
     <div id="titre">{{ currentFilmInfos.titre }}</div>
     <p id="soustitre">
@@ -185,6 +184,7 @@
             <mat-icon class="icone">event_note</mat-icon>
             <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
           </div>
+          {{scrapeCritiques(currentFilm.value.title)}}
           <div>
             <mat-icon class="icone">stars</mat-icon>
             <p id="ligne">
@@ -206,8 +206,8 @@
                           >{{ rev.content }}
                         </li>
                         <li>
-                          <span class="bold">en savoir + : </span
-                          ><a href="{{ rev.url }}">{{ rev.url }}</a>
+                          <span class="bold">en savoir + : </span>
+                          <a href="{{ rev.url }}">{{ rev.url }}</a>
                         </li>
                       </ul>
                     </li>
