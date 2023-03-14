@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Film } from 'app/models/film.model';
-import { ListFilm } from 'app/models/listFilm.models';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
@@ -16,17 +14,12 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./detail-liste.component.scss'],
 })
 export class DetailListeComponent implements OnInit {
-  films: Film[] = [];
-
-  filmsWithAPI: any[] = [];
-
   listName!: any;
-
-  temp!: any;
 
   movies: Map<any, any> = new Map();
 
   singleFilm: Map<any, string> = new Map();
+
   result: any;
 
   searchText !: any;
@@ -38,7 +31,7 @@ export class DetailListeComponent implements OnInit {
     private api: ApiServiceService,
     private router: Router,
     private snack: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +48,9 @@ export class DetailListeComponent implements OnInit {
       this.movies.get(key).Actors = movieFromOMDB.Actors;
       this.movies.get(key).Runtime = movieFromOMDB.Runtime;
       this.movies.get(key).release_date = movieFromOMDB.Year;
+      this.isMovieInDB(key).then(result => {
+        this.movies.get(key).isInDB = result
+      });
     }
   }
 
@@ -93,6 +89,21 @@ export class DetailListeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       this.result = dialogResult;
+    });
+  }
+
+  async isMovieInDB(omdbID: string){ //Promise<boolean> 
+    const data = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), omdbID);
+    const data_jsoned = await data?.json()
+    return (data_jsoned.titre !== undefined);
+  }
+
+  async addMovieFromSharedListToUser(omdbID: string, tmdbID: string, title: string){
+    await this.filmService.addFilmToListAsync(title, omdbID, tmdbID, "", "", "", "", "")
+    this.openSnackBar(`Le film ${title} a été ajouté`)
+    this.router.navigateByUrl('/', { skipLocationChange: true })
+    .then(() => {
+      this.router.navigateByUrl('/favs/' + this.utilService.getCurrentListeName());
     });
   }
 }
