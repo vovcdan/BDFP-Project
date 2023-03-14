@@ -130,33 +130,63 @@
             <p><span class="bold">Avis :</span> {{ currentFilmInfos.avis }}</p>
           </div>
           <!-- {{scrapeCritiques(currentFilm.value.title)}} -->
-          <div>
-            <mat-icon class="icone">stars</mat-icon>
-            <p id="ligne">
-              <details>
-                <summary>
-                  <span class="bold">Critiques :</span>
-                  <p id="texte">afficher les critiques</p>
-                </summary>
-                <section *ngIf="listeRevue">
-                  <ul *ngFor="let rev of listeRevue.results">
+          <button id="butModif" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
+            <mat-icon>create</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <hr />
+      <h2>Informations extraites des API</h2>
+      <div id="wrapper2">
+        <div>
+          <mat-icon class="icone">movie_creation</mat-icon>
+          <p><span class="bold">Acteurs :</span> {{ currentFilmInfos.Actors }}</p>
+          <details>
+            <summary>
+              <p id="texte">voir plus</p>
+            </summary>
+            <ul>
+              <li *ngFor="let item of actors | keyvalue">
+                {{ item.key }} ({{ item.value }})
+              </li>
+            </ul>
+          </details>
+        </div>
+        <div>
+          <mat-icon class="icone">rate_review</mat-icon>
+          <p>
+            <span class="bold">Réalisateurs :</span> {{ currentFilmInfos.Director }}
+          </p>
+        </div>
+        <div>
+          <mat-icon class="icone">event_note</mat-icon>
+          <p><span class="bold">Synopsis : </span> {{ currentFilmInfos.Plot }}</p>
+        </div>
+        <div>
+          <mat-icon class="icone">stars</mat-icon>
+          <p id="ligne">
+          <details>
+            <summary>
+              <span class="bold">Critiques :</span>
+              <p id="texte"> Afficher les critiques</p>
+            </summary>
+            <section *ngIf="listeRevue">
+              <ul *ngFor="let rev of listeRevue.results">
+                <li>
+                  <ul id="det">
                     <li>
-                      <ul id="det">
-                        <li>
-                          <span class="bold">utilisateur : </span
-                          >{{ rev.author }}
-                        </li>
-                        <li>
-                          <span class="bold"> critique : </span
-                          >{{ rev.content }}
-                        </li>
-                        <li>
-                          <span class="bold">en savoir + : </span>
-                          <a href="{{ rev.url }}">{{ rev.url }}</a>
-                        </li>
-                      </ul>
+                      <span class="bold">utilisateur : </span>{{ rev.author }}
+                    </li>
+                    <li>
+                      <span class="bold"> critique : </span>{{ rev.content }}
+                    </li>
+                    <li>
+                      <span class="bold">en savoir + : </span><a href="{{ rev.url }}">{{ rev.url }}</a>
                     </li>
                   </ul>
+                </li>
+              </ul>
             </section>
           </details>
           </p>
