@@ -34,6 +34,8 @@ export class SingleFilmComponent implements OnInit {
 
   updating = false
 
+  isListShared!: boolean
+
   formUpdateMovie!: FormGroup
 
   test: boolean = false;
@@ -54,7 +56,6 @@ export class SingleFilmComponent implements OnInit {
     // this.getRealisateur();
     this.chercherActeurs();
     this.getReviews();
-
   }
 
   async init() {
@@ -63,8 +64,14 @@ export class SingleFilmComponent implements OnInit {
     let user_id = this.utilService.getUserId();
     const movie_imdb_id = this.currentFilm.key;
 
-    let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
-    this.currentFilmInfos = await movieFromDB_data!.json()
+    this.isListShared = this.utilService.getIsListShared();
+
+    if (this.isListShared) {
+      this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
+    } else {
+      let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
+      this.currentFilmInfos = await movieFromDB_data!.json();
+    }
 
     let movieFromOMDB_data = await this.api.getMovieByIdAsync(movie_imdb_id);
     let movieFromOMDB = await movieFromOMDB_data!.json()
@@ -127,7 +134,6 @@ export class SingleFilmComponent implements OnInit {
 
   suppDialog(): void {
     this.utilService.setMovie(this.currentFilm);
-    console.log(this.currentFilm)
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
     this.utilService.setListeOuGlobalSupp(2)

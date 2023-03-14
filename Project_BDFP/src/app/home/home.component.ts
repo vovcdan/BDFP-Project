@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -59,7 +59,6 @@ export class HomeComponent implements OnInit {
   error_message = "";
   // showResultatRecherche = this.utilService.getResultatRecherche()
   showResultatRecherche = true
-
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
@@ -70,6 +69,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
+    this.utilService.setisListShared(false);
 
     this.formRecherche = new FormGroup({
       titreControl:new FormControl(),
@@ -178,6 +178,12 @@ export class ajouterFilm implements OnInit {
   films: Film[] = [];
   val: boolean = false;
   omdbSelected: boolean = true;
+  messError: boolean = false
+  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
+  searchControlDate = new FormControl(
+    '',
+    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+  );
 
   constructor(
     public dialogRef: MatDialogRef<ajouterFilm>, private filmService: FilmsService, private api: ApiServiceService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
@@ -240,11 +246,12 @@ export class ajouterFilm implements OnInit {
     )
     .subscribe((data: any) => {
       if (data['Search'] == undefined) {
+        this.messError = true
         this.filteredMoviesOMDB = [];
       } else {
+        this.messError = false
         this.filteredMoviesOMDB = data['Search'];
       }
-      //console.log(this.filteredMoviesOMDB);
     });
   }
 
@@ -273,12 +280,14 @@ export class ajouterFilm implements OnInit {
         )
       ).subscribe((data: any) => {
       if (data['results'] == undefined) {
+        this.messError = true
         this.filteredMoviesTMDB = [];
       } else {
+        this.messError = false
         this.filteredMoviesTMDB = data['results'];
       }
-      //console.log(this.filteredMoviesTMDB);
     });
+    this.messError = false
   }
 
   onSelected() {
@@ -293,6 +302,7 @@ export class ajouterFilm implements OnInit {
     this.selectedMovie = '';
     this.filteredMoviesOMDB = [];
     this.filteredMoviesTMDB = [];
+    this.messError = false
   }
 
   onNoClick(): void {
@@ -344,16 +354,13 @@ export class ajouterFilm implements OnInit {
   }
 
   ajoutFilmFromTMDB() {
-    console.log(this.selectedMovie);
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
     let tmdbid = this.selectedMovie.id;
-    console.log(tmdbid);
     this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
-      console.log(movieTMDB);
       let imdb_id = movieTMDB.imdb_id;
       if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(

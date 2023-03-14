@@ -7,7 +7,6 @@ import { HttpClientModule} from '@angular/common/http';
 import { NavComponent } from './nav/nav.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { HomeComponent  } from './home/home.component';
-import { CarousselComponent } from './caroussel/caroussel.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { InscrireComponent } from './inscrire/inscrire.component';
 import { DialogOverviewExampleDialog, ListesComponent } from './listes/listes.component';
@@ -34,6 +33,7 @@ import { SuppDialogComponent } from './supp-dialog/supp-dialog.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { AffichageRechercheComponent } from './affichage-recherche/affichage-recherche.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     NavComponent,
     ConnexionComponent,
     HomeComponent,
-    CarousselComponent,
     InscrireComponent,
     ListesComponent,
     DialogOverviewExampleDialog,
@@ -77,11 +76,12 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     MatRadioModule,
     Ng2SearchPipeModule,
     MatTooltipModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
   entryComponents: [ajouterFilm, SuppDialogComponent],
-  
+
 })
 export class AppModule { }

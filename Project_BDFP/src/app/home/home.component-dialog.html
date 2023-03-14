@@ -39,14 +39,18 @@
               <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
-
         </ng-container>
       </mat-autocomplete>
+      <div *ngIf="messError" [ngStyle]="{'color': 'red','margin-top': 0}">
+        Aucun résultat.
+      </div>
     </mat-form-field>
-
     <mat-form-field class="field" appearance="fill">
       <mat-label for="dat">Date de visionnage</mat-label>
-      <input matInput [(ngModel)]="data.dateVision" type="dat" placeholder="15/09/2022">
+      <input matInput [(ngModel)]="data.dateVision" type="dat" [formControl]="searchControlDate"  placeholder="15092022">
+      <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
+        forme : jjmmaaaa ex: 23032022
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
@@ -61,7 +65,10 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="note">Note/5</mat-label>
-      <input matInput [(ngModel)]="data.note" type="note" placeholder="3">
+      <input matInput [(ngModel)]="data.note" [formControl]="searchControlNote" type="note">
+        <mat-error *ngIf="searchControlNote.invalid && (searchControlNote.dirty || searchControlNote.touched)">
+          Entrez un nombre de 0 à 5
+        </mat-error>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">

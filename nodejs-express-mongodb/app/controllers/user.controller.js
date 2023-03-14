@@ -79,7 +79,7 @@ exports.findByMail = (req, res) => {
   const userMail = req.params.userMail;
 
   var condition = userMail
-    ? { email: { $regex: new RegExp(userMail), $options: "i" } }
+    ? { email: userMail }
     : {};
 
   UserDB.find(condition)
@@ -92,6 +92,27 @@ exports.findByMail = (req, res) => {
       res
         .status(500)
         .send({ message: "Erreur pendant la récupération de la liste " + userMail });
+    });
+};
+
+exports.findByMailAndPassword = (req, res) => {
+  const userMail = req.params.userMail;
+  const password = req.params.password;
+
+  var condition = userMail && password
+    ? { email: userMail, mdp: password }
+    : {};
+
+  UserDB.find(condition)
+    .then((data) => {
+      if (!data)
+        res.status(404).send({ message: `Aucun utilisateur trouvé avec les informations ${userMail} ${password}` });
+      else res.send(data);
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ message: "Erreur pendant la récupération de l'utilisateur " + userMail });
     });
 };
 

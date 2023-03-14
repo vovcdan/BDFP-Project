@@ -34,6 +34,8 @@ export class AffichageRechercheComponent implements OnInit {
   finished = false;
   singleFilm: Map<any, string> = new Map();
   finalMovieResults: any;
+  spinner : boolean = false
+  noResult = false
 
   constructor(
     private filmService: FilmsService,
@@ -59,6 +61,7 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
   searchedMoviesNotEmpty() {
+    this.spinner = true
     if (this.moviesInDB) {
       return true;
     } else {
@@ -68,6 +71,7 @@ export class AffichageRechercheComponent implements OnInit {
 
   async rechercherFilm() {
     this.finished = false;
+    this.spinner = true
 
     if(this.moviesInDB != undefined) {
       this.moviesInDB = undefined;
@@ -258,12 +262,18 @@ export class AffichageRechercheComponent implements OnInit {
     console.log(this.moviesInDB);
     console.log(this.moviesInDBByAPI)
 
+    this.noResult = false
     this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!)
+    if (this.finalMovieResults.size == 0){
+      this.noResult = true
+      this.finalMovieResults = "Vous n'avez pas de résultats qui correspondent à cette recherche"
+    }
 
     console.log(this.finalMovieResults);
 
 
     this.finished = true;
+    this.spinner = false
   }
 
   // parti du formulaire de recherche

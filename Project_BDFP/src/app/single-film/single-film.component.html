@@ -98,7 +98,7 @@
               <button
                 id="butModif"
                 mat-mini-fab
-                matTooltip="Modifier mes informations"
+                matTooltip="Velider mes nouveaux informations"
                 (click)="modifyMovie()"
               >
                 <mat-icon>check_circle</mat-icon>
@@ -106,7 +106,7 @@
               <button
               id="butModif"
               mat-mini-fab
-              matTooltip="Modifier mes informations"
+              matTooltip="Annuler les modifications"
               (click)="showFormUpdateNovie()"
             >
               <mat-icon>cancel</mat-icon>
@@ -149,6 +149,7 @@
               id="butModif"
               mat-mini-fab
               matTooltip="Modifier mes informations"
+              *ngIf="!isListShared"
               (click)="showFormUpdateNovie()"
             >
               <mat-icon>create</mat-icon>

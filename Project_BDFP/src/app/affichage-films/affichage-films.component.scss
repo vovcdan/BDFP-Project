@@ -1,5 +1,5 @@
 .form-group {
-    margin: 20px auto auto 33%; 
+    margin: 20px auto auto 33%;
     display: block;
     width: 250px;
     align-items: center;
@@ -11,12 +11,12 @@
     /*change color of label*/
     color: white !important;
    }
-  
+
    ::ng-deep.mat-form-field-underline {
     /*change color of underline*/
     background-color: white !important;
-  } 
-  
+  }
+
   ::ng-deep.mat-form-field-ripple {
    /*change color of underline when focused*/
    background-color: white !important;
@@ -40,7 +40,7 @@
     margin-right: 10px;
     margin-top: 20px;
     margin-bottom: 5px;
-    color: white; 
+    color: white;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     &:hover {
@@ -55,10 +55,22 @@
 #bout {
     display : inline-block
 }
-  
+
 .carte {
     width : 150px;
     margin: 20px;
     display: inline-flex;
   }
 
+  #spinner {
+    transform: scale(0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color : #ffa500
+  }
+
+
+  .mat-progress-spinner::ng-deep circle {
+    stroke: currentColor;
+  }

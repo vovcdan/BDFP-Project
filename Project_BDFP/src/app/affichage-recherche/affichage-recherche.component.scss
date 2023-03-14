@@ -56,10 +56,18 @@ h2 {
     display: inline;
 }
 
-// #ligne {
-//   margin-left: 20%;
-// }
-
 #cherche {
   display: block;
+}
+
+#spinner {
+  transform: scale(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#noResult {
+  text-align: center;
+  color : white;
 }
