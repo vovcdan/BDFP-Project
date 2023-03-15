@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Que faire ?</h2>
+
+<div mat-dialog-content>
+    Voulez-vous ajouter des informations sur ce film maintenant ?
+</div>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Non</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Oui</button>
+</mat-dialog-actions>
