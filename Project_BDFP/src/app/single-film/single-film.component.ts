@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
@@ -44,6 +44,8 @@ export class SingleFilmComponent implements OnInit {
   critique?: string
 
   lienCritique?: string
+
+  spinner : boolean = false
 
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
@@ -94,6 +96,8 @@ export class SingleFilmComponent implements OnInit {
   back() {
     this.loc.back();
   }
+
+  get spinnerStyle() { return {color: 'Orange'} }
 
   openSnackBar(message: string) {
     this.snack.open(message,"", {
@@ -189,6 +193,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
   async scrapeCritiques(titreFilm: string) {
+    this.spinner = true
     if (this.test) {
       return;
     }
@@ -244,10 +249,34 @@ export class SingleFilmComponent implements OnInit {
     } else {
       this.critique = "Aucune critiques disponibles pour ce film"
     }
-  } catch (error) {
-    throw new Error("Recuperation des revues échouée")
-  }
+    this.spinner = false
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(CritiqueDialogComponent, {
+      data: {
+        critique: this.critique!,
+        lienCritique: this.lienCritique!
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+}
+
+@Component({
+  selector: 'app-critique-dialog',
+  templateUrl: './critique-dialog.html',
+  styleUrls: ['./critique-dialog.scss']
+})
+export class CritiqueDialogComponent implements OnInit {
+  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any){}
+
+  ngOnInit(){
+    console.log(this.data)
+  }
 
 }

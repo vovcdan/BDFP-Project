@@ -21,7 +21,7 @@ import { SingleListeComponent, ajouterUnFilm, partagerListe } from './single-lis
 import { AuthService } from 'services/auth.service';
 import {MatSelectModule} from '@angular/material/select';
 import { AffichageFilmsComponent } from './affichage-films/affichage-films.component';
-import { SingleFilmComponent } from './single-film/single-film.component';
+import { SingleFilmComponent, CritiqueDialogComponent } from './single-film/single-film.component';
 import { DetailListeComponent, AddmMovieFromSharedListToUser } from './detail-liste/detail-liste.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -54,6 +54,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     SuppDialogComponent,
     AffichageRechercheComponent,
     MovieCardComponent,
+    CritiqueDialogComponent,
   ],
   imports: [
     BrowserModule,
