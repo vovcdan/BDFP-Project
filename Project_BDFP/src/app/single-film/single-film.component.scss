@@ -159,10 +159,6 @@ summary {
     display: inline;
 }
 
-#ligne {
-    display: inline;
-}
-
 a {
     color : whitesmoke
 }
@@ -221,4 +217,23 @@ input, textarea {
 
 #avis mat-form-field {
     height : 50px;
+}
+
+#critique {
+    width : 800px;   
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#spinner {
+    transform: scale(0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color : #ffa500
+  }
+
+#cote {
+    display: inline;
 }

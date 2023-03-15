@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
+import {
+  SuppDialogComponent,
+  SuppDialogModel,
+} from 'app/supp-dialog/supp-dialog.component';
 import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { InitService } from 'services/init.service';
@@ -22,7 +25,7 @@ export class DetailListeComponent implements OnInit {
 
   result: any;
 
-  searchText !: any;
+  searchText!: any;
 
   constructor(
     private filmService: FilmsService,
@@ -31,14 +34,14 @@ export class DetailListeComponent implements OnInit {
     private api: ApiServiceService,
     private router: Router,
     private snack: MatSnackBar,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.initialisation();
   }
 
-  async initialisation(){
+  async initialisation() {
     this.movies = await this.init.initDetailListe();
 
     for (const [key, value] of this.movies) {
@@ -48,62 +51,91 @@ export class DetailListeComponent implements OnInit {
       this.movies.get(key).Actors = movieFromOMDB.Actors;
       this.movies.get(key).Runtime = movieFromOMDB.Runtime;
       this.movies.get(key).release_date = movieFromOMDB.Year;
-      this.isMovieInDB(key).then(result => {
-        this.movies.get(key).isInDB = result
+      this.isMovieInDB(key).then((result) => {
+        this.movies.get(key).isInDB = result;
       });
     }
   }
 
-
   openSnackBar(message: string) {
-    this.snack.open(message,"", {
+    this.snack.open(message, '', {
       duration: 3000,
     });
   }
 
   afficherFilm(imdbID: string) {
     let movie;
-    for(const [key, value] of this.movies){
-      if(key == imdbID){
-        movie = {key: key, value: value}
-        break
+    for (const [key, value] of this.movies) {
+      if (key == imdbID) {
+        movie = { key: key, value: value };
+        break;
       }
     }
-    this.utilService.setMovie(movie)
-    this.router.navigateByUrl('/home/' + movie?.value.title)
+    this.utilService.setMovie(movie);
+    this.router.navigateByUrl('/home/' + movie?.value.title);
   }
 
   suppDialog(omdbID: string, title: string): void {
     let value = {
-      title: title
-    }
-    let movie = {key: omdbID, value: value}
+      title: title,
+    };
+    let movie = { key: omdbID, value: value };
     this.utilService.setMovie(movie);
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
-    const dialogData = new SuppDialogModel("Suppression", message);
-    this.utilService.setListeOuGlobalSupp(1)
+    const dialogData = new SuppDialogModel('Suppression', message);
+    this.utilService.setListeOuGlobalSupp(1);
     const dialogRef = this.dialog.open(SuppDialogComponent, {
-      maxWidth: "600px",
-      data: dialogData
+      maxWidth: '600px',
+      data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       this.result = dialogResult;
     });
   }
 
-  async isMovieInDB(omdbID: string){ //Promise<boolean> 
-    const data = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), omdbID);
-    const data_jsoned = await data?.json()
-    return (data_jsoned.titre !== undefined);
+  async isMovieInDB(omdbID: string){ //Promise<boolean>
+    const data = await this.filmService.isMovieInDatabase(this.utilService.getUserId(), omdbID);
+    return data;
   }
 
-  async addMovieFromSharedListToUser(omdbID: string, tmdbID: string, title: string){
-    await this.filmService.addFilmToListAsync(title, omdbID, tmdbID, "", "", "", "", "")
-    this.openSnackBar(`Le film ${title} a été ajouté`)
-    this.router.navigateByUrl('/', { skipLocationChange: true })
-    .then(() => {
-      this.router.navigateByUrl('/favs/' + this.utilService.getCurrentListeName());
+  async addMovieFromSharedListToUser(
+    omdbID: string,
+    tmdbID: string,
+    title: string
+  ) {
+    const dialogRef = this.dialog.open(AddmMovieFromSharedListToUser);
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      await this.filmService.addFilmToListAsync(title, omdbID, tmdbID, "", "", "", "", "")
+      this.openSnackBar(`Le film ${title} a été ajouté`)
+      if(result){
+        this.router.navigateByUrl('/home', { skipLocationChange: true })
+        .then(() => {
+          this.router.navigateByUrl('/home/' + title);
+        });
+      } else {
+        this.router.navigateByUrl('/', { skipLocationChange: true })
+        .then(() => {
+          this.router.navigateByUrl('/favs/' + this.utilService.getCurrentListeName());
+        });
+      }
     });
   }
+
+  openAddMovieFromSharedListToUserDialog() {
+    const dialogRef = this.dialog.open(AddmMovieFromSharedListToUser);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+}
+
+@Component({
+  selector: 'add-movie-from-shared-list-to-user',
+  templateUrl: './add-movie-from-shared-list-to-user.html',
+})
+export class AddmMovieFromSharedListToUser {
+  constructor(public dialogRef: MatDialogRef<AddmMovieFromSharedListToUser>) {}
 }

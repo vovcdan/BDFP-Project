@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Film } from 'app/models/film.model';
 import { SuppDialogComponent, SuppDialogModel } from 'app/supp-dialog/supp-dialog.component';
@@ -48,6 +48,8 @@ export class SingleFilmComponent implements OnInit {
   titreCritique?: string;
   auteurCritique?: string;
 
+  spinner: boolean = false
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class SingleFilmComponent implements OnInit {
     this.formUpdateMovie = new FormGroup({
       noteControl: new FormControl('', Validators.pattern('^[0-5]$')),
       cinemaControl: new FormControl(),
-      dateVisionControl: new FormControl('',Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')),
+      dateVisionControl: new FormControl('', Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')),
       accompagnateursControl: new FormControl(),
       avisControl: new FormControl(),
     });
@@ -98,15 +100,17 @@ export class SingleFilmComponent implements OnInit {
     this.loc.back();
   }
 
+  get spinnerStyle() { return { color: 'Orange' } }
+
   openSnackBar(message: string) {
-    this.snack.open(message,"", {
+    this.snack.open(message, "", {
       duration: 3000,
     });
   }
 
   chercherActeurs() {
     //TODO: Verifier que le premier if marche
-    if(this.currentFilm.value.tmdbid) {
+    if (this.currentFilm.value.tmdbid) {
       this.api.getCastTMDB(this.currentFilm.value.tmdbid).subscribe((actors: any) => {
         actors.cast.forEach((actor: any) => {
           this.actors.set(actor.name, actor.character)
@@ -115,14 +119,15 @@ export class SingleFilmComponent implements OnInit {
     } else {
       this.api.getMovieTMDBByIMDBID(this.currentFilm.key).subscribe((film: any) => {
         if (film['movie_results'][0]) {
-        let id = film['movie_results'][0].id;
-        this.api.getMovieTMDbId(id).subscribe((film: any) => {
-          this.api.getCastTMDB(film.id).subscribe((actors: any) => {
-            actors.cast.forEach((actor: any) => {
-              this.actors.set(actor.name, actor.character)
+          let id = film['movie_results'][0].id;
+          this.api.getMovieTMDbId(id).subscribe((film: any) => {
+            this.api.getCastTMDB(film.id).subscribe((actors: any) => {
+              actors.cast.forEach((actor: any) => {
+                this.actors.set(actor.name, actor.character)
+              })
             })
           })
-        })}
+        }
       })
     }
   }
@@ -130,15 +135,16 @@ export class SingleFilmComponent implements OnInit {
   getReviews() {
     this.api.getMovieTMDBByIMDBID(this.currentFilm.key).subscribe((film: any) => {
       if (film['movie_results'][0]) {
-      let id = film['movie_results'][0].id;
-      this.api.getMovieTMDbId(id).subscribe((film: any) => {
-        this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
-          this.listeRevue = reviews
-          reviews.results.forEach((review: any) => {
-            this.review = review
+        let id = film['movie_results'][0].id;
+        this.api.getMovieTMDbId(id).subscribe((film: any) => {
+          this.api.getReviewsTMDB(film.id).subscribe((reviews: any) => {
+            this.listeRevue = reviews
+            reviews.results.forEach((review: any) => {
+              this.review = review
+            })
           })
         })
-      })}
+      }
     })
   }
 
@@ -170,7 +176,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
 
-  modifyMovie(){
+  modifyMovie() {
     let filmModifie: Film = this.currentFilmInfos;
     filmModifie.note = this.formUpdateMovie.get('noteControl')!.value
     filmModifie.cinema = this.formUpdateMovie.get('cinemaControl')!.value
@@ -183,44 +189,45 @@ export class SingleFilmComponent implements OnInit {
 
   async translateTitle(title: string) {
     try {
-    let doc = await wtf.fetch(title, {lang: 'fr'});
-    let text = (doc as any).title()
-    return text;
+      let doc = await wtf.fetch(title, { lang: 'fr' });
+      let text = (doc as any).title()
+      return text;
     } catch (error) {
       throw new Error("Tranduction du titre du film impossible");
     }
   }
 
   async scrapeCritiques(titreFilm: string) {
+    this.spinner = true
     if (this.test) {
       return;
     }
-    this.test=true;
+    this.test = true;
 
     try {
-    const titreFR = await this.translateTitle(titreFilm);
+      const titreFR = await this.translateTitle(titreFilm);
 
-    console.log(titreFilm);
+      console.log(titreFilm);
 
-    console.log(titreFR);
+      console.log(titreFR);
 
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
       // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
-    const str = titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+      const str = titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 
-    this.lienCritique = "https://www.critikat.com/actualite-cine/critique/"+str
+      this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 
-    //PROXY 1
+      //PROXY 1
 
-    // Utilisation d'un proxy pour éviter les problèmes de CORS.
-    const url = `https://www.critikat.com/actualite-cine/critique/${str}`
-    const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
-    const htmlString = await response.text();
+      // Utilisation d'un proxy pour éviter les problèmes de CORS.
+      const url = `https://www.critikat.com/actualite-cine/critique/${str}`
+      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+      const htmlString = await response.text();
 
-    // Parsage de la chaîne HTML en objet DOM.
-    const parser = new DOMParser();
-    const htmlDOM = parser.parseFromString(htmlString, 'text/html');
+      // Parsage de la chaîne HTML en objet DOM.
+      const parser = new DOMParser();
+      const htmlDOM = parser.parseFromString(htmlString, 'text/html');
 
     // Extraction du titre et de l'auteur de la critique
     // On sélectionne le premier élément HTML qui a la classe ici c'est Cherchez le beauf
@@ -232,33 +239,61 @@ export class SingleFilmComponent implements OnInit {
     console.log("titreCritique " +this.titreCritique);
     console.log("auteurCritique "+this.auteurCritique);
 
-    // Extraction de la critique du film " " de l'objet DOM.
-    // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
-    // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
-    const critiques = htmlDOM.querySelectorAll('.labeur');
+      // Extraction de la critique du film " " de l'objet DOM.
+      // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
+      // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
+      const critiques = htmlDOM.querySelectorAll('.labeur');
 
-    if(critiques.length > 0) {
-      let critique!: string | undefined
-      critique = critiques[0].textContent?.trim();
-      const regex = /jQuery\(.*}\);./gi;
-      const newStr = critique!.replace(regex, "");
-      if(newStr.includes("function")) {
-        const index = newStr.indexOf('function');
-        const newStr2 = newStr.substring(0, index);
-        this.critique = newStr2
-        console.log(newStr2);
+      if (critiques.length > 0) {
+        let critique!: string | undefined
+        critique = critiques[0].textContent?.trim();
+        const regex = /jQuery\(.*}\);./gi;
+        const newStr = critique!.replace(regex, "");
+        console.log(newStr)
+        if (newStr.includes("function")) {
+          const index = newStr.indexOf('function');
+          const newStr2 = newStr.substring(0, index);
+          this.critique = newStr2
+          console.log(newStr2);
+        } else {
+          this.critique = newStr
+          console.log(newStr);
+        }
+
       } else {
-        this.critique = newStr
-        console.log(newStr);
+        this.critique = "Aucune critiques disponibles pour ce film"
       }
-            
-    } else {
-      this.critique = "Aucune critiques disponibles pour ce film"
+      this.spinner = false
+    } catch (error) {
+      throw new Error("Récuperation des revues échouée")
     }
-  } catch (error) {
-    throw new Error("Recuperation des revues échouée")
-  }
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(CritiqueDialogComponent, {
+      data: {
+        critique: this.critique!,
+        lienCritique: this.lienCritique!
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+}
+
+@Component({
+  selector: 'app-critique-dialog',
+  templateUrl: './critique-dialog.html',
+  styleUrls: ['./critique-dialog.scss']
+})
+export class CritiqueDialogComponent implements OnInit {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
+
+  ngOnInit() {
+    console.log(this.data)
+  }
 
 }
