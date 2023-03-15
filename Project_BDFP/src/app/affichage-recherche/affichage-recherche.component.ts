@@ -25,7 +25,7 @@ export class AffichageRechercheComponent implements OnInit {
   searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
   searchControlDate = new FormControl(
     '',
-    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+    Validators.pattern('^19[0-9]{2}|2[0-9]{3}$')
   );
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchedMovies: any[] = [];
