@@ -11,8 +11,8 @@
 
     <header>
       <mat-radio-group id="groupradio" aria-label="Select an option">
-        <mat-radio-button class="radio" value="OMDB" [checked]="true" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
-        <mat-radio-button class="radio" value="TMDB" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
+        <mat-radio-button class="radio" value="TMDB" [checked]="true" (click)="changeBoolFalse()">API TMDB</mat-radio-button>
+        <mat-radio-button class="radio" value="OMDB" (click)="changeBoolTrue()">API OMDB</mat-radio-button>
       </mat-radio-group>
       <mat-icon id="icone" aria-hidden="false" matTooltip="OMDB et TMDB sont deux bases de données en ligne qui fournissent des informations sur les films.
       Si OMDB ne dispose pas du film que vous recherchez, vous pouvez cocher TMDB comme une autre source. " fontIcon="help_outline"></mat-icon>

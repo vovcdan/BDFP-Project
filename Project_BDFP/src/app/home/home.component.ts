@@ -158,7 +158,7 @@ export class ajouterFilm implements OnInit {
   movieValue!: string;
   films: Film[] = [];
   val: boolean = false;
-  omdbSelected: boolean = true;
+  omdbSelected: boolean = false;
   messError: boolean = false;
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
@@ -177,7 +177,7 @@ export class ajouterFilm implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.OMDBInit();
+    this.TMDBInit();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -207,6 +207,7 @@ export class ajouterFilm implements OnInit {
 
   //OMDB
   OMDBInit() {
+    console.log("omdb")
     this.omdbSelected = true;
     this.selectedMovie = '';
     this.filteredMoviesOMDB = null;
@@ -242,6 +243,7 @@ export class ajouterFilm implements OnInit {
 
   //TMDB
   TMDBInit() {
+    console.log("tmdb")
     this.omdbSelected = false;
     this.selectedMovie = '';
     this.filteredMoviesTMDB = null;
