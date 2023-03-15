@@ -98,20 +98,15 @@ exports.findOne = (req, res) => {
     .then((data) => {
       if (data) {
         const movie = data.movies.find((m) => m.omdbID === omdbID);
-        if (movie) {
-          res.send(JSON.stringify(movie));
-        } else {
-          res.send([]);
-        }
-      } else {
-        res.send([]);
-      }
+        res.send(JSON.stringify(movie));
+      } else res.status(404).send("Aucun film trouvé avec l'id: " + omdbID);
     })
     .catch((err) => {
       if (err.status === 500)
         res.status(500).send({
           message: "Erreur pendant la récupération du film avec l'id " + err,
         });
+      else res.status(404).send("Aucun film trouvé avec l'id: ");
     });
 };
 
@@ -126,11 +121,9 @@ exports.addFilmToList = (req, res) => {
       else res.send(data);
     })
     .catch((err) => {
-      res
-        .status(500)
-        .send({
-          message: "Erreur pendant la récupération du film avec l'id" + uid,
-        });
+      res.status(500).send({
+        message: "Erreur pendant la récupération du film avec l'id" + uid,
+      });
     });
 };
 
@@ -291,7 +284,13 @@ exports.findByAccompagnateurs = (req, res) => {
   MovieDB.aggregate([
     { $match: { uid: uid } },
     { $unwind: "$movies" },
-    { $match: { "movies.accompagnateurs": { $in: [new RegExp(`.*${accompagnateurs}.*`, "i")] } } },
+    {
+      $match: {
+        "movies.accompagnateurs": {
+          $in: [new RegExp(`.*${accompagnateurs}.*`, "i")],
+        },
+      },
+    },
   ])
     .then((data) => {
       if (!data || data.length === 0) {
@@ -337,7 +336,7 @@ exports.findByNote = (req, res) => {
           "Erreur pendant la récupération des films vus avec la note " + note,
       });
     });
-}
+};
 
 exports.findByAvis = (req, res) => {
   const uid = req.params.uid;
@@ -346,7 +345,7 @@ exports.findByAvis = (req, res) => {
   MovieDB.aggregate([
     { $match: { uid: uid } },
     { $unwind: "$movies" },
-    { $match: { "movies.avis": { $in: [new RegExp(`.*${avis}.*`, "i")] }} },
+    { $match: { "movies.avis": { $in: [new RegExp(`.*${avis}.*`, "i")] } } },
   ])
     .then((data) => {
       if (!data || data.length === 0) {

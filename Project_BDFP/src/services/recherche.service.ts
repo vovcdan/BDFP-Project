@@ -116,27 +116,9 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp);
       return temp;
     } catch (error) {
       console.error(`Error getting films by director: ${error}`);
-      return new Map<string, number>();
-    }
-  }
-
-  async getFilmsByYear(year: string) {
-    try {
-      const moviesResponse = await this.api.getMoviesByYearAllPages(year);
-      const temp = new Map<string, number>();
-      for (let i = 0; i < (moviesResponse as any).length; i++) {
-        const movie = (moviesResponse as any)[i];
-        temp.set(movie.title, movie.id);
-      }
-      console.log(temp);
-
-      return temp;
-    } catch (error) {
-      console.error(`Error getting films by year: ${error}`);
       return new Map<string, number>();
     }
   }
@@ -159,7 +141,6 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp);
 
       return temp;
     } catch (error) {
@@ -179,7 +160,6 @@ export class RechercheService {
         const movie = (moviesResponse as any)[i];
         temp.set(movie.title, movie.id);
       }
-      console.log(temp)
       return temp;
     } catch (error) {
       console.error(`Error getting films by director and year: ${error}`);

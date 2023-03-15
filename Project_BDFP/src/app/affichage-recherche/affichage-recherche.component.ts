@@ -14,8 +14,14 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./affichage-recherche.component.scss'],
 })
 export class AffichageRechercheComponent implements OnInit {
-  searchControlCaracReal = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?'));
-  searchControlCaracActors = new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}'));
+  searchControlCaracReal = new FormControl(
+    '',
+    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?')
+  );
+  searchControlCaracActors = new FormControl(
+    '',
+    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}')
+  );
   searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
   searchControlDate = new FormControl(
     '',
@@ -26,16 +32,16 @@ export class AffichageRechercheComponent implements OnInit {
   formRecherche!: FormGroup;
   showFormRecherche = true;
   resList = new Map<string, number>();
-  moviesInDB?: Map<number, any>
-  moviesInDBByAPI?: Map<number, any>
+  moviesInDB?: Map<number, any>;
+  moviesInDBByAPI?: Map<number, any>;
   movieExist: any[] = [];
   switch_number = -1;
   error_message = '';
   finished = false;
   singleFilm: Map<any, string> = new Map();
   finalMovieResults: any;
-  spinner : boolean = false
-  noResult = false
+  spinner: boolean = false;
+  noResult = false;
 
   constructor(
     private filmService: FilmsService,
@@ -61,7 +67,7 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
   searchedMoviesNotEmpty() {
-    this.spinner = true
+    this.spinner = true;
     if (this.moviesInDB) {
       return true;
     } else {
@@ -71,12 +77,12 @@ export class AffichageRechercheComponent implements OnInit {
 
   async rechercherFilm() {
     this.finished = false;
-    this.spinner = true
+    this.spinner = true;
 
-    if(this.moviesInDB != undefined) {
+    if (this.moviesInDB != undefined) {
       this.moviesInDB = undefined;
     }
-    if(this.moviesInDBByAPI != undefined) {
+    if (this.moviesInDBByAPI != undefined) {
       this.moviesInDBByAPI = undefined;
     }
 
@@ -84,7 +90,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.searchControlDate.value != undefined &&
       this.searchControlDate.value != ''
     ) {
-      if(this.moviesInDB == undefined) {
+      if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
       await this.getFilmsByDateVision(this.searchControlDate.value);
@@ -93,7 +99,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.formRecherche.value.accompagnateursControl != undefined &&
       this.formRecherche.value.accompagnateursControl != ''
     ) {
-      if(this.moviesInDB == undefined) {
+      if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
       await this.getFilmsByAccompagnateurs(
@@ -104,7 +110,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.formRecherche.value.locationControl != undefined &&
       this.formRecherche.value.locationControl != ''
     ) {
-      if(this.moviesInDB == undefined) {
+      if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
       await this.getFilmsByLocation(this.formRecherche.value.locationControl);
@@ -113,7 +119,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.formRecherche.value.avisControl != undefined &&
       this.formRecherche.value.avisControl != ''
     ) {
-      if(this.moviesInDB == undefined) {
+      if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
       await this.getFilmsByAvis(this.formRecherche.value.avisControl);
@@ -122,7 +128,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.searchControlNote.value != undefined &&
       this.searchControlNote.value != ''
     ) {
-      if(this.moviesInDB == undefined) {
+      if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
       await this.getFilmsByNote(this.searchControlNote.value);
@@ -136,7 +142,7 @@ export class AffichageRechercheComponent implements OnInit {
       this.searchControlCaracActors.value != undefined &&
       this.searchControlCaracActors.value != ''
     ) {
-      if(this.moviesInDBByAPI == undefined) {
+      if (this.moviesInDBByAPI == undefined) {
         this.moviesInDBByAPI = new Map();
       }
       this.switch_number = 1;
@@ -147,7 +153,7 @@ export class AffichageRechercheComponent implements OnInit {
         this.searchControlCaracActors.value != '' &&
         this.searchControlCaracActors.value != undefined
       ) {
-        if(this.moviesInDBByAPI == undefined) {
+        if (this.moviesInDBByAPI == undefined) {
           this.moviesInDBByAPI = new Map();
         }
         this.switch_number = 2;
@@ -158,7 +164,7 @@ export class AffichageRechercheComponent implements OnInit {
           this.searchControlCaracReal.value != '' &&
           this.searchControlCaracReal.value != undefined
         ) {
-          if(this.moviesInDBByAPI == undefined) {
+          if (this.moviesInDBByAPI == undefined) {
             this.moviesInDBByAPI = new Map();
           }
           this.switch_number = 3;
@@ -169,7 +175,7 @@ export class AffichageRechercheComponent implements OnInit {
             this.searchControlCaracReal.value != undefined &&
             this.searchControlCaracReal.value != ''
           ) {
-            if(this.moviesInDBByAPI == undefined) {
+            if (this.moviesInDBByAPI == undefined) {
               this.moviesInDBByAPI = new Map();
             }
             this.switch_number = 4;
@@ -178,7 +184,7 @@ export class AffichageRechercheComponent implements OnInit {
               this.searchControlCaracReal.value != undefined &&
               this.searchControlCaracReal.value != ''
             ) {
-              if(this.moviesInDBByAPI == undefined) {
+              if (this.moviesInDBByAPI == undefined) {
                 this.moviesInDBByAPI = new Map();
               }
               this.switch_number = 5;
@@ -187,7 +193,7 @@ export class AffichageRechercheComponent implements OnInit {
                 this.searchControlCaracActors.value != undefined &&
                 this.searchControlCaracActors.value != ''
               ) {
-                if(this.moviesInDBByAPI == undefined) {
+                if (this.moviesInDBByAPI == undefined) {
                   this.moviesInDBByAPI = new Map();
                 }
                 this.switch_number = 6;
@@ -237,43 +243,42 @@ export class AffichageRechercheComponent implements OnInit {
         break;
     }
 
-    console.log(this.moviesInDBByAPI)
-    console.log(this.moviesInDB)
+    console.log(this.moviesInDBByAPI);
+    console.log(this.moviesInDB);
 
     if (
       ((this.searchControlAnnee.value != undefined &&
-      this.searchControlAnnee.value != '') ||
-      (this.searchControlCaracReal.value != undefined &&
-      this.searchControlCaracReal.value != '') ||
-      (this.searchControlCaracActors.value != undefined &&
-      this.searchControlCaracActors.value != '')) &&
-      (this.moviesInDBByAPI != undefined &&
-      this.moviesInDB != undefined)
+        this.searchControlAnnee.value != '') ||
+        (this.searchControlCaracReal.value != undefined &&
+          this.searchControlCaracReal.value != '') ||
+        (this.searchControlCaracActors.value != undefined &&
+          this.searchControlCaracActors.value != '')) &&
+      this.moviesInDBByAPI != undefined &&
+      this.moviesInDB != undefined
     ) {
       this.moviesInDB = this.intersectMaps(
         this.moviesInDB!,
         this.moviesInDBByAPI!
       );
-    } else if(this.moviesInDBByAPI != undefined){
+    } else if (this.moviesInDBByAPI != undefined) {
       this.moviesInDB = this.moviesInDBByAPI;
     }
-    
 
     console.log(this.moviesInDB);
-    console.log(this.moviesInDBByAPI)
+    console.log(this.moviesInDBByAPI);
 
-    this.noResult = false
-    this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!)
-    if (this.finalMovieResults.size == 0){
-      this.noResult = true
-      this.finalMovieResults = "Vous n'avez pas de résultats qui correspondent à cette recherche"
+    this.noResult = false;
+    this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!);
+    if (this.finalMovieResults.size == 0) {
+      this.noResult = true;
+      this.finalMovieResults =
+        "Vous n'avez pas de résultats qui correspondent à cette recherche";
     }
 
     console.log(this.finalMovieResults);
 
-
     this.finished = true;
-    this.spinner = false
+    this.spinner = false;
   }
 
   // parti du formulaire de recherche
@@ -370,6 +375,7 @@ export class AffichageRechercheComponent implements OnInit {
   async getFilmsByRealisator(real: string) {
     try {
       this.resList = await this.rechercheService.getFilmsByRealisator(real);
+      console.log(this.resList)
 
       for (const [key, value] of this.resList) {
         try {
