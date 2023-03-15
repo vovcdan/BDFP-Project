@@ -23,11 +23,17 @@ export class ListeCompComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.filmsService
-      .getAllListFromUser(this.utilService.getUserId())
-      .subscribe((listofFilms) => {
-        this.listofFilms = listofFilms;
-      });
+    this.init()
+    // this.filmsService
+    //   .getAllListFromUser(this.utilService.getUserId())
+    //   .subscribe((listofFilms) => {
+    //     this.listofFilms = listofFilms;
+    //   });
+  }
+
+  async init(){
+    const alllists = await this.filmsService.getAllListsFromUserAsync()
+    this.listofFilms = alllists
   }
 
   gererListe(laliste: ListFilm) {
