@@ -273,7 +273,10 @@ export class SingleFilmComponent implements OnInit {
     const dialogRef = this.dialog.open(CritiqueDialogComponent, {
       data: {
         critique: this.critique!,
-        lienCritique: this.lienCritique!
+        lienCritique: this.lienCritique!,
+        titreCritique: this.titreCritique!,
+        spinner: this.spinner,
+        auteurCritique: this.auteurCritique!
       }
     });
 

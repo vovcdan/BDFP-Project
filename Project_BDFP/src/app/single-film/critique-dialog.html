@@ -4,7 +4,8 @@
           <mat-icon>close</mat-icon>
         </button>
     </div>
-    <h2 mat-dialog-title>Critique Critikat</h2>
+    <h2> {{this.data.titreCritique}}</h2>
+    <h2 id="auteur"> par : {{this.data.auteurCritique}}</h2>
     <div id="spinner" *ngIf="this.data.spinner"><mat-spinner></mat-spinner></div>
     <mat-dialog-content>
         <p id="texte">{{this.data.critique}}</p>
