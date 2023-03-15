@@ -304,6 +304,7 @@ export class ajouterFilm implements OnInit {
   }
 
   async ajoutFilmFromOMDB() {
+    console.log("ajoute par omdb")
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
@@ -313,7 +314,7 @@ export class ajouterFilm implements OnInit {
     if (
       IMDBid &&
       this.selectedMovie.Title &&
-      !this.checkIfFilmExistsInList(IMDBid)
+      !(await this.checkIfFilmExistsInList(IMDBid))
     ) {
       this.filmService
         .addFilmToList(
