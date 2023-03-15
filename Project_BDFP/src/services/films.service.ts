@@ -91,7 +91,7 @@ export class FilmsService {
     });
   }
 
-  addFilmToListAsync(titre: string, omdbID: string, tmdbID: string, dateVision: string, cinema: string, accompagnateurs: string, avis: string, note: string){
+  async addFilmToListAsync(titre: string, omdbID: string, tmdbID: string, dateVision: string, cinema: string, accompagnateurs: string, avis: string, note: string){
     const uid = this.utilService.getUserId()
 
     const options = {
@@ -113,7 +113,7 @@ export class FilmsService {
 
     const url = `http://localhost:8080/api/movies/${uid}`;
 
-    fetch(url, options).then(response => {
+    await fetch(url, options).then(response => {
       if(response.ok){
         return response.json()
       } else {
@@ -153,7 +153,7 @@ export class FilmsService {
 
     const url = `http://localhost:8080/api/users`;
 
-    fetch(url, options).then(response => {
+    await fetch(url, options).then(response => {
       if(response.ok){
         return response.json()
       } else {
@@ -161,7 +161,10 @@ export class FilmsService {
       }
     }).then(data => {
       if(data) {
-        //this.createListFilmForUser(this.id._id);
+        this.createListFilmForUser(data._id);
+        this.utilService.connect();
+        this.utilService.setUserName(data.email);
+        this.utilService.setUserId(data._id);
       }
     })
     .catch(error => {
@@ -186,6 +189,31 @@ export class FilmsService {
         }
       );
     return list;
+  }
+
+  async addListToAllListsAsync(titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({uid: uid, titrelist: titrelist})
+    };
+
+    const url = "http://localhost:8080/api/allLists";
+
+    return fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
   }
 
   // créé une liste pour un utilisateur pour ensuite stocker des films à l'intérieur
@@ -225,6 +253,50 @@ export class FilmsService {
         }
       );
     return film;
+  }
+
+  async addFilmToAllListsAsync(
+    titrelist: string,
+    titre: string,
+    omdbID: string,
+    dateVision: string,
+    cinema: string,
+    accompagnateurs: string,
+    avis: string,
+    note: string
+  ){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        movies: {
+          titre: titre,
+          omdbID: omdbID,
+          dateVision: dateVision,
+          cinema: cinema,
+          accompagnateurs: accompagnateurs,
+          avis: avis,
+          note: note,
+        },
+      })
+    };
+
+    const url = `http://localhost:8080/api/allLists/${uid}/${titrelist}`;
+
+    await fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
   }
 
   deleteAllUsers() {
@@ -430,6 +502,23 @@ export class FilmsService {
     }
   }
 
+  async isMovieInDatabase(uid: string, omdbID: string) {
+    try {
+      const movie = await fetch(
+        'http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID
+      );
+      const movieData = await movie.json();
+      return Boolean(movieData); // Returns true if movie data exists, false otherwise
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée.";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return false;
+    }
+  }
+
   async getFilmsOfUserByDateVision(dateVision: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId();
@@ -611,26 +700,6 @@ export class FilmsService {
     }
   }
 
-  shareList(destUserId: string, titrelist: string, liste: ListFilm) {
-    let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
-    this.http
-      .post<ListFilm>('http://localhost:8080/api/allLists/share', {
-        uid: destUserId,
-        titrelist:
-          titrelist + ' partagee par ' + this.utilService.getUserName(),
-        movies: liste.movies,
-      })
-      .subscribe(
-        (res) => {
-          laliste.emit(res);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    return laliste;
-  }
-
   async shareListAsync(dest_id: string, list: ListFilm){
     const uid = this.utilService.getUserId()
 
@@ -720,23 +789,6 @@ export class FilmsService {
       .catch((error) => {
         console.error('Error updating data:', error);
       });
-  }
-
-  getUserByMail(userMail: string) {
-    let user: EventEmitter<User> = new EventEmitter<User>();
-
-    this.http
-      .get<User>('http://localhost:8080/api/users/mail/' + userMail)
-      .subscribe(
-        (result) => {
-          user.emit(result);
-        },
-        (error: any) => {
-          throw new Error(error);
-        }
-      );
-
-    return user;
   }
 
   async getUserByMailAsync(usermail: string) {

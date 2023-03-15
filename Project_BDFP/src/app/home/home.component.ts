@@ -113,22 +113,6 @@ export class HomeComponent implements OnInit {
     this.showResultatRecherche = !this.showResultatRecherche
   }
 
-
-  reloadFilms() {
-    this.filmService
-      .getFilmsByUid(this.utilService.getUserId())
-      .subscribe((allfilms) => {
-        this.films = allfilms[0].movies;
-        this.utilService.setListOfFilms(this.films);
-        this.utilService.setListeRecherche(this.films);
-        this.router
-          .navigateByUrl('/', { skipLocationChange: true })
-          .then(() => {
-            this.router.navigateByUrl('/home');
-          });
-      });
-  }
-
   openDialog(): void {
     const dialogRef = this.diag.open(ajouterFilm, {
       width: '800px',

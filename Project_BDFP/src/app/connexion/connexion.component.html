@@ -1,30 +1,52 @@
 <div id="entier">
   <div class="form-card">
-    <div id="head">
+    <div id="head" *ngIf="!signUp">
       <mat-icon id="icone">account_circle</mat-icon>
       <h2>Connexion</h2>
+    </div>
+    <div id="head" *ngIf="signUp">
+      <mat-icon id="icone">how_to_reg</mat-icon>
+      <h2>Inscription</h2>
     </div>
     <div id="centre">
       <div class="form-group">
         <mat-form-field appearance="fill">
-          <mat-label class="lab" for="UserName">Email</mat-label>
+          <mat-label class="lab" for="UserName">Pseudo</mat-label>
           <mat-icon matSuffix>face</mat-icon>
-          <input matInput type="text" id="user" [formControl]="idForm">
+          <input matInput type="text" id="user" [formControl]="email" required>
+          <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
         </mat-form-field>
       </div>
       <div class="form-group">
         <mat-form-field appearance="fill">
           <mat-label class="lab" for="password">Mot de passe</mat-label>
           <mat-icon matSuffix>lock_open</mat-icon>
-          <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="passForm">
+          <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="password" required>
+          <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group" *ngIf="signUp">
+        <mat-form-field appearance="fill">
+          <mat-label class="lab" for="password">Confirmation</mat-label>
+          <mat-icon matSuffix>lock_open</mat-icon>
+          <input (keyup.enter)="connexion()" matInput type="password" id="password" [formControl]="confirmPassword" required>
+          <mat-error *ngIf="confirmPassword.invalid">{{ getConfirmPasswordErrorMessage() }}</mat-error>
         </mat-form-field>
       </div>
     </div>
-      <p *ngIf="errorMess" style="color: white">Identifiants incorrects !</p>
-      <div id="buttons">
-        <button class="but" mat-flat-button (click)="connexion()">Se connecter</button>
-        <button class="but" mat-flat-button (click)="redirectSign()">S'inscrire</button>
+      <div id="buttons" *ngIf="!signUp">
+        <button class="but" mat-flat-button (click)="addUserOrConnect()">Se connecter</button>
       </div>
+      <div id="buttons" *ngIf="signUp">
+        <button class="but" mat-flat-button (click)="addUserOrConnect()">S'inscrire</button>
+      </div>
+      <div class="change" *ngIf="!signUp">
+        <mat-label>Pas encore de compte ? <span (click)="setSignUp()">Créez-en un !</span></mat-label>
+      </div>
+      <div class="change" *ngIf="signUp">
+        <mat-label>Déjà compte ? <span (click)="setSignUp()">Connectez-vous !</span></mat-label>
+      </div>
+      <p *ngIf="errorMess" style="color: white">{{errorMess}}</p>
   </div>
 </div>
 
