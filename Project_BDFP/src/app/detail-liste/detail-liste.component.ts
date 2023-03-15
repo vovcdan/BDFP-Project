@@ -67,6 +67,7 @@ export class DetailListeComponent implements OnInit {
     let movie;
     for (const [key, value] of this.movies) {
       if (key == imdbID) {
+        console.log(value)
         movie = { key: key, value: value };
         break;
       }
@@ -110,10 +111,8 @@ export class DetailListeComponent implements OnInit {
       await this.filmService.addFilmToListAsync(title, omdbID, tmdbID, "", "", "", "", "")
       this.openSnackBar(`Le film ${title} a été ajouté`)
       if(result){
-        this.router.navigateByUrl('/home', { skipLocationChange: true })
-        .then(() => {
-          this.router.navigateByUrl('/home/' + title);
-        });
+        this.utilService.setisListShared(false)
+        this.afficherFilm(omdbID)
       } else {
         this.router.navigateByUrl('/', { skipLocationChange: true })
         .then(() => {

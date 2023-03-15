@@ -207,10 +207,6 @@ export class SingleFilmComponent implements OnInit {
     try {
       const titreFR = await this.translateTitle(titreFilm);
 
-      console.log(titreFilm);
-
-      console.log(titreFR);
-
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
       // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
@@ -236,9 +232,6 @@ export class SingleFilmComponent implements OnInit {
     this.titreCritique = titleElement?.textContent?.trim() || '';
     this.auteurCritique = authorElement?.textContent?.trim() || '';
 
-    console.log("titreCritique " +this.titreCritique);
-    console.log("auteurCritique "+this.auteurCritique);
-
       // Extraction de la critique du film " " de l'objet DOM.
       // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
       // On parcourt la liste d'éléments et on extrait le texte du premier élément qui contient le titre du film recherché
@@ -249,15 +242,12 @@ export class SingleFilmComponent implements OnInit {
         critique = critiques[0].textContent?.trim();
         const regex = /jQuery\(.*}\);./gi;
         const newStr = critique!.replace(regex, "");
-        console.log(newStr)
         if (newStr.includes("function")) {
           const index = newStr.indexOf('function');
           const newStr2 = newStr.substring(0, index);
           this.critique = newStr2
-          console.log(newStr2);
         } else {
           this.critique = newStr
-          console.log(newStr);
         }
 
       } else {
@@ -296,7 +286,6 @@ export class CritiqueDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
-    console.log(this.data)
   }
 
 }
