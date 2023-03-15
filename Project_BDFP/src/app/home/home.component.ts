@@ -22,11 +22,9 @@ import { ApiServiceService } from 'services/api-service.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
-import axios from 'axios';
-import cheerio from 'cheerio';
-
 export interface DialogAjoutFilm {
   title: string;
+  french_title: string,
   dateVision: string;
   cinema: string;
   accompagnateurs: string;
@@ -43,6 +41,7 @@ export class HomeComponent implements OnInit {
   isSign: boolean = false;
   userName!: string;
   title!: string;
+  french_title!: string;
   dateVision!: string;
   cinema!: string;
   accompagnateurs!: string;
@@ -62,9 +61,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
-    private api: ApiServiceService,
     private utilService: UtilsService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -79,17 +76,6 @@ export class HomeComponent implements OnInit {
       locationControl: new FormControl(),
       accompagnateursControl: new FormControl(),
     });
-  }
-
-  async getRevuesCalindex() {
-    const url = '/api/revues_indexees.php';
-    const response = await axios.get(url);
-    const $ = cheerio.load(response.data);
-    const revues: string[] = [];
-    $('.index_revue_nom').each((index, element) => {
-      revues.push($(element).text().trim());
-    });
-    return revues;
   }
 
   suppFilm(titrefilm: string) {
@@ -117,6 +103,7 @@ export class HomeComponent implements OnInit {
       width: '800px',
       data: {
         title: this.title,
+        french_title: this.french_title,
         dateVision: this.dateVision,
         cinema: this.cinema,
         accompagnateurs: this.accompagnateurs,
@@ -127,6 +114,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: any) => {
       this.title = result;
+      this.french_title = result;
       this.dateVision = result;
       this.cinema = result;
       this.accompagnateurs = result;
@@ -357,9 +345,10 @@ export class ajouterFilm implements OnInit {
         this.selectedMovie.title &&
         !(await this.checkIfFilmExistsInList(imdb_id))
       ) {
+        const title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title
         this.filmService
           .addFilmToList(
-            this.selectedMovie.title,
+            title,
             imdb_id,
             tmdbid,
             this.utilService.getUserId(),

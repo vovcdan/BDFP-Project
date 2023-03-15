@@ -21,7 +21,8 @@ export class InitService {
     let results = await this.filmService.getFilmsByUidAsync();
 
     for (let movie of results[0].movies) {
-      omdbIDS.push(movie.omdbID);
+      console.log(movie.titre)
+      omdbIDS.push([movie.omdbID, movie.titre]);
     }
 
     this.movies = await this.getMapWithInfoAndPoster(omdbIDS);
@@ -54,12 +55,12 @@ export class InitService {
     return res;
   }
 
-  async getMapWithInfoAndPoster(omdbIDS: any) {
+  async getMapWithInfoAndPoster(movies: any) {
     let res = new Map<any, any>();
 
-    for (let i = 0; i < omdbIDS.length; i++) {
+    for (let i = 0; i < movies.length; i++) {
       let poster = '';
-      let tmdbMovie = await this.api.getMovieTMDBByIMDBIDAsync(omdbIDS[i]);
+      let tmdbMovie = await this.api.getMovieTMDBByIMDBIDAsync(movies[i][0]);
       let tmdbMovie_jsoned = await tmdbMovie.json();
       if (tmdbMovie_jsoned.movie_results[0]) {
         poster =
@@ -68,7 +69,7 @@ export class InitService {
               tmdbMovie_jsoned.movie_results[0].poster_path
             : '../assets/no-poster.png';
 
-        let title: string = tmdbMovie_jsoned.movie_results[0].title;
+        let title: string = movies[i][1] != undefined ? movies[i][1] : tmdbMovie_jsoned.movie_results[0].title;
         let release_date: string =
           tmdbMovie_jsoned.movie_results[0].release_date;
         let tmdbid: string = tmdbMovie_jsoned.movie_results[0].id;
@@ -79,16 +80,16 @@ export class InitService {
           poster: poster,
           tmdbid: tmdbid,
         };
-        res.set(omdbIDS[i], values);
+        res.set(movies[i][0], values);
       } else {
-        let omdbMovie = await this.api.getMovieByIdAsync(omdbIDS[i]);
+        let omdbMovie = await this.api.getMovieByIdAsync(movies[i][0]);
         let omdbMovie_jsoned = await omdbMovie.json();
         poster =
           omdbMovie_jsoned.Poster != 'N/A'
             ? omdbMovie_jsoned.Poster
             : '../assets/no-poster.png';
 
-        let title: string = omdbMovie_jsoned.Title;
+        let title: string = movies[i][1] != undefined ? movies[i][1] : omdbMovie_jsoned.Title;
         let release_date: string = omdbMovie_jsoned.Released;
 
         let values = {
@@ -97,7 +98,7 @@ export class InitService {
           poster: poster,
           tmdbid: '',
         };
-        res.set(omdbIDS[i], values);
+        res.set(movies[i][0], values);
       }
     }
     return res;

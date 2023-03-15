@@ -45,6 +45,12 @@
         Aucun résultat.
       </div>
     </mat-form-field>
+
+    <mat-form-field class="field" appearance="fill">
+      <mat-label for="cine">Titre en français</mat-label>
+      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder="Le diner de cons">
+    </mat-form-field>
+
     <mat-form-field class="field" appearance="fill">
       <mat-label for="dat">Date de visionnage</mat-label>
       <input matInput [(ngModel)]="data.dateVision" type="dat" [formControl]="searchControlDate"  placeholder="2022">
@@ -54,7 +60,7 @@
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
-      <mat-label for="cine">Cinéma</mat-label>
+      <mat-label for="cine">Lieu</mat-label>
       <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson">
     </mat-form-field>
 
