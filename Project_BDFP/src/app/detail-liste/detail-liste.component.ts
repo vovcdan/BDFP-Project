@@ -92,10 +92,10 @@ export class DetailListeComponent implements OnInit {
     });
   }
 
-  async isMovieInDB(omdbID: string){ //Promise<boolean> 
-    const data = await this.filmService.getFilmByOmdbIDAsync(this.utilService.getUserId(), omdbID);
-    const data_jsoned = await data?.json()
-    return (data_jsoned.titre !== undefined);
+  async isMovieInDB(omdbID: string){ //Promise<boolean>
+    const data = await this.filmService.isMovieInDatabase(this.utilService.getUserId(), omdbID);
+    console.log(data);
+    return data;
   }
 
   async addMovieFromSharedListToUser(omdbID: string, tmdbID: string, title: string){
