@@ -21,7 +21,6 @@ export class InitService {
     let results = await this.filmService.getFilmsByUidAsync();
 
     for (let movie of results[0].movies) {
-      console.log(movie.titre)
       omdbIDS.push([movie.omdbID, movie.titre]);
     }
 
@@ -36,7 +35,7 @@ export class InitService {
     let list = await this.filmService.getOneListAsync(listName);
     if (list.movies) {
       for (let movie of list.movies) {
-        omdbIDS.push(movie.omdbID);
+        omdbIDS.push([movie.omdbID, movie.titre]);
       }
       this.movies = await this.getMapWithInfoAndPoster(omdbIDS);
     }
@@ -46,7 +45,7 @@ export class InitService {
   async initDetailListe2(movies: Map<any, any>) {
     let omdbIDS = [];
     for (const [key, value] of movies) {
-      omdbIDS.push(key);
+      omdbIDS.push([key, value]);
     }
 
     let res = new Map<any, any>();
