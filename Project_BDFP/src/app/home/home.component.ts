@@ -299,7 +299,7 @@ export class ajouterFilm implements OnInit {
     });
   }
 
-  ajoutFilmFromOMDB() {
+  async ajoutFilmFromOMDB() {
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
@@ -330,21 +330,21 @@ export class ajouterFilm implements OnInit {
               this.dialogRef.close();
             });
         });
-    } else if (this.checkIfFilmExistsInList(IMDBid)) {
+    } else if (await this.checkIfFilmExistsInList(IMDBid)) {
       this.errorMsgFilmExists = true;
     } else {
       this.filmError = true;
     }
   }
 
-  ajoutFilmFromTMDB() {
+  async ajoutFilmFromTMDB() {
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
     let tmdbid = this.selectedMovie.id;
-    this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
+    this.api.getMovieTMDbId(tmdbid).subscribe(async (movieTMDB: any) => {
       let imdb_id = movieTMDB.imdb_id;
       if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(
@@ -370,7 +370,7 @@ export class ajouterFilm implements OnInit {
                 this.dialogRef.close();
               });
           });
-      } else if (this.checkIfFilmExistsInList(imdb_id)) {
+      } else if (await this.checkIfFilmExistsInList(imdb_id)) {
         this.errorMsgFilmExists = true;
       } else {
         this.filmError = true;
@@ -378,15 +378,8 @@ export class ajouterFilm implements OnInit {
     });
   }
 
-  checkIfFilmExistsInList(movieID: any): boolean {
-    this.val = false;
-    this.films = this.utilService.getListOfFilms();
-    for (let i = 0; i < this.films.length; i++) {
-      if (this.films[i].omdbID == movieID) {
-        this.val = true;
-        break;
-      }
-    }
-    return this.val;
+  async checkIfFilmExistsInList(movieID: any) {
+    let bool = await this.filmService.isMovieInDatabase(movieID);
+    return bool;
   }
 }

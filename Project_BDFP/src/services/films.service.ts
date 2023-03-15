@@ -524,6 +524,24 @@ export class FilmsService {
     }
   }
 
+  async isMovieInDatabase(omdbID: string) {
+    try {
+      const uid = this.utilService.getUserId();
+      const movie = await fetch(
+        'http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID
+      );
+      const movieData = await movie.json();
+      return Boolean(movieData); // Returns true if movie data exists, false otherwise
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée.";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return false;
+    }
+  }
+
   async getFilmsOfUserByLocation(location: string) {
     let map = new Map<number, string>();
     const uid = this.utilService.getUserId();
