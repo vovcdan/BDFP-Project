@@ -45,6 +45,9 @@ export class SingleFilmComponent implements OnInit {
 
   lienCritique?: string
 
+  titreCritique?: string;
+  auteurCritique?: string;
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -219,6 +222,15 @@ export class SingleFilmComponent implements OnInit {
     const parser = new DOMParser();
     const htmlDOM = parser.parseFromString(htmlString, 'text/html');
 
+    // Extraction du titre et de l'auteur de la critique
+    // On sélectionne le premier élément HTML qui a la classe ici c'est Cherchez le beauf
+    const titleElement = htmlDOM.querySelector('title');
+    const authorElement = htmlDOM.querySelector('span[itemprop="author"] a');
+    this.titreCritique = titleElement?.textContent?.trim() || '';
+    this.auteurCritique = authorElement?.textContent?.trim() || '';
+
+    console.log("titreCritique " +this.titreCritique);
+    console.log("auteurCritique "+this.auteurCritique);
 
     // Extraction de la critique du film " " de l'objet DOM.
     // On sélectionne tous les éléments HTML qui ont la classe 'review-content'
@@ -230,7 +242,6 @@ export class SingleFilmComponent implements OnInit {
       critique = critiques[0].textContent?.trim();
       const regex = /jQuery\(.*}\);./gi;
       const newStr = critique!.replace(regex, "");
-      console.log(newStr)
       if(newStr.includes("function")) {
         const index = newStr.indexOf('function');
         const newStr2 = newStr.substring(0, index);
