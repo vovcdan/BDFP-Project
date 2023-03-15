@@ -44,6 +44,8 @@ export class SingleFilmComponent implements OnInit {
 
   lienCritique?: string
 
+  spinner : boolean = false
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -93,6 +95,8 @@ export class SingleFilmComponent implements OnInit {
   back() {
     this.loc.back();
   }
+
+  get spinnerStyle() { return {color: 'Orange'} }
 
   openSnackBar(message: string) {
     this.snack.open(message,"", {
@@ -178,6 +182,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
   async scrapeCritiques(titreFilm: string) {
+    this.spinner = true
     if (this.test) {
       return;
     }
@@ -210,6 +215,7 @@ export class SingleFilmComponent implements OnInit {
     } else {
       this.critique = "Aucune critiques disponibles pour ce film"
     }
+    this.spinner = false
   }
 
   openDialog() {

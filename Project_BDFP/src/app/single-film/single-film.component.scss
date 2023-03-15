@@ -159,10 +159,6 @@ summary {
     display: inline;
 }
 
-#ligne {
-    display: inline;
-}
-
 a {
     color : whitesmoke
 }
@@ -223,9 +219,21 @@ input, textarea {
     height : 50px;
 }
 
-#texte {
-    width:70%;
+#critique {
+    width : 800px;   
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
 
+#spinner {
+    transform: scale(0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color : #ffa500
+  }
+
+#cote {
+    display: inline;
 }
