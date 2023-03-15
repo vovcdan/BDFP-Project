@@ -50,6 +50,8 @@ export class SingleFilmComponent implements OnInit {
 
   spinner: boolean = false
 
+  titreFR: any;
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -205,12 +207,17 @@ export class SingleFilmComponent implements OnInit {
     this.test = true;
 
     try {
-      const titreFR = await this.translateTitle(titreFilm);
+      try{
+        this.titreFR = await this.translateTitle(titreFilm);
+      }catch(error){
+        this.titreFR = titreFilm
+      }
+      
 
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
       // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
-      const str = titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+      const str = this.titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
 
       this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 
