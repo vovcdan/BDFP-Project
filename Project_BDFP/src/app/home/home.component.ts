@@ -163,7 +163,7 @@ export class ajouterFilm implements OnInit {
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
-    Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')
+    Validators.pattern('^19[0-9]{2}|2[0-9]{3}$')
   );
 
   constructor(
@@ -207,7 +207,6 @@ export class ajouterFilm implements OnInit {
 
   //OMDB
   OMDBInit() {
-    console.log("omdb")
     this.omdbSelected = true;
     this.selectedMovie = '';
     this.filteredMoviesOMDB = null;
@@ -243,7 +242,6 @@ export class ajouterFilm implements OnInit {
 
   //TMDB
   TMDBInit() {
-    console.log("tmdb")
     this.omdbSelected = false;
     this.selectedMovie = '';
     this.filteredMoviesTMDB = null;
@@ -304,7 +302,6 @@ export class ajouterFilm implements OnInit {
   }
 
   async ajoutFilmFromOMDB() {
-    console.log("ajoute par omdb")
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;

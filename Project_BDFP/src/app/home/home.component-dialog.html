@@ -47,9 +47,9 @@
     </mat-form-field>
     <mat-form-field class="field" appearance="fill">
       <mat-label for="dat">Date de visionnage</mat-label>
-      <input matInput [(ngModel)]="data.dateVision" type="dat" [formControl]="searchControlDate"  placeholder="15092022">
+      <input matInput [(ngModel)]="data.dateVision" type="dat" [formControl]="searchControlDate"  placeholder="2022">
       <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
-        forme : jjmmaaaa ex: 23032022
+        forme : aaaa ex: 2022
       </mat-error>
     </mat-form-field>
 
@@ -81,7 +81,7 @@
   <div mat-dialog-actions>
 
     <button mat-button (click)="onNoClick()">Retour</button>
-    <button mat-button (keyup.enter)="clickButtonChooseAPIINIT()" [disabled]="boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
+    <button mat-button (keyup.enter)="clickButtonChooseAPIINIT()" [disabled]="!searchControlDate.valid || !searchControlNote.valid ||boutonAjoutClicked" (click)="clickButtonChooseAPIINIT()">Ok</button>
 
   </div>
 </div>
