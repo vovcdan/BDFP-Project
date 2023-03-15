@@ -669,6 +669,25 @@ export class FilmsService {
     return listes;
   }
 
+  async getAllListsFromUserAsync(){
+    const uid = this.utilService.getUserId()
+    try{
+      const lists = await fetch(`http://localhost:8080/api/allLists/${uid}`)
+      const lists_jsoned = await lists.json()
+      return lists_jsoned;
+    } catch(error){
+      console.log(error)
+    }
+  }
+
+  async getAllSharedListsFromUserAsync(){
+
+  }
+
+  async getAllOwnListsFromUserAsync(){
+
+  }
+
   getOneList(uid: string, titrelist: string) {
     let laliste: EventEmitter<ListFilm> = new EventEmitter<ListFilm>();
 
