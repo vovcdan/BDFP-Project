@@ -531,7 +531,12 @@ export class FilmsService {
         'http://localhost:8080/api/movies/omdb/' + uid + '/' + omdbID
       );
       const movieData = await movie.json();
-      return Boolean(movieData); // Returns true if movie data exists, false otherwise
+      console.log(movieData);
+      if (movieData.length == 0) {
+        return false
+      } else {
+        return true
+      }
     } catch (error: any) {
       if (error.status === 404) {
         this.errorMessage = "La ressource demandée n'a pas été trouvée.";

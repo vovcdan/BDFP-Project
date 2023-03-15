@@ -306,7 +306,7 @@ export class ajouterFilm implements OnInit {
     }, 3000);
     this.filmError = false;
     let IMDBid = this.selectedMovie.imdbID;
-    if (IMDBid && this.selectedMovie.Title && !this.checkIfFilmExistsInList(IMDBid)) {
+    if (IMDBid && this.selectedMovie.Title && !await this.checkIfFilmExistsInList(IMDBid)) {
       this.filmService
         .addFilmToList(
           this.selectedMovie.Title,
@@ -332,8 +332,14 @@ export class ajouterFilm implements OnInit {
         });
     } else if (await this.checkIfFilmExistsInList(IMDBid)) {
       this.errorMsgFilmExists = true;
+      setTimeout(() => {
+        this.errorMsgFilmExists = false;
+      }, 5000);
     } else {
       this.filmError = true;
+      setTimeout(() => {
+        this.filmError = false;
+      }, 5000);
     }
   }
 
@@ -346,7 +352,7 @@ export class ajouterFilm implements OnInit {
     let tmdbid = this.selectedMovie.id;
     this.api.getMovieTMDbId(tmdbid).subscribe(async (movieTMDB: any) => {
       let imdb_id = movieTMDB.imdb_id;
-      if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
+      if (imdb_id && this.selectedMovie.title && !await this.checkIfFilmExistsInList(imdb_id)) {
         this.filmService.addFilmToList(
             this.selectedMovie.title,
             imdb_id,
@@ -372,8 +378,14 @@ export class ajouterFilm implements OnInit {
           });
       } else if (await this.checkIfFilmExistsInList(imdb_id)) {
         this.errorMsgFilmExists = true;
+        setTimeout(() => {
+          this.errorMsgFilmExists = false;
+        }, 5000);
       } else {
         this.filmError = true;
+        setTimeout(() => {
+          this.filmError = false;
+        }, 5000);
       }
     });
   }
