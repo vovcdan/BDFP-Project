@@ -56,15 +56,15 @@ export class HomeComponent implements OnInit {
   resList!: Map<string, number>;
   movieExist: any[] = [];
   switch_number = -1;
-  error_message = "";
+  error_message = '';
   // showResultatRecherche = this.utilService.getResultatRecherche()
-  showResultatRecherche = true
+  showResultatRecherche = true;
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
     private api: ApiServiceService,
     private utilService: UtilsService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -72,13 +72,13 @@ export class HomeComponent implements OnInit {
     this.utilService.setisListShared(false);
 
     this.formRecherche = new FormGroup({
-      titreControl:new FormControl(),
+      titreControl: new FormControl(),
       realisatorControl: new FormControl(),
       yearControl: new FormControl(),
       actorsControl: new FormControl(),
       locationControl: new FormControl(),
-      accompagnateursControl: new FormControl()
-    })
+      accompagnateursControl: new FormControl(),
+    });
   }
 
   async getRevuesCalindex() {
@@ -92,25 +92,24 @@ export class HomeComponent implements OnInit {
     return revues;
   }
 
-
   suppFilm(titrefilm: string) {
     this.filmService.deleteMovieDBById(titrefilm);
   }
 
   getNumberOfFilms(): Observable<number> {
-    return this.filmService.getFilmsByUid(this.utilService.getUserId()).pipe(
-      map(allfilms => allfilms[0].movies.length)
-    );
+    return this.filmService
+      .getFilmsByUid(this.utilService.getUserId())
+      .pipe(map((allfilms) => allfilms[0].movies.length));
   }
 
   affichageForm() {
     this.showFormRecherche = !this.showFormRecherche;
-    this.showResultatRecherche = !this.showResultatRecherche
+    this.showResultatRecherche = !this.showResultatRecherche;
   }
 
   onClose() {
     this.showFormRecherche = !this.showFormRecherche;
-    this.showResultatRecherche = !this.showResultatRecherche
+    this.showResultatRecherche = !this.showResultatRecherche;
   }
 
   openDialog(): void {
@@ -142,12 +141,10 @@ export class HomeComponent implements OnInit {
   templateUrl: 'home.component-dialog.html',
   styleUrls: ['./home.component-dialog.scss'],
 })
-
 export class ajouterFilm implements OnInit {
-
   filmError: boolean = false;
 
- // currentListAPI: any;
+  // currentListAPI: any;
 
   boutonAjoutClicked: boolean = false;
 
@@ -162,7 +159,7 @@ export class ajouterFilm implements OnInit {
   films: Film[] = [];
   val: boolean = false;
   omdbSelected: boolean = true;
-  messError: boolean = false
+  messError: boolean = false;
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
@@ -170,39 +167,43 @@ export class ajouterFilm implements OnInit {
   );
 
   constructor(
-    public dialogRef: MatDialogRef<ajouterFilm>, private filmService: FilmsService, private api: ApiServiceService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: DialogAjoutFilm) {}
+    public dialogRef: MatDialogRef<ajouterFilm>,
+    private filmService: FilmsService,
+    private api: ApiServiceService,
+    private utilService: UtilsService,
+    private router: Router,
+    private snack: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: DialogAjoutFilm
+  ) {}
 
-    ngOnInit(): void {
-      this.OMDBInit();
+  ngOnInit(): void {
+    this.OMDBInit();
+  }
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.clickButtonChooseAPIINIT();
     }
+  }
 
-    @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent) {
-      if (event.key === 'Enter') {
-        this.clickButtonChooseAPIINIT();
-      }
+  changeBoolTrue() {
+    this.omdbSelected = true;
+    this.OMDBInit();
+  }
+
+  changeBoolFalse() {
+    this.omdbSelected = false;
+    this.TMDBInit();
+  }
+
+  clickButtonChooseAPIINIT() {
+    if (this.omdbSelected) {
+      this.ajoutFilmFromOMDB();
+    } else {
+      this.ajoutFilmFromTMDB();
     }
-
-    changeBoolTrue() {
-      this.omdbSelected = true
-      this.OMDBInit();
-    }
-
-    changeBoolFalse(){
-      this.omdbSelected = false
-      this.TMDBInit();
-    }
-
-    clickButtonChooseAPIINIT() {
-      if (this.omdbSelected) {
-        this.ajoutFilmFromOMDB();
-      } else {
-        this.ajoutFilmFromTMDB();
-      }
-    }
-
+  }
 
   //OMDB
   OMDBInit() {
@@ -210,33 +211,33 @@ export class ajouterFilm implements OnInit {
     this.selectedMovie = '';
     this.filteredMoviesOMDB = null;
     this.searchMoviesCtrl.valueChanges
-    .pipe(
-      filter(res => {
-        return res !== null && res.length >= this.minLengthTerm
-      }),
-      distinctUntilChanged(),
-      debounceTime(1000),
-      tap(() => {
-        this.filteredMoviesTMDB = [];
-        this.isLoading = true;
-      }),
-      switchMap(value => this.api.getMoviesBySearchTerm(value)
-        .pipe(
-          finalize(() => {
-            this.isLoading = false
-          }),
+      .pipe(
+        filter((res) => {
+          return res !== null && res.length >= this.minLengthTerm;
+        }),
+        distinctUntilChanged(),
+        debounceTime(1000),
+        tap(() => {
+          this.filteredMoviesTMDB = [];
+          this.isLoading = true;
+        }),
+        switchMap((value) =>
+          this.api.getMoviesBySearchTerm(value).pipe(
+            finalize(() => {
+              this.isLoading = false;
+            })
+          )
         )
       )
-    )
-    .subscribe((data: any) => {
-      if (data['Search'] == undefined) {
-        this.messError = true
-        this.filteredMoviesOMDB = [];
-      } else {
-        this.messError = false
-        this.filteredMoviesOMDB = data['Search'];
-      }
-    });
+      .subscribe((data: any) => {
+        if (data['Search'] == undefined) {
+          this.messError = true;
+          this.filteredMoviesOMDB = [];
+        } else {
+          this.messError = false;
+          this.filteredMoviesOMDB = data['Search'];
+        }
+      });
   }
 
   //TMDB
@@ -262,16 +263,17 @@ export class ajouterFilm implements OnInit {
             })
           )
         )
-      ).subscribe((data: any) => {
-      if (data['results'] == undefined) {
-        this.messError = true
-        this.filteredMoviesTMDB = [];
-      } else {
-        this.messError = false
-        this.filteredMoviesTMDB = data['results'];
-      }
-    });
-    this.messError = false
+      )
+      .subscribe((data: any) => {
+        if (data['results'] == undefined) {
+          this.messError = true;
+          this.filteredMoviesTMDB = [];
+        } else {
+          this.messError = false;
+          this.filteredMoviesTMDB = data['results'];
+        }
+      });
+    this.messError = false;
   }
 
   onSelected() {
@@ -286,7 +288,7 @@ export class ajouterFilm implements OnInit {
     this.selectedMovie = '';
     this.filteredMoviesOMDB = [];
     this.filteredMoviesTMDB = [];
-    this.messError = false
+    this.messError = false;
   }
 
   onNoClick(): void {
@@ -299,19 +301,23 @@ export class ajouterFilm implements OnInit {
     });
   }
 
-  ajoutFilmFromOMDB() {
+  async ajoutFilmFromOMDB() {
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
     let IMDBid = this.selectedMovie.imdbID;
-    if (IMDBid && this.selectedMovie.Title && !this.checkIfFilmExistsInList(IMDBid)) {
+    if (
+      IMDBid &&
+      this.selectedMovie.Title &&
+      !this.checkIfFilmExistsInList(IMDBid)
+    ) {
       this.filmService
         .addFilmToList(
           this.selectedMovie.Title,
           IMDBid,
-          "",
+          '',
           this.utilService.getUserId(),
           this.data.dateVision,
           this.data.cinema,
@@ -330,24 +336,29 @@ export class ajouterFilm implements OnInit {
               this.dialogRef.close();
             });
         });
-    } else if (this.checkIfFilmExistsInList(IMDBid)) {
+    } else if (await this.checkIfFilmExistsInList(IMDBid)) {
       this.errorMsgFilmExists = true;
     } else {
       this.filmError = true;
     }
   }
 
-  ajoutFilmFromTMDB() {
+  async ajoutFilmFromTMDB() {
     this.boutonAjoutClicked = true;
     setTimeout(() => {
       this.boutonAjoutClicked = false;
     }, 3000);
     this.filmError = false;
     let tmdbid = this.selectedMovie.id;
-    this.api.getMovieTMDbId(tmdbid).subscribe((movieTMDB: any) => {
+    this.api.getMovieTMDbId(tmdbid).subscribe(async (movieTMDB: any) => {
       let imdb_id = movieTMDB.imdb_id;
-      if (imdb_id && this.selectedMovie.title && !this.checkIfFilmExistsInList(imdb_id)) {
-        this.filmService.addFilmToList(
+      if (
+        imdb_id &&
+        this.selectedMovie.title &&
+        !(await this.checkIfFilmExistsInList(imdb_id))
+      ) {
+        this.filmService
+          .addFilmToList(
             this.selectedMovie.title,
             imdb_id,
             tmdbid,
@@ -360,8 +371,7 @@ export class ajouterFilm implements OnInit {
           )
           .subscribe((film) => {
             this.openSnackBar(
-              this.selectedMovie.title +
-                ' à été ajouté à votre liste'
+              this.selectedMovie.title + ' à été ajouté à votre liste'
             );
             this.router
               .navigateByUrl('/', { skipLocationChange: true })
@@ -370,7 +380,7 @@ export class ajouterFilm implements OnInit {
                 this.dialogRef.close();
               });
           });
-      } else if (this.checkIfFilmExistsInList(imdb_id)) {
+      } else if (await this.checkIfFilmExistsInList(imdb_id)) {
         this.errorMsgFilmExists = true;
       } else {
         this.filmError = true;
@@ -378,15 +388,11 @@ export class ajouterFilm implements OnInit {
     });
   }
 
-  checkIfFilmExistsInList(movieID: any): boolean {
-    this.val = false;
-    this.films = this.utilService.getListOfFilms();
-    for (let i = 0; i < this.films.length; i++) {
-      if (this.films[i].omdbID == movieID) {
-        this.val = true;
-        break;
-      }
-    }
-    return this.val;
+  async checkIfFilmExistsInList(movieID: any) {
+    let bool = await this.filmService.isMovieInDatabase(
+      this.utilService.getUserId(),
+      movieID
+    );
+    return bool;
   }
 }
