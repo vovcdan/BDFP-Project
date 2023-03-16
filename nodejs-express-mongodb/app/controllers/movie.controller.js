@@ -232,7 +232,6 @@ exports.findByDateVision = (req, res) => {
     { $match: { "movies.dateVision": dateVision } },
   ])
     .then((data) => {
-      console.log(data);
       if (!data || data.length === 0) {
         res.status(404).send({
           message: "Aucun film vu en " + dateVision,
