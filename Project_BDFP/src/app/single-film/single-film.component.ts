@@ -95,7 +95,7 @@ export class SingleFilmComponent implements OnInit {
     this.currentFilmInfos['Director'] = movieFromOMDB.Director
     this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
 
-    this.scrapeCritiques(this.currentFilm.value.title)
+    this.scrapeCritiques(this.currentFilm.value.title, this.currentFilm.value.tmdbid)
   }
 
   back() {
@@ -189,17 +189,28 @@ export class SingleFilmComponent implements OnInit {
     this.updating = !this.updating
   }
 
-  async translateTitle(title: string) {
+  // async translateTitle(title: string) {
+  //   try {
+  //     let doc = await wtf.fetch(title, { lang: 'fr' });
+  //     let text = (doc as any).title()
+  //     return text;
+  //   } catch (error) {
+  //     throw new Error("Tranduction du titre du film impossible");
+  //   }
+  // }
+
+  async getMovieTranslations(movieId: any) {
     try {
-      let doc = await wtf.fetch(title, { lang: 'fr' });
-      let text = (doc as any).title()
-      return text;
+      let translations = await this.api.getMovieTranslations(movieId);
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
+      return titleFrench;
     } catch (error) {
-      throw new Error("Tranduction du titre du film impossible");
+      console.error(error);
     }
   }
 
-  async scrapeCritiques(titreFilm: string) {
+  async scrapeCritiques(titreFilm: string, tmdbid: string) {
     this.spinner = true
     if (this.test) {
       return;
@@ -207,8 +218,9 @@ export class SingleFilmComponent implements OnInit {
     this.test = true;
 
     try {
+      
       try{
-        this.titreFR = await this.translateTitle(titreFilm);
+        this.titreFR = await this.getMovieTranslations(tmdbid);
       }catch(error){
         this.titreFR = titreFilm
       }
@@ -217,7 +229,13 @@ export class SingleFilmComponent implements OnInit {
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
       // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
-      const str = this.titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+      const str = this.titreFR
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlever les accents
+      .replace(/'/g, '-') // remplacer les apostrophes par des tirets
+      .replace(/ \(film\)/gi, '') // enlever la chaîne " (film)" s'il existe
+      .replace(/[^a-zA-Z0-9\s-]/g, '') // enlever les caractères spéciaux (sauf les tirets et les espaces)
+      .replace(/\s+/g, '-') // remplacer les espaces par des tirets
+      .toLowerCase(); // mettre en minuscules
 
       this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 
