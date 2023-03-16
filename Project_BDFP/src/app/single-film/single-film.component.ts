@@ -221,11 +221,13 @@ export class SingleFilmComponent implements OnInit {
       
       try{
         this.titreFR = await this.getMovieTranslations(tmdbid);
+        if(this.titreFR === ''){
+          this.titreFR = titreFilm
+        }
       }catch(error){
         this.titreFR = titreFilm
       }
       
-
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
       // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
@@ -236,6 +238,8 @@ export class SingleFilmComponent implements OnInit {
       .replace(/[^a-zA-Z0-9\s-]/g, '') // enlever les caractères spéciaux (sauf les tirets et les espaces)
       .replace(/\s+/g, '-') // remplacer les espaces par des tirets
       .toLowerCase(); // mettre en minuscules
+
+      
 
       this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 
