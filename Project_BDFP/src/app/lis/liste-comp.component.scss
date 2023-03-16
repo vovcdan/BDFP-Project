@@ -34,10 +34,6 @@ li {
     display: inline;
   }
 
-  .mat-icon {
-    color : orange;
-  }
-
   
   ::ng-deep .mat-focused .mat-form-field-label {
     /*change color of label*/
@@ -69,6 +65,7 @@ li {
   }
 
   #butGerer {
+    transform: scale(0.8);
     color: white; 
     transition: 0.4s;
     background-color: rgb(39,39,39);
@@ -78,9 +75,9 @@ li {
 }
 
 .add {
+  color: white; 
   transition: 0.4s;
   background-color: rgb(39,39,39);
-  color: white;
   &:hover {
       color: orange;
   }
@@ -88,13 +85,50 @@ li {
 
 #ajout {
   display: inline-block;
-  margin: 10px auto auto 10px;
+  margin: 0px auto auto 0px;
+  color: white; 
   transition: 0.4s;
   background-color: rgb(39,39,39);
-  color: white;
   &:hover {
       color: orange;
   }
+}
+
+#aide {
+  margin-top : 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  position: relative;
+
+}
+
+#aide h1 {
+  position : absolute;
+  font-size: small;
+  color : white;
+
+}
+
+#p1 {
+  margin-right: 200px;
+}
+
+#p2 {
+  margin-left : 250px
+}
+
+#aide button {
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  transform: scale(0.8);
+  position: absolute;
+  top: -5px;
+  color: white; 
+  background-color: rgb(50, 50, 50);
+  cursor:default
 }
 
 h2 {

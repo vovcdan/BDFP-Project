@@ -7,9 +7,13 @@
         </mat-form-field>
     </div>
 
-    <div *ngIf="aucuneListe">
-        <h2>Aucune liste n'a été créé.</h2>
-    </div>
+    <div id="aide" *ngIf="aucuneListe">
+    <h1 id="p1">Cliquez sur le bouton </h1>
+    <button mat-fab mat-fab>
+      <mat-icon>add</mat-icon>
+    </button>
+    <h1 id="p2">pour ajouter votre première liste.</h1>
+  </div>
     
     <div id="comp-liste"*ngFor="let liste of listofFilms | filter:searchText titrelist">
         <li>{{ liste.titrelist }}</li>
