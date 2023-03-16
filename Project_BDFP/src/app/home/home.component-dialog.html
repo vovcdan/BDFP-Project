@@ -60,13 +60,29 @@
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
-      <mat-label for="cine">Lieu</mat-label>
-      <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson">
+      <mat-label for="cine">Cinéma</mat-label>
+      <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson" [matAutocomplete]="cinemaAuto">
+      <mat-autocomplete #cinemaAuto="matAutocomplete">
+        <mat-option *ngFor="let cinema of cinemaFieldHistory" [value]="cinema">
+          {{cinema}}
+          <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteCinemaHistory($event, cinema)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="accomp">Accompagnateurs</mat-label>
-      <input matInput [(ngModel)]="data.accompagnateurs" type="accomp" placeholder="Julien, Martine, Benjamin">
+      <input matInput [(ngModel)]="data.accompagnateurs" type="accomp" placeholder="Julien, Martine, Benjamin" [matAutocomplete]="accompagnateursAuto">
+      <mat-autocomplete #accompagnateursAuto="matAutocomplete">
+        <mat-option *ngFor="let accompagnateurs of accompagnateursFieldHistory" [value]="accompagnateurs">
+          {{accompagnateurs}}
+          <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteAccompagnateurHistory($event, accompagnateurs)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
