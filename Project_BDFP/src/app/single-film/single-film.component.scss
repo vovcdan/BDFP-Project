@@ -188,7 +188,7 @@ h2 {
     margin-left: 100px;
 }
 
-#texte {
+#texte2 {
     cursor:pointer
 }
 
@@ -239,3 +239,20 @@ input, textarea {
 #cote {
     display: inline;
 }
+
+/* Style pour le texte de "voir plus" */
+#texte:before {
+    margin-left: 10px;
+    content: "- voir plus -";
+    cursor:pointer;
+    color : orange;
+    margin-left: 150px;
+  }
+  
+  /* Style pour le texte de "voir moins" */
+  details[open] #texte:before {
+    content: "- voir moins -";
+    cursor:pointer;
+    color : orange;
+    margin-left: 150px;
+  }
