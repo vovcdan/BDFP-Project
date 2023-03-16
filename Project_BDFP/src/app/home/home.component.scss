@@ -40,17 +40,17 @@
     margin-right: 10px;
     margin-top: 20px;
     margin-bottom: 5px;
-    color: white; 
+    color: rgb(0, 0, 0); 
     transition: 0.4s;
-    background-color: rgb(39,39,39);
-   animation: blink 1s infinite;
+    background-color: rgba(255, 166, 0, 0.747);
+//    animation: blink 1s infinite;
 }
 
-@keyframes blink {
-    0% {background-color: rgb(39,39,39);}
-    50% {background-color: orange;}
-    100% {background-color: rgb(39,39,39);}
-}
+// @keyframes blink {
+//     0% {background-color: rgb(39,39,39);}
+//     50% {background-color: orange;}
+//     100% {background-color: rgb(39,39,39);}
+// }
 
 .butAjout:hover {
     color: orange;

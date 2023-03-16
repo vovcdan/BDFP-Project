@@ -77,7 +77,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     Ng2SearchPipeModule,
     MatTooltipModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
