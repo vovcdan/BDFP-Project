@@ -317,12 +317,16 @@ export class partagerListe implements OnInit {
       this.error_message = `Le destinataire ${this.data.email} n'existe pas`
     } else {
       const list_title = this.utilService.getCurrentListeName()
-      const list = await this.film.getOneListAsync(list_title)
+      let list = await this.film.getOneListAsync(list_title)
+      for(let i = 0; i < list.movies.length; i++){
+        list.movies[i].accompagnateurs = ""
+        list.movies[i].dateVision = ""
+        list.movies[i].cinema = ""
+      }
+      console.log(list)
       await this.film.shareListAsync(dest[0]._id, list)
       this.openSnackBar("La liste " + list.titrelist + " a été partagée à " + this.data.email)
     }
-
-    console.log(this.error_message)
   }
 
 
