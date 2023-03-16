@@ -43,9 +43,18 @@
     color: white; 
     transition: 0.4s;
     background-color: rgb(39,39,39);
-    &:hover {
-        color: orange;
-    }
+   animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {background-color: rgb(39,39,39);}
+    50% {background-color: orange;}
+    100% {background-color: rgb(39,39,39);}
+}
+
+.butAjout:hover {
+    color: orange;
+    animation: none;
 }
 
 
@@ -269,5 +278,4 @@ header {
     margin-right: auto;
     width: 450px;
 }
-
 
