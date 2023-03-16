@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit {
   error_message = '';
   // showResultatRecherche = this.utilService.getResultatRecherche()
   showResultatRecherche = true;
+
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
@@ -148,6 +149,9 @@ export class ajouterFilm implements OnInit {
   val: boolean = false;
   omdbSelected: boolean = false;
   messError: boolean = false;
+
+  titleFrench : string | undefined;
+
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
@@ -259,6 +263,10 @@ export class ajouterFilm implements OnInit {
         } else {
           this.messError = false;
           this.filteredMoviesTMDB = data['results'];
+          this.filteredMoviesTMDB.forEach(async (element: any) => {
+            let titleFR = await this.getMovieTranslations(element.id);
+            element.titleFR = titleFR;
+          });
         }
       });
     this.messError = false;
@@ -346,6 +354,7 @@ export class ajouterFilm implements OnInit {
         !(await this.checkIfFilmExistsInList(imdb_id))
       ) {
         const title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title
+
         this.filmService
           .addFilmToList(
             title,
@@ -384,4 +393,17 @@ export class ajouterFilm implements OnInit {
     );
     return bool;
   }
+
+  async getMovieTranslations(movieId: string) {
+    try {
+      let translations = await this.api.getMovieTranslations(movieId);
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
+      return titleFrench;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 }
