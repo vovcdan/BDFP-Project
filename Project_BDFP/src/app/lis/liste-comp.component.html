@@ -6,6 +6,10 @@
           <input matInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Rechercher par titre de liste ou de film">
         </mat-form-field>
     </div>
+
+    <div *ngIf="aucuneListe">
+        <h2>Aucune liste n'a été créé.</h2>
+    </div>
     
     <div id="comp-liste"*ngFor="let liste of listofFilms | filter:searchText titrelist">
         <li>{{ liste.titrelist }}</li>

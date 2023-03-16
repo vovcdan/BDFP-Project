@@ -15,6 +15,7 @@ export class ListeCompComponent implements OnInit {
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
   searchText!: any;
+  aucuneListe:boolean = false
 
   constructor(
     private filmsService: FilmsService,
@@ -27,6 +28,9 @@ export class ListeCompComponent implements OnInit {
       .getAllListFromUser(this.utilService.getUserId())
       .subscribe((listofFilms) => {
         this.listofFilms = listofFilms;
+        if (this.listofFilms.length == 0){
+          this.aucuneListe = true
+        }
       });
   }
 

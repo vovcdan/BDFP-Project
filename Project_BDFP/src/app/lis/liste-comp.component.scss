@@ -55,7 +55,7 @@ li {
   }
 
   input, textarea {
-    width: 50%;
+    width: 100%;
     color: white;
   }
 
@@ -95,6 +95,11 @@ li {
   &:hover {
       color: orange;
   }
+}
+
+h2 {
+  text-align: center;
+  color: orange;
 }
 
   
