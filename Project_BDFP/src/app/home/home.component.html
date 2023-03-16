@@ -29,6 +29,7 @@
         </div>
         <app-affichage-recherche></app-affichage-recherche>
     </div>
+    <h2 id="aucun" *ngIf="noMovies">Aucun film n'a été ajouté.</h2>
     <div *ngIf="showResultatRecherche">
         <app-affichage-films></app-affichage-films>
     </div>

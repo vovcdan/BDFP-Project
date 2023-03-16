@@ -465,6 +465,21 @@ export class FilmsService {
     }
   }
 
+  async hasNoMovies(){
+    const uid = this.utilService.getUserId();
+    try {
+      const movies = await fetch('http://localhost:8080/api/movies/' + uid);
+      const movies_jsoned = await movies.json();
+      if(movies_jsoned[0].movies.length == 0){
+        return true
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false
+    }
+  }
+
   getFilmByOmdbID(uid: string, omdbID: string) {
     let film: EventEmitter<Film> = new EventEmitter<Film>();
 

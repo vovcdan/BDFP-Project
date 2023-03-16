@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
   films: Film[] = [];
   list: any;
   numberOfFilms!: Observable<number>;
+  noMovies!: any
   showFormRecherche: boolean = false;
   formRecherche!: FormGroup;
   resList!: Map<string, number>;
@@ -67,6 +68,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
     this.utilService.setisListShared(false);
+    this.hasNoMovies().then(res => {
+      this.noMovies = res
+    })
 
     this.formRecherche = new FormGroup({
       titreControl: new FormControl(),
@@ -87,6 +91,12 @@ export class HomeComponent implements OnInit {
       .getFilmsByUid(this.utilService.getUserId())
       .pipe(map((allfilms) => allfilms[0].movies.length));
   }
+
+ async hasNoMovies(){
+  let bool = await this.filmService.hasNoMovies()
+  console.log(bool)
+  return bool
+ }
 
   affichageForm() {
     this.showFormRecherche = !this.showFormRecherche;
