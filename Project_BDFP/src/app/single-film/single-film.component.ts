@@ -228,9 +228,7 @@ export class SingleFilmComponent implements OnInit {
         this.titreFR = titreFilm
       }
       
-      // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
-      // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
-      // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
+      
       const str = this.titreFR
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlever les accents
       .replace(/'/g, '-') // remplacer les apostrophes par des tirets
