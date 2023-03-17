@@ -62,7 +62,7 @@ export class ListeCompComponent implements OnInit {
         this.showListofFilms = this.listofFilms.filter(film => film.shared);
       }
     }
-    
+
     if (this.test) {
       return;
     }
@@ -71,7 +71,7 @@ export class ListeCompComponent implements OnInit {
     this.listofFilms = this.showListofFilms;
   }
 
-  gererListe(laliste: ListFilm) {
+  gererListe(laliste: any) {
     this.router.navigateByUrl('/favs/' + laliste.titrelist);
     this.utilService.setListName(laliste.titrelist);
     this.utilService.setCurrentListe(laliste);
