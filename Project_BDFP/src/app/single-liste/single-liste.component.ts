@@ -253,7 +253,7 @@ export class ajouterUnFilm implements OnInit {
   addMovieToListOrTOCommonList(){
     if(this.utilService.getIsListCommon()){
       this.addMovieToCommonList()
-    } else if (this.utilService.getIsListShared()){
+    } else {
       this.ajoutFilm()
     }
   }

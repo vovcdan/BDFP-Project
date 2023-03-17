@@ -77,3 +77,17 @@
         color: orange;
     }
 }
+
+p {
+    margin : auto 20px auto 20px
+}
+
+#ajout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto auto 10px;
+    transition: 0.4s;
+    background-color: rgb(39,39,39);
+    color: white;
+}
