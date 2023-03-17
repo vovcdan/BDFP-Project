@@ -52,6 +52,9 @@ export class SingleFilmComponent implements OnInit {
 
   titreFR: any;
 
+  cinemaFieldHistory!: [string];
+  accompagnateursFieldHistory!: [string];
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -165,8 +168,35 @@ export class SingleFilmComponent implements OnInit {
     });
   }
 
-  showFormUpdateNovie() {
+  async getCinemaHistory() {
+    let cinemaHistory = await this.filmService.getCinemaHistory();
+    return cinemaHistory;
+  }
+
+  async getAccompagnateursHistory() {
+    let accompagnateursHistory = await this.filmService.getAccompagnateursHistory();
+    return accompagnateursHistory;
+  }
+
+  async deleteCinemaHistory(event: MouseEvent, cinema: string) {
+    event.stopPropagation();
+    let cinemaField = await this.filmService.deleteCinemaHistory(cinema);
+    this.cinemaFieldHistory = cinemaField;
+  }
+
+  async deleteAccompagnateurHistory(event: MouseEvent, accompagnateur: string) {
+    event.stopPropagation();
+    let accompagnateursHistory = await this.filmService.deleteAccompagnateursHistory(accompagnateur);
+    this.accompagnateursFieldHistory = accompagnateursHistory;
+  }
+
+  async showFormUpdateNovie() {
     this.updating = !this.updating
+
+    if (this.updating) {
+      this.accompagnateursFieldHistory = await this.getAccompagnateursHistory();
+      this.cinemaFieldHistory = await this.getCinemaHistory();
+    }
 
     this.formUpdateMovie.patchValue({
       noteControl: this.currentFilmInfos.note,
@@ -186,6 +216,14 @@ export class SingleFilmComponent implements OnInit {
     filmModifie.accompagnateurs = this.formUpdateMovie.get('accompagnateursControl')!.value
     filmModifie.avis = this.formUpdateMovie.get('avisControl')!.value
     this.filmService.updateMovieInfo(filmModifie)
+
+    if (filmModifie.accompagnateurs != null && filmModifie.accompagnateurs != undefined && filmModifie.accompagnateurs != '') {
+      this.filmService.addAccompagnateursHistory(filmModifie.accompagnateurs);
+    }
+
+    if (filmModifie.cinema != null && filmModifie.cinema != undefined && filmModifie.cinema != '') {
+      this.filmService.addCinemaHistory(filmModifie.cinema);
+    }
     this.updating = !this.updating
   }
 
@@ -212,7 +250,7 @@ export class SingleFilmComponent implements OnInit {
       }catch(error){
         this.titreFR = titreFilm
       }
-      
+
 
       // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
       // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
