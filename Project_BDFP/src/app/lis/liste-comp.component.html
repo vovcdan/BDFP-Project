@@ -24,7 +24,7 @@
         </mat-chip-list>
       </div>  
     
-    <div id="comp-liste"*ngFor="let liste of listofFilms | filter:searchText titrelist">
+    <div id="comp-liste"*ngFor="let liste of showListofFilms | filter:searchText titrelist">
         <li>{{ liste.titrelist }}</li>
         <div id="ajout">
             <div class="add">
