@@ -9,24 +9,20 @@
 }
 
 .add {
-    text-align: center;
+    display: flex;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     color: white;
-    &:hover {
-        color: orange;
-    }
 }
 
 #ajout {
+    display: flex;
     justify-content: center;
+    align-items: center;
     margin: 10px auto auto 10px;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     color: white;
-    &:hover {
-        color: orange;
-    }
 }
 .comp-laliste{
     margin-bottom: 1em;
@@ -34,6 +30,10 @@
     color: black;
     font-size: large;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+p {
+    margin : auto 20px auto 20px
 }
 
 
