@@ -62,6 +62,7 @@ export class ListeCompComponent implements OnInit {
     for(let i = 0; i < this.listofFilms.length; i++){
       if (this.selectedChip == "all") {
         this.showListofFilms = this.listofFilms
+        this.commonList
       }
       else if (this.selectedChip == "mine") {
         this.showListofFilms = this.listofFilms.filter(film => !film.shared);
