@@ -1,10 +1,10 @@
 li {
     display: inline-block;
     list-style-type: none;
-    font-family: 'Goudy Old Style',monospace; 
-    font-size: 30px; 
-    font-weight: 100; 
-    line-height: 5px; 
+    font-family: 'Goudy Old Style',monospace;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 5px;
     padding: 30px;
     line-height: 1; /* Notez que j'ai changé la valeur de "line-height" */
     word-break: break-all;
@@ -23,7 +23,7 @@ li {
 }
 
 .form-group {
-    margin: 20px auto auto 35%; 
+    margin: 20px auto auto 35%;
     width: 23%;
     align-items: center;
     justify-content: space-between;
@@ -35,17 +35,17 @@ li {
     display: inline;
   }
 
-  
+
   ::ng-deep .mat-focused .mat-form-field-label {
     /*change color of label*/
     color: white !important;
    }
-  
+
    ::ng-deep.mat-form-field-underline {
     /*change color of underline*/
     background-color: white !important;
-  } 
-  
+  }
+
   ::ng-deep.mat-form-field-ripple {
    /*change color of underline when focused*/
    background-color: white !important;
@@ -67,7 +67,7 @@ li {
 
   #butGerer {
     transform: scale(0.8);
-    color: white; 
+    color: white;
     transition: 0.4s;
     background-color: rgb(39,39,39);
     &:hover {
@@ -76,7 +76,7 @@ li {
 }
 
 .add {
-  color: white; 
+  color: white;
   transition: 0.4s;
   background-color: rgb(39,39,39);
   &:hover {
@@ -87,7 +87,7 @@ li {
 #ajout {
   display: inline-block;
   margin: 0px auto auto 0px;
-  color: white; 
+  color: white;
   transition: 0.4s;
   background-color: rgb(39,39,39);
   &:hover {
@@ -126,7 +126,7 @@ li {
   transform: scale(0.8);
   position: absolute;
   top: 0px;
-  color: white; 
+  color: white;
   cursor:default
 }
 
@@ -147,4 +147,16 @@ mat-chip.selected {
   background-color: orange !important;
   color: white !important;
 }
-  
+
+#spinner {
+  transform: scale(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color : #ffa500
+}
+
+
+.mat-progress-spinner::ng-deep circle {
+  stroke: currentColor;
+}

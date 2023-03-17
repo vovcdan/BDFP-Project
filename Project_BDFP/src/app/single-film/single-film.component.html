@@ -29,7 +29,7 @@
       {{ currentFilmInfos.release_date }} - {{ currentFilmInfos.Genre }} - {{ currentFilmInfos.Runtime }}
     </p>
     <div id="details">
-      <h2>Informations personnelles</h2>
+      <h2 *ngIf="!isListCommon">Informations personnelles</h2>
 
       <div *ngIf="updating">
         <div class="form-card">
@@ -113,7 +113,7 @@
         </div>
       </div>
 
-      <div class="wrapper">
+      <div class="wrapper" *ngIf="!isListCommon">
           <div *ngIf="!updating">
           <div class="partie">
             <mat-icon class="icone">star_border</mat-icon>
@@ -145,7 +145,7 @@
             <mat-icon class="icone"> local_movies</mat-icon>
             <p><span class="bold">Avis :</span> {{ currentFilmInfos.avis }}</p>
           </div>
-          <button id="butModif" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
+          <button id="butModif" *ngIf="!isListShared" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
             <mat-icon>create</mat-icon>
           </button>
         </div>

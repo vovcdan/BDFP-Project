@@ -21,6 +21,7 @@ export class ListeCompComponent implements OnInit {
   aucuneListe:boolean = false;
   selectedChip = 'all';
   test: any;
+  loading!: boolean
   listofFilmsComm: ListFilm[] = [];
 
   constructor(
@@ -30,7 +31,7 @@ export class ListeCompComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.commonList)
+    this.loading = true;
     this.onClickChip('all'); // afficher la liste par défaut au chargement de la page
     this.filmsService
       .getAllListFromUser(this.utilService.getUserId())
@@ -42,10 +43,11 @@ export class ListeCompComponent implements OnInit {
         // appeler la méthode après avoir initialisé la variable
         this.onClickChip('all');
       });
-
-      this.getCommonList();
-
+    this.getCommonList()
+    this.loading = false;
   }
+
+  get spinnerStyle() { return {color: 'Orange'} }
 
   async getCommonList(){
     this.commonList = await this.filmsService.getAllCommonListOfUser()

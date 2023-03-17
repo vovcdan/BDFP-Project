@@ -9,8 +9,17 @@
             </button>
         </div>
     </div>
+
+    <div id="bout">
+
+      <div id="members" *ngFor="let member of members">
+        {{member}}
+      </div>
+
+        <div class="bt" *ngIf="!isListShared">
         <div id="ajout" class="bt" *ngIf="isListCommon">
             <p>Ajouter un film </p>
+
             <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
                 <mat-icon>add</mat-icon>
             </button>

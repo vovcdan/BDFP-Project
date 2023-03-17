@@ -47,14 +47,21 @@ export class SingleListeComponent implements OnInit {
 
   isListCommon!: boolean
 
+  members!: string[];
+
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
     ,private exportService: ExportService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.currentListe = this.utilService.getCurrentListe();
     this.isSharedList();
     this.isListCommon = this.utilService.getIsListCommon();
+    if (this.isListCommon) {
+      this.members = await this.filmService.getMembersIDFromCommonList(this.utilService.getListName())
+    }
+    console.log(this.members);
+
   }
 
   back() {
