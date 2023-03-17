@@ -19,6 +19,7 @@ export class ListeCompComponent implements OnInit {
   searchText!: any;
   aucuneListe:boolean = false;
   selectedChip = 'all';
+  test: any;
 
   constructor(
     private filmsService: FilmsService,
@@ -27,6 +28,7 @@ export class ListeCompComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.onClickChip('all'); // afficher la liste par défaut au chargement de la page
     this.filmsService
       .getAllListFromUser(this.utilService.getUserId())
       .subscribe((listofFilms) => {
@@ -35,6 +37,8 @@ export class ListeCompComponent implements OnInit {
         if (this.listofFilms.length == 0){
           this.aucuneListe = true
         }
+        // appeler la méthode après avoir initialisé la variable
+        this.onClickChip('all');
       });
   }
 
@@ -52,6 +56,12 @@ export class ListeCompComponent implements OnInit {
       }
     }
     
+    if (this.test) {
+      return;
+    }
+    this.test = true;
+    // mettre à jour la variable utilisée pour l'affichage
+    this.listofFilms = this.showListofFilms;
   }
 
   gererListe(laliste: ListFilm) {
