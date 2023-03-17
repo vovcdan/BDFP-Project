@@ -77,7 +77,7 @@ exports.addUserToCommonList = (req, res) => {
   commonListDB
     .updateOne(
       { uids: { $in: [uid] }, titrelist: titrelist },
-      { $push: { uids: newUserId } }
+      { $addToSet: { uids: newUserId } }
     )
     .then((data) => {
       if (!data) {
@@ -106,7 +106,7 @@ exports.addMovie = (req, res) => {
   commonListDB
     .updateOne(
       { uids: { $in: [uid] }, titrelist: titrelist },
-      { $push: { movies: movie } }
+      { $addToSet: { movies: movie } }
     )
     .then((data) => {
       if (!data) {
@@ -178,3 +178,19 @@ exports.deleteListFromCommonList = (req, res) => {
       });
     });
 };
+
+exports.findMembers = (req, res) => {
+  const uid = req.params.uid;
+  const titrelist = req.params.titrelist;
+
+  commonListDB
+    .findOne({ uids: { $in: [uid] }, titrelist: titrelist })
+    .then((data) => {
+      res.send(JSON.stringify(data.uids))
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Erreur pendant la récupération des données.",
+      });
+    });
+}
