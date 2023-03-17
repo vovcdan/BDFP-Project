@@ -61,7 +61,15 @@
                 <p><span class="bold">Cinéma :</span></p>
                 <mat-form-field appearance="fill" class="field">
                   <mat-label class="lab">Cinéma : </mat-label>
-                  <input matInput formControlName="cinemaControl" placeholder="Rechercher">
+                  <input matInput formControlName="cinemaControl" placeholder="Rechercher" [matAutocomplete]="cinemaAutoS">
+                  <mat-autocomplete #cinemaAutoS="matAutocomplete">
+                    <mat-option *ngFor="let cinema of cinemaFieldHistory" [value]="cinema">
+                      {{cinema}}
+                      <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteCinemaHistory($event, cinema)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
               </div>
             </div>
@@ -70,7 +78,15 @@
                 <p><span class="bold">Accompagnateurs :</span></p>
                 <mat-form-field appearance="fill" class="field">
                   <mat-label class="lab">Accompagnateurs : </mat-label>
-                  <input matInput formControlName=accompagnateursControl placeholder="Rechercher">
+                  <input matInput formControlName="accompagnateursControl" placeholder="Rechercher" [matAutocomplete]="accompagnateursAutoS">
+                  <mat-autocomplete #accompagnateursAutoS="matAutocomplete">
+                    <mat-option *ngFor="let accompagnateurs of accompagnateursFieldHistory" [value]="accompagnateurs">
+                      {{accompagnateurs}}
+                      <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteAccompagnateurHistory($event, accompagnateurs)">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-option>
+                  </mat-autocomplete>
                 </mat-form-field>
               </div>
             </div>
@@ -91,7 +107,7 @@
             <button id="butModif" mat-mini-fab matTooltip="Annuler" (click)="showFormUpdateNovie()">
               <mat-icon>cancel</mat-icon>
             </button>
-          </div> 
+          </div>
           </form>
         </div>
       </div>

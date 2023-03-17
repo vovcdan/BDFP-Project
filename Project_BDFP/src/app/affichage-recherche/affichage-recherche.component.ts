@@ -14,20 +14,6 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./affichage-recherche.component.scss'],
 })
 export class AffichageRechercheComponent implements OnInit {
-  searchControlCaracReal = new FormControl(
-    '',
-    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?')
-  );
-  searchControlCaracActors = new FormControl(
-    '',
-    Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}')
-  );
-  searchControlAnnee = new FormControl('', Validators.pattern('^[0-9]{4}$'));
-  searchControlDate = new FormControl(
-    '',
-    Validators.pattern('^19[0-9]{2}|2[0-9]{3}$')
-  );
-  searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
   showFormRecherche = true;
@@ -43,6 +29,9 @@ export class AffichageRechercheComponent implements OnInit {
   spinner: boolean = false;
   noResult = false;
 
+  cinemaFieldHistory!: [string];
+  accompagnateursFieldHistory!: [string];
+
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
@@ -53,17 +42,49 @@ export class AffichageRechercheComponent implements OnInit {
     private init: InitService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getSearchedMovies();
+
+
     this.formRecherche = new FormGroup({
+      realisateurControl: new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*)?')),
+      acteurControl: new FormControl('', Validators.pattern('^[A-Za-z]* [A-Za-z]*(, [A-Za-z]* [A-Za-z]*){0,}')),
+      anneeSortieControl: new FormControl('', Validators.pattern('^[0-9]{4}$')),
+      dateVisionControl: new FormControl('', Validators.pattern('^19[0-9]{2}|2[0-9]{3}$')),
+      noteControl: new FormControl('', Validators.pattern('^[0-5]$')),
       locationControl: new FormControl(),
       accompagnateursControl: new FormControl(),
       avisControl: new FormControl(),
     });
+
+    this.cinemaFieldHistory = await this.getCinemaHistory();
+    this.accompagnateursFieldHistory = await this.getAccompagnateursHistory();
   }
 
   async getSearchedMovies() {
     this.searchedMovies = await this.utilService.getSearchedMovies();
+  }
+
+  async getCinemaHistory() {
+    let cinemaHistory = await this.filmService.getCinemaHistory();
+    return cinemaHistory;
+  }
+
+  async getAccompagnateursHistory() {
+    let accompagnateursHistory = await this.filmService.getAccompagnateursHistory();
+    return accompagnateursHistory;
+  }
+
+  async deleteCinemaHistory(event: MouseEvent, cinema: string) {
+    event.stopPropagation();
+    let cinemaField = await this.filmService.deleteCinemaHistory(cinema);
+    this.cinemaFieldHistory = cinemaField;
+  }
+
+  async deleteAccompagnateurHistory(event: MouseEvent, accompagnateur: string) {
+    event.stopPropagation();
+    let accompagnateursHistory = await this.filmService.deleteAccompagnateursHistory(accompagnateur);
+    this.accompagnateursFieldHistory = accompagnateursHistory;
   }
 
   searchedMoviesNotEmpty() {
@@ -87,13 +108,13 @@ export class AffichageRechercheComponent implements OnInit {
     }
 
     if (
-      this.searchControlDate.value != undefined &&
-      this.searchControlDate.value != ''
+      this.formRecherche.value.dateVisionControl != undefined &&
+      this.formRecherche.value.dateVisionControl != ''
     ) {
       if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
-      await this.getFilmsByDateVision(this.searchControlDate.value);
+      await this.getFilmsByDateVision(this.formRecherche.value.dateVisionControl);
     }
     if (
       this.formRecherche.value.accompagnateursControl != undefined &&
@@ -125,22 +146,22 @@ export class AffichageRechercheComponent implements OnInit {
       await this.getFilmsByAvis(this.formRecherche.value.avisControl);
     }
     if (
-      this.searchControlNote.value != undefined &&
-      this.searchControlNote.value != ''
+      this.formRecherche.value.noteControl != undefined &&
+      this.formRecherche.value.noteControl != ''
     ) {
       if (this.moviesInDB == undefined) {
         this.moviesInDB = new Map();
       }
-      await this.getFilmsByNote(this.searchControlNote.value);
+      await this.getFilmsByNote(this.formRecherche.value.noteControl);
     }
 
     if (
-      this.searchControlAnnee.value != undefined &&
-      this.searchControlAnnee.value != '' &&
-      this.searchControlCaracReal.value != undefined &&
-      this.searchControlCaracReal.value != '' &&
-      this.searchControlCaracActors.value != undefined &&
-      this.searchControlCaracActors.value != ''
+      this.formRecherche.value.anneeSortieControl != undefined &&
+      this.formRecherche.value.anneeSortieControl != '' &&
+      this.formRecherche.value.realisateurControl != undefined &&
+      this.formRecherche.value.realisateurControl != '' &&
+      this.formRecherche.value.acteurControl != undefined &&
+      this.formRecherche.value.acteurControl != ''
     ) {
       if (this.moviesInDBByAPI == undefined) {
         this.moviesInDBByAPI = new Map();
@@ -148,10 +169,10 @@ export class AffichageRechercheComponent implements OnInit {
       this.switch_number = 1;
     } else {
       if (
-        this.searchControlAnnee.value != undefined &&
-        this.searchControlAnnee.value != '' &&
-        this.searchControlCaracActors.value != '' &&
-        this.searchControlCaracActors.value != undefined
+        this.formRecherche.value.anneeSortieControl != undefined &&
+        this.formRecherche.value.anneeSortieControl != '' &&
+        this.formRecherche.value.acteurControl != '' &&
+        this.formRecherche.value.acteurControl != undefined
       ) {
         if (this.moviesInDBByAPI == undefined) {
           this.moviesInDBByAPI = new Map();
@@ -159,10 +180,10 @@ export class AffichageRechercheComponent implements OnInit {
         this.switch_number = 2;
       } else {
         if (
-          this.searchControlAnnee.value != undefined &&
-          this.searchControlAnnee.value != '' &&
-          this.searchControlCaracReal.value != '' &&
-          this.searchControlCaracReal.value != undefined
+          this.formRecherche.value.anneeSortieControl != undefined &&
+          this.formRecherche.value.anneeSortieControl != '' &&
+          this.formRecherche.value.realisateurControl != '' &&
+          this.formRecherche.value.realisateurControl != undefined
         ) {
           if (this.moviesInDBByAPI == undefined) {
             this.moviesInDBByAPI = new Map();
@@ -170,10 +191,10 @@ export class AffichageRechercheComponent implements OnInit {
           this.switch_number = 3;
         } else {
           if (
-            this.searchControlCaracActors.value != undefined &&
-            this.searchControlCaracActors.value != '' &&
-            this.searchControlCaracReal.value != undefined &&
-            this.searchControlCaracReal.value != ''
+            this.formRecherche.value.acteurControl != undefined &&
+            this.formRecherche.value.acteurControl != '' &&
+            this.formRecherche.value.realisateurControl != undefined &&
+            this.formRecherche.value.realisateurControl != ''
           ) {
             if (this.moviesInDBByAPI == undefined) {
               this.moviesInDBByAPI = new Map();
@@ -181,8 +202,8 @@ export class AffichageRechercheComponent implements OnInit {
             this.switch_number = 4;
           } else {
             if (
-              this.searchControlCaracReal.value != undefined &&
-              this.searchControlCaracReal.value != ''
+              this.formRecherche.value.realisateurControl != undefined &&
+              this.formRecherche.value.realisateurControl != ''
             ) {
               if (this.moviesInDBByAPI == undefined) {
                 this.moviesInDBByAPI = new Map();
@@ -190,8 +211,8 @@ export class AffichageRechercheComponent implements OnInit {
               this.switch_number = 5;
             } else {
               if (
-                this.searchControlCaracActors.value != undefined &&
-                this.searchControlCaracActors.value != ''
+                this.formRecherche.value.acteurControl != undefined &&
+                this.formRecherche.value.acteurControl != ''
               ) {
                 if (this.moviesInDBByAPI == undefined) {
                   this.moviesInDBByAPI = new Map();
@@ -204,57 +225,52 @@ export class AffichageRechercheComponent implements OnInit {
       }
     }
 
-    console.log(this.switch_number);
-
     switch (this.switch_number) {
       case 1:
         await this.getFilmsByYearAndActorsAndRealisator(
-          this.searchControlAnnee.value!,
-          this.searchControlCaracActors.value!,
-          this.searchControlCaracReal.value!
+          this.formRecherche.value.anneeSortieControl!,
+          this.formRecherche.value.acteurControl!,
+          this.formRecherche.value.realisateurControl!
         );
         break;
       case 2:
         await this.getFilmsByYearAndActors(
-          this.searchControlAnnee.value!,
-          this.searchControlCaracActors.value!
+          this.formRecherche.value.anneeSortieControl!,
+          this.formRecherche.value.acteurControl!
         );
         break;
       case 3:
         await this.getFilmsByYearAndRealisator(
-          this.searchControlAnnee.value!,
-          this.searchControlCaracReal.value!
+          this.formRecherche.value.anneeSortieControl!,
+          this.formRecherche.value.realisateurControl!
         );
         break;
       case 4:
         await this.getFilmsByActorsAndRealisator(
-          this.searchControlCaracActors.value!,
-          this.searchControlCaracReal.value!
+          this.formRecherche.value.acteurControl!,
+          this.formRecherche.value.realisateurControl!
         );
         break;
       case 5:
-        await this.getFilmsByRealisator(this.searchControlCaracReal.value!);
+        await this.getFilmsByRealisator(this.formRecherche.value.realisateurControl!);
         break;
       case 6:
-        await this.getFilmsByActors(this.searchControlCaracActors.value!);
+        await this.getFilmsByActors(this.formRecherche.value.acteurControl!);
         break;
       default:
         this.error_message = 'Vous devez remplir au moins un champ';
         break;
     }
 
-    console.log(this.moviesInDBByAPI);
-    console.log(this.moviesInDB);
-
     if (
-      ((this.searchControlAnnee.value != undefined &&
-        this.searchControlAnnee.value != '') ||
-        (this.searchControlCaracReal.value != undefined &&
-          this.searchControlCaracReal.value != '') ||
-        (this.searchControlCaracActors.value != undefined &&
-          this.searchControlCaracActors.value != '')) &&
+      ((this.formRecherche.value.anneeSortieControl != undefined &&
+        this.formRecherche.value.anneeSortieControl != '') ||
+        (this.formRecherche.value.realisateurControl != undefined &&
+          this.formRecherche.value.realisateurControl != '') ||
+        (this.formRecherche.value.acteurControl != undefined &&
+          this.formRecherche.value.acteurControl != '')) &&
       this.moviesInDBByAPI != undefined &&
-      this.moviesInDB != undefined
+      this.moviesInDB!.size != 0
     ) {
       this.moviesInDB = this.intersectMaps(
         this.moviesInDB!,
@@ -264,18 +280,14 @@ export class AffichageRechercheComponent implements OnInit {
       this.moviesInDB = this.moviesInDBByAPI;
     }
 
-    console.log(this.moviesInDB);
-    console.log(this.moviesInDBByAPI);
-
     this.noResult = false;
     this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!);
+
     if (this.finalMovieResults.size == 0) {
       this.noResult = true;
       this.finalMovieResults =
         "Vous n'avez pas de résultats qui correspondent à cette recherche";
     }
-
-    console.log(this.finalMovieResults);
 
     this.finished = true;
     this.spinner = false;
