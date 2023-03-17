@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
   films: Film[] = [];
   list: any;
   numberOfFilms!: Observable<number>;
+  noMovies!: any
   showFormRecherche: boolean = false;
   formRecherche!: FormGroup;
   resList!: Map<string, number>;

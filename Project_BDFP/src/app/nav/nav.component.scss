@@ -43,6 +43,10 @@
           font-size: 116%;  
         color: orange
       }
+
+      & #icone2 {
+        color:orange;
+      }
   }
 
   a {
@@ -113,16 +117,22 @@ button {
   
 }
 
-#util {
+#util, #deco{
   color: orange;
   display: flex;
   align-items: center;
 }
 
 
-.mat-icon {
+#icone{
   color : orange;
   margin-right: 10px;
+}
+
+#icone2 {
+  color : white;
+  margin-left : 10px;
+  transform: scale(0.8);
 }
 
 

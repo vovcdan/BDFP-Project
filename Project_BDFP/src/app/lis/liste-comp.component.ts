@@ -5,6 +5,7 @@ import { ExportService } from 'services/export.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
+
 @Component({
   selector: 'app-liste-comp',
   templateUrl: './liste-comp.component.html',
@@ -12,10 +13,12 @@ import { UtilsService } from 'services/utils.service';
 })
 export class ListeCompComponent implements OnInit {
   listofFilms: ListFilm[] = [];
+  showListofFilms: ListFilm[] = [];
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
   searchText!: any;
-  aucuneListe:boolean = false
+  aucuneListe:boolean = false;
+  selectedChip = 'all';
 
   constructor(
     private filmsService: FilmsService,
@@ -28,10 +31,27 @@ export class ListeCompComponent implements OnInit {
       .getAllListFromUser(this.utilService.getUserId())
       .subscribe((listofFilms) => {
         this.listofFilms = listofFilms;
+        console.log(listofFilms)
         if (this.listofFilms.length == 0){
           this.aucuneListe = true
         }
       });
+  }
+
+  onClickChip(chipValue: string) {
+    this.selectedChip = chipValue;
+    for(let i = 0; i < this.listofFilms.length; i++){
+      if (this.selectedChip == "all") {
+        this.showListofFilms = this.listofFilms
+      }
+      else if (this.selectedChip == "mine") {
+        this.showListofFilms = this.listofFilms.filter(film => !film.shared);
+      }
+      else if (this.selectedChip == "shared") {
+        this.showListofFilms = this.listofFilms.filter(film => film.shared);
+      }
+    }
+    
   }
 
   gererListe(laliste: ListFilm) {

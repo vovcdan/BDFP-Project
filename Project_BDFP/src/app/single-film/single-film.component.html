@@ -153,12 +153,12 @@
       <hr />
       <h2>Informations extraites des API</h2>
       <div id="wrapper2">
-        <div>
+        <div id="acteurs">
           <mat-icon class="icone">movie_creation</mat-icon>
           <p><span class="bold">Acteurs :</span> {{ currentFilmInfos.Actors }}</p>
           <details>
             <summary>
-              <p id="texte">voir plus</p>
+              <p id="texte"></p>
             </summary>
             <ul>
               <li *ngFor="let item of actors | keyvalue">
@@ -193,7 +193,7 @@
           <details id="cote">
             <summary>
               <span class="bold">Critiques TMDB :</span>
-              <p id="texte"> Afficher les critiques</p>
+              <p id="texte2"> Afficher les critiques</p>
             </summary>
             <section *ngIf="listeRevue">
               <ul *ngFor="let rev of listeRevue.results">
