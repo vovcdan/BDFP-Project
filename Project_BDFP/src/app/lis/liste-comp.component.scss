@@ -135,4 +135,15 @@ h2 {
   color: orange;
 }
 
+#chips {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+mat-chip.selected {
+  background-color: orange !important;
+  color: white !important;
+}
   

@@ -5,6 +5,7 @@ import { ExportService } from 'services/export.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
+
 @Component({
   selector: 'app-liste-comp',
   templateUrl: './liste-comp.component.html',
@@ -15,7 +16,8 @@ export class ListeCompComponent implements OnInit {
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
   searchText!: any;
-  aucuneListe:boolean = false
+  aucuneListe:boolean = false;
+  selectedChip = 'all';
 
   constructor(
     private filmsService: FilmsService,
@@ -32,6 +34,10 @@ export class ListeCompComponent implements OnInit {
           this.aucuneListe = true
         }
       });
+  }
+
+  onClickChip(chipValue: string) {
+    this.selectedChip = chipValue;
   }
 
   gererListe(laliste: ListFilm) {
