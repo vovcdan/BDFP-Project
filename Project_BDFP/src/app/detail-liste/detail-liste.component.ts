@@ -86,7 +86,16 @@ export class DetailListeComponent implements OnInit {
     this.router.navigateByUrl('/home/' + movie?.value.title);
   }
 
-  suppDialog(omdbID: string, title: string): void {
+  deleteFromListOrDeleteFromCommonList(omdbID: string, title: string){
+    let isListCommon = this.utilService.getIsListCommon()
+    if(isListCommon){
+      this.openDeleteFromCommonListDialog(omdbID, title)
+    } else {
+      this.openDeleteFromListDialog(omdbID, title)
+    }
+  }
+
+  openDeleteFromListDialog(omdbID: string, title: string): void {
     let value = {
       title: title,
     };
@@ -95,6 +104,25 @@ export class DetailListeComponent implements OnInit {
     const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
     const dialogData = new SuppDialogModel('Suppression', message);
     this.utilService.setListeOuGlobalSupp(1);
+    const dialogRef = this.dialog.open(SuppDialogComponent, {
+      maxWidth: '600px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      this.result = dialogResult;
+    });
+  }
+
+  openDeleteFromCommonListDialog(omdbID: string, title: string): void {
+    let value = {
+      title: title,
+    };
+    let movie = { key: omdbID, value: value };
+    this.utilService.setMovie(movie);
+    const message = `Êtes-vous sûr de vouloir supprimer ce film ?`;
+    const dialogData = new SuppDialogModel('Suppression', message);
+    this.utilService.setListeOuGlobalSupp(4);
     const dialogRef = this.dialog.open(SuppDialogComponent, {
       maxWidth: '600px',
       data: dialogData,

@@ -22,8 +22,9 @@
   <div id="leposter">
     <img src="{{ currentFilm.value.poster }}" alt="{{ currentFilm.value.title }}" id="images" />
   </div>
-  <div id="infos" *ngIf="currentFilmInfos">
-    <div id="titre">{{ currentFilmInfos.titre }}</div>
+  <div id="infos">
+    <div id="titre">{{ currentFilm.value.title }}</div>
+    <ng-container *ngIf="currentFilmInfos">
     <p id="soustitre">
       {{ currentFilmInfos.release_date }} - {{ currentFilmInfos.Genre }} - {{ currentFilmInfos.Runtime }}
     </p>
@@ -217,4 +218,5 @@
         </div>
       </div>
     </div>
+  </ng-container>
   </div>

@@ -26,7 +26,7 @@
                 <p><span class="bold">Synopsys:</span> {{infoMovies.value.Plot}}</p>
             </div>
             <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
-            <button id="supp" mat-raised-button (click)="suppDialog(infoMovies.key, infoMovies.value.title)">Supprimer le film</button>
+            <button id="supp" mat-raised-button (click)="deleteFromListOrDeleteFromCommonList(infoMovies.key, infoMovies.value.title)">Supprimer le film</button>
             <ng-container *ngIf="!infoMovies.value.isInDB">
                 <button id="supp" mat-raised-button (click)="addMovieFromSharedListToUser(infoMovies.key, infoMovies.value.tmdbID, infoMovies.value.title)">Ajouter ce film</button>
             </ng-container>

@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Créer une liste commune</h1>
+<div>
+  <p>Entrez un nom de liste</p>
+
+  <mat-form-field class="field" appearance="fill" style="width: auto; text-align: center;">
+    <mat-label for="mail">Ma premiere liste</mat-label>
+    <input matInput [(ngModel)]="data.title" type="mail" placeholder="Les films à voir">
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Retour</button>
+  <button mat-button [mat-dialog-close]="data.title" cdkFocusInitial (click)="createCommonList()">Ok</button>
+</div>

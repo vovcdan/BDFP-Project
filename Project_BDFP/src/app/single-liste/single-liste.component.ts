@@ -1,4 +1,4 @@
-  import { Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Film } from 'app/models/film.model';
@@ -45,6 +45,8 @@ export class SingleListeComponent implements OnInit {
 
   isListShared!: boolean
 
+  isListCommon!: boolean
+
   constructor(private filmService: FilmsService, private router: Router, private loc: Location,
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
     ,private exportService: ExportService) { }
@@ -52,6 +54,7 @@ export class SingleListeComponent implements OnInit {
   ngOnInit(): void {
     this.currentListe = this.utilService.getCurrentListe();
     this.isSharedList();
+    this.isListCommon = this.utilService.getIsListCommon();
   }
 
   back() {
@@ -85,6 +88,17 @@ export class SingleListeComponent implements OnInit {
     liste.movies = [];
     liste.uid = '';
     return liste;
+  }
+
+  openAddNewUserDialog(): void {
+    const dialogRef = this.diag.open(addUser, {
+      width: '250px',
+      data: {title: "Ajouter un membre"}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this.title = result;
+    });
   }
 
 
@@ -121,7 +135,11 @@ export class SingleListeComponent implements OnInit {
     this.utilService.setMovie(this.currentListe);
     const message = `Êtes-vous sûr de vouloir supprimer cette liste ?`;
     const dialogData = new SuppDialogModel("Suppression", message);
-    this.utilService.setListeOuGlobalSupp(3)
+    if(this.utilService.isListCommon){
+      this.utilService.setListeOuGlobalSupp(5)
+    } else {
+      this.utilService.setListeOuGlobalSupp(3)
+    }
     const dialogRef = this.diag.open(SuppDialogComponent, {
       maxWidth: "600px",
       data: dialogData
@@ -225,6 +243,14 @@ export class ajouterUnFilm implements OnInit {
     });
   }
 
+  addMovieToListOrTOCommonList(){
+    if(this.utilService.getIsListCommon()){
+      this.addMovieToCommonList()
+    } else if (this.utilService.getIsListShared()){
+      this.ajoutFilm()
+    }
+  }
+
   ajoutFilm() {
 
     let imdbID: any;
@@ -255,7 +281,28 @@ export class ajouterUnFilm implements OnInit {
       })
   }
 
+  async addMovieToCommonList(){
+
+    let list = await this.film.getOneCommonList(this.utilService.getListName())
+    console.log(list)
+    if(!this.checkIfFilmExistsInList(this.filmChoisi.omdbID, list)){
+      this.film.addMovieToCommonList(list.titrelist, this.filmChoisi.titre, this.filmChoisi.omdbID, this.filmChoisi.tmdbID).then(res => {
+        this.openSnackBar(this.filmChoisi.titre + " a été ajouté à la liste " + list.titrelist );
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+              this.router.navigateByUrl('/favs/' + list.titrelist);
+              this.dialogRef.close();
+            })
+      })
+    } else if (this.checkIfFilmExistsInList(this.filmChoisi.omdbID, list)) {
+      this.openSnackBar(this.filmChoisi.titre + " appartient déjà à la liste " + this.utilService.getListName());
+
+  } else {
+      this.openSnackBar(this.filmChoisi + " n'appartient pas dans votre répertoire");
+  }
+  }
+
   checkIfFilmExistsInList(movieID: any, liste: any):boolean {
+    console.log(liste)
     if(liste.movies.length == 0) {
       return false;
     }
@@ -334,5 +381,31 @@ export class partagerListe implements OnInit {
     }
   }
 
+
+}
+
+@Component({
+  selector: 'app-common-list-new-user',
+  templateUrl: 'common-list-new-user.html',
+})
+
+export class addUser {
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: dialogShare, public dialogRef: MatDialogRef<addUser>, private filmsService: FilmsService, private utilService: UtilsService) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  async addUserToCommonList(){
+    let newUser = await this.filmsService.getUserByMailAsync(this.data.email)
+    if(newUser[0] == undefined){
+      console.log("Cet utilisateur n'existe pas")
+    } else {
+      this.filmsService.addUserToCommonList(newUser[0]._id, this.utilService.getCurrentListeName())
+      console.log(newUser[0]._id)
+    }
+  }
 
 }

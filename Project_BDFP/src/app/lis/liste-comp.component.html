@@ -37,6 +37,19 @@
             </div>
         </div>
     </div>
+    <div id="comp-liste"*ngFor="let liste of commonList | filter:searchText titrelist">
+        <li>{{ liste.titrelist }}</li>
+        <div id="ajout">
+            <div class="add">
+                <button id="butGerer" mat-fab matTooltip="Afficher la liste" mat-fab (click)="gererListe(liste)">
+                    <mat-icon>list</mat-icon>
+                </button>
+                <ng-container *ngIf="liste.shared">
+                    <button id="addSharedListToUserLists" mat-button (click)="addSharedListToUserLists(liste)">Posséder</button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
 </div>
 
 

@@ -13,6 +13,7 @@ import { UtilsService } from 'services/utils.service';
 })
 export class ListeCompComponent implements OnInit {
   listofFilms: ListFilm[] = [];
+  commonList: any[] = []
   showListofFilms: ListFilm[] = [];
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
@@ -40,6 +41,12 @@ export class ListeCompComponent implements OnInit {
         // appeler la méthode après avoir initialisé la variable
         this.onClickChip('all');
       });
+
+    this.getCommonList()
+  }
+
+  async getCommonList(){
+    this.commonList = await this.filmsService.getAllCommonListOfUser()
   }
 
   onClickChip(chipValue: string) {
@@ -68,7 +75,14 @@ export class ListeCompComponent implements OnInit {
     this.router.navigateByUrl('/favs/' + laliste.titrelist);
     this.utilService.setListName(laliste.titrelist);
     this.utilService.setCurrentListe(laliste);
-    this.utilService.setisListShared(laliste.shared);
+    if(laliste.shared != undefined){
+      this.utilService.setisListShared(laliste.shared);
+      this.utilService.setIsListCommon(false)
+    } else if (laliste.common != undefined){
+      this.utilService.setisListShared(false)
+      this.utilService.setIsListCommon(laliste.common)
+    }
+
   }
 
   async addSharedListToUserLists(list: ListFilm) {

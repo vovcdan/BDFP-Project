@@ -728,6 +728,18 @@ export class FilmsService {
     }
   }
 
+  async getOneCommonList(titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    try{
+      const commonlist = await fetch(`http://localhost:8080/api/commonList/${uid}/${titrelist}`)
+      const commonlist_jsoned = await commonlist.json()
+      return commonlist_jsoned[0]
+    } catch(error) {
+      console.error(error)
+    }
+  }
+
   // getOneListAsync pour la destinaire
   async getOneListAsyncDestinaire(titrelist: string, uid: string) {
     try {
@@ -1089,5 +1101,132 @@ export class FilmsService {
     }
   }
 
+
+  async createCommonList(titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({uid: uid, titrelist: titrelist})
+    };
+
+    const url = "http://localhost:8080/api/commonList/";
+
+    return fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
+  async getAllCommonListOfUser(){
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch('http://localhost:8080/api/commonList/' + uid);
+      const movies_jsoned = await movies.json();
+      return movies_jsoned;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async addUserToCommonList(newUserId: string, titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({newUserId: newUserId})
+    };
+
+    const url = `http://localhost:8080/api/commonList/addUser/${uid}/${titrelist}`;
+
+    return fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
+  async addMovieToCommonList(titrelist: string, movieTitle: string, omdbID: string, tmdbID: string){
+    const uid = this.utilService.getUserId()
+
+
+    const options = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({movie: {
+        titre: movieTitle,
+        omdbID: omdbID,
+        tmdbID: tmdbID
+      }})
+    };
+
+    const url = `http://localhost:8080/api/commonList/movies/${uid}/${titrelist}`;
+
+    return fetch(url, options).then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        throw new Error("Une erreur est survenue")
+      }
+    })
+    .catch(error => {
+      console.error("Error ", error)
+    })
+  }
+
+  async deleteMovieFromCommonListAsync(omdbID: string, titrelist: string) {
+    const uid = this.utilService.getUserId();
+
+    const url = `http://localhost:8080/api/commonList/${uid}/${titrelist}/${omdbID}`;
+
+    fetch(url, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+  }
+
+  async deleteListFromCommonListAsync(titrelist: string) {
+    const uid = this.utilService.getUserId();
+
+    const url = `http://localhost:8080/api/commonList/${uid}/${titrelist}`;
+
+    fetch(url, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+  }
 
 }

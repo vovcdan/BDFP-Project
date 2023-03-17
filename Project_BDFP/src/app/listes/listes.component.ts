@@ -39,6 +39,16 @@ export class ListesComponent implements OnInit {
     
   }
 
+  openCreateCommonListDialog(): void {
+    const dialogRef = this.diag.open(CreateCommonListDialog, {
+      width: '250px',
+      data: {title: this.title}
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      this.title = result;
+    });
+  }
   
 
   openDialog(): void {
@@ -72,6 +82,7 @@ export class DialogOverviewExampleDialog implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>, private filmService: FilmsService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
   ngOnInit(): void {
     this.filmService.getAllListFromUser(this.utilService.getUserId()).subscribe((allLists) => {
       this.testEqual = allLists; 
@@ -105,6 +116,42 @@ export class DialogOverviewExampleDialog implements OnInit {
       
     });
   }
+}
+
+
+@Component({
+  selector: 'app-create-common-list',
+  templateUrl: './create-common-list-dialog.html',
+})
+
+
+
+export class CreateCommonListDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>, private filmService: FilmsService, private utilService: UtilsService, private router: Router, private snack: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+
+    openSnackBar(message: string) {
+      this.snack.open(message,"", {
+        duration: 3000,
+      });
+    }
+
+    createCommonList(){
+      this.filmService.createCommonList(this.data.title).then(res => {
+        this.openSnackBar('Liste ' + this.data.title + ' à été créée');
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigateByUrl('/favs');
+        this.dialogRef.close();
+      });
+      })
+    }
 }
 
 
