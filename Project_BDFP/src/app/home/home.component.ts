@@ -354,7 +354,11 @@ export class ajouterFilm implements OnInit {
         this.selectedMovie.title &&
         !(await this.checkIfFilmExistsInList(imdb_id))
       ) {
-        const title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title
+        let title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title;
+
+        if (title == undefined) {
+          title = this.selectedMovie.titleFR
+        }
 
         this.filmService
           .addFilmToList(
