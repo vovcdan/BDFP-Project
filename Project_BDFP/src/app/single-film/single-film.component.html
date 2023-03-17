@@ -145,7 +145,7 @@
             <mat-icon class="icone"> local_movies</mat-icon>
             <p><span class="bold">Avis :</span> {{ currentFilmInfos.avis }}</p>
           </div>
-          <button id="butModif" ^*ngIf="!isListShared" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
+          <button id="butModif" *ngIf="!isListShared" mat-mini-fab matTooltip="Modifier mes informations" (click)="showFormUpdateNovie()">
             <mat-icon>create</mat-icon>
           </button>
         </div>

@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.numberOfFilms = this.getNumberOfFilms();
     this.utilService.setisListShared(false);
+    this.utilService.setIsListCommon(false);
 
     this.formRecherche = new FormGroup({
       titreControl: new FormControl(),
@@ -440,7 +441,7 @@ export class ajouterFilm implements OnInit {
   async getMovieTranslations(movieId: string) {
     try {
       let translations = await this.api.getMovieTranslations(movieId);
-      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) =>
       translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
       return titleFrench;
     } catch (error) {
