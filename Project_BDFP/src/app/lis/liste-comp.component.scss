@@ -6,6 +6,8 @@ li {
     font-weight: 100; 
     line-height: 5px; 
     padding: 30px;
+    line-height: 1; /* Notez que j'ai changé la valeur de "line-height" */
+    word-break: break-all;
 }
 
 #comp-liste {
