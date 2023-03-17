@@ -37,8 +37,8 @@
                 <div class="form-group">
                   <p><span class="bold">Note :</span>/5</p>
                   <mat-form-field appearance="fill" class="field">
-                    <mat-label class="lab">Note : </mat-label>
-                    <input matInput formControlName="noteControl" placeholder="Rechercher">
+                    <mat-label class="lab">Note </mat-label>
+                    <input matInput formControlName="noteControl" placeholder="Note">
                     <mat-error *ngIf="formUpdateMovie.get('noteControl')?.invalid && formUpdateMovie.get('noteControl')?.touched">
                       forme :  chiffre de 0 à 5
                     </mat-error>
@@ -47,11 +47,11 @@
             </div>
             <div id="ligne">
                 <div class="form-group">
-                  <p><span class="bold">Date de visionnage</span></p>
+                  <p><span class="bold">Année de visionnage</span></p>
                   <mat-form-field appearance="fill" class="field">
-                    <input matInput formControlName="dateVisionControl" placeholder="Rechercher">
+                    <input matInput formControlName="dateVisionControl" placeholder="Année">
                     <mat-error *ngIf="formUpdateMovie.get('dateVisionControl')?.invalid && formUpdateMovie.get('dateVisionControl')?.touched">
-                      forme :  jjmmaaaa ex : 12032022
+                      forme :  AAAA ex : 2012
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -61,7 +61,7 @@
                 <p><span class="bold">Cinéma :</span></p>
                 <mat-form-field appearance="fill" class="field">
                   <mat-label class="lab">Cinéma : </mat-label>
-                  <input matInput formControlName="cinemaControl" placeholder="Rechercher" [matAutocomplete]="cinemaAutoS">
+                  <input matInput formControlName="cinemaControl" placeholder="Cinéma" [matAutocomplete]="cinemaAutoS">
                   <mat-autocomplete #cinemaAutoS="matAutocomplete">
                     <mat-option *ngFor="let cinema of cinemaFieldHistory" [value]="cinema">
                       {{cinema}}
@@ -78,7 +78,7 @@
                 <p><span class="bold">Accompagnateurs :</span></p>
                 <mat-form-field appearance="fill" class="field">
                   <mat-label class="lab">Accompagnateurs : </mat-label>
-                  <input matInput formControlName="accompagnateursControl" placeholder="Rechercher" [matAutocomplete]="accompagnateursAutoS">
+                  <input matInput formControlName="accompagnateursControl" placeholder="Accompagnateurs" [matAutocomplete]="accompagnateursAutoS">
                   <mat-autocomplete #accompagnateursAutoS="matAutocomplete">
                     <mat-option *ngFor="let accompagnateurs of accompagnateursFieldHistory" [value]="accompagnateurs">
                       {{accompagnateurs}}
@@ -94,8 +94,8 @@
               <div class="form-group">
                 <p><span class="bold">Avis :</span></p>
                 <mat-form-field appearance="fill" class="field">
-                  <mat-label class="lab">Avis : </mat-label>
-                  <input matInput formControlName="avisControl" placeholder="Rechercher">
+                  <mat-label class="lab">Avis </mat-label>
+                  <input matInput formControlName="avisControl" placeholder="Avis">
                 </mat-form-field>
               </div>
           </div>
