@@ -12,9 +12,9 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./liste-comp.component.scss'],
 })
 export class ListeCompComponent implements OnInit {
-  listofFilms: ListFilm[] = [];
+  listofFilms: any[] = [];
   commonList: any[] = []
-  showListofFilms: ListFilm[] = [];
+  showListofFilms: any[] = [];
   arraysOfLists: any[] = [];
   listVide!: ListFilm;
   searchText!: any;
@@ -49,8 +49,10 @@ export class ListeCompComponent implements OnInit {
 
   async getCommonList(){
     this.commonList = await this.filmsService.getAllCommonListOfUser()
-    console.log(this.commonList);
-    
+    for(let i = 0; i < this.commonList.length; i++){
+      this.listofFilms.push(this.commonList[i])  
+    } 
+    console.log(this.listofFilms)
   }
 
   onClickChip(chipValue: string) {
