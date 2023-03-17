@@ -21,6 +21,7 @@ export class ListeCompComponent implements OnInit {
   aucuneListe:boolean = false;
   selectedChip = 'all';
   test: any;
+  listofFilmsComm: ListFilm[] = [];
 
   constructor(
     private filmsService: FilmsService,
@@ -29,12 +30,12 @@ export class ListeCompComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.commonList)
     this.onClickChip('all'); // afficher la liste par défaut au chargement de la page
     this.filmsService
       .getAllListFromUser(this.utilService.getUserId())
       .subscribe((listofFilms) => {
         this.listofFilms = listofFilms;
-        console.log(listofFilms)
         if (this.listofFilms.length == 0){
           this.aucuneListe = true
         }
@@ -42,11 +43,14 @@ export class ListeCompComponent implements OnInit {
         this.onClickChip('all');
       });
 
-    this.getCommonList()
+      this.getCommonList();
+
   }
 
   async getCommonList(){
     this.commonList = await this.filmsService.getAllCommonListOfUser()
+    console.log(this.commonList);
+    
   }
 
   onClickChip(chipValue: string) {
@@ -60,6 +64,11 @@ export class ListeCompComponent implements OnInit {
       }
       else if (this.selectedChip == "shared") {
         this.showListofFilms = this.listofFilms.filter(film => film.shared);
+      }
+    }
+    for(let i = 0; i < this.commonList.length; i++){
+      if (this.selectedChip == "common") {
+        this.showListofFilms = this.commonList
       }
     }
 

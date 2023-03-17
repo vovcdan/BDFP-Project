@@ -9,19 +9,21 @@
             </button>
         </div>
     </div>
+        <div id="ajout" class="bt" *ngIf="isListCommon">
+            <p>Ajouter un film </p>
+            <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <p> | </p>
+            <button class="bt" mat-fab matTooltip="Ajouter un membre" mat-fab (click)="openAddNewUserDialog()">
+                <mat-icon>person_add</mat-icon>
+            </button>
+            <p>Ajouter un collaborateur </p>
+        </div>
     <div id="bout">
 
         <div class="bt" *ngIf="!isListShared">
             <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-
-        <div class="bt" *ngIf="isListCommon">
-            <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
-                <mat-icon>add</mat-icon>
-            </button>
-            <button class="bt" mat-fab matTooltip="Ajouter un membre" mat-fab (click)="openAddNewUserDialog()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

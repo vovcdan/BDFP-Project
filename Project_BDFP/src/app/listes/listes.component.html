@@ -1,12 +1,14 @@
 <div id="ajout">
     <div class="add">
+        <p>Ajouter une liste classique </p>
         <button id="butAjout" mat-fab matTooltip="Créer une liste" mat-fab (click)="openDialog()">
             <mat-icon>add</mat-icon>
         </button>
-
-        <button id="butAjout" mat-fab matTooltip="Créer une liste partagée" mat-fab (click)="openCreateCommonListDialog()">
-            <mat-icon>add</mat-icon>
+        <p> | </p>
+        <button id="butAjout" mat-fab matTooltip="Créer une liste collaborative" mat-fab (click)="openCreateCommonListDialog()">
+            <mat-icon>people_outline</mat-icon>
         </button>
+        <p>Ajouter une liste collaborative</p>
     </div>
 </div>
 
