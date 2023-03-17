@@ -274,6 +274,7 @@ export class ajouterFilm implements OnInit {
 
   onSelected() {
     this.selectedMovie = this.selectedMovie;
+    this.titleFrench = this.selectedMovie.titleFR;
   }
 
   displayWith(value: any) {

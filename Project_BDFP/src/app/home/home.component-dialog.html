@@ -49,7 +49,7 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="cine">Titre en français</mat-label>
-      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder="Le diner de cons">
+      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder={{titleFrench}} value="{{ titleFrench }}">
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
