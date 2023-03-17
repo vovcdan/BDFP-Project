@@ -201,7 +201,11 @@ h2 {
 
 input, textarea {
   width: 50%;
-  color: white;
+  color: rgb(0, 0, 0);
+}
+
+.field {
+    background-color: rgba(255, 255, 255, 0.521);
 }
 
 #boutons {
@@ -211,14 +215,6 @@ input, textarea {
 #boutons p {
     color : red;
     display: inline-block;
-}
-
-#avis input{
-    height: 50px;
-}
-
-#avis mat-form-field {
-    height : 50px;
 }
 
 #critique {

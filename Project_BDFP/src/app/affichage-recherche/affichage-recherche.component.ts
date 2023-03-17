@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { UtilsService } from 'services/utils.service';
   styleUrls: ['./affichage-recherche.component.scss'],
 })
 export class AffichageRechercheComponent implements OnInit {
+  @ViewChild('myDiv') myDiv!: ElementRef;
   searchedMovies: any[] = [];
   formRecherche!: FormGroup;
   showFormRecherche = true;
@@ -291,6 +292,7 @@ export class AffichageRechercheComponent implements OnInit {
 
     this.finished = true;
     this.spinner = false;
+    this.myDiv.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
   // parti du formulaire de recherche

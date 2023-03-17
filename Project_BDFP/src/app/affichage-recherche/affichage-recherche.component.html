@@ -114,7 +114,7 @@
 
 <!-- Resultats de la recherche  -->
 <h2>Résultats de la recherche :</h2>
-<div id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
+<div #myDiv id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
 <div *ngIf="finished">
   <section *ngIf="noResult"><p id="noResult">{{finalMovieResults}}</p></section>
   <section id="reponse" *ngFor="let movie of finalMovieResults | keyvalue">
