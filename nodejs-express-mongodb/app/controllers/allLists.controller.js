@@ -12,12 +12,13 @@ exports.create = (req, res) => {
     return;
   }
 
-  allListDB.create({
-    uid: req.body.uid,
-    titrelist: req.body.titrelist,
-    shared: false,
-    movies: [],
-  })
+  allListDB
+    .create({
+      uid: req.body.uid,
+      titrelist: req.body.titrelist,
+      shared: false,
+      movies: [],
+    })
     .then((data) => {
       res.send(data);
     })
@@ -27,7 +28,6 @@ exports.create = (req, res) => {
       });
     });
 };
-
 
 /**
  * Crée un utilisateur depuis angular et l'ajoute dans la BD
@@ -40,12 +40,13 @@ exports.createShare = (req, res) => {
     return;
   }
 
-  allListDB.create({
-    uid: req.body.uid,
-    titrelist: req.body.titrelist,
-    shared: true,
-    movies: req.body.movies,
-  })
+  allListDB
+    .create({
+      uid: req.body.uid,
+      titrelist: req.body.titrelist,
+      shared: true,
+      movies: req.body.movies,
+    })
     .then((data) => {
       res.send(data);
     })
@@ -61,15 +62,14 @@ exports.createShare = (req, res) => {
  * @param req donne accès à tous les paramètres
  * @param res revoie le status des requêtes
  */
- exports.findByIdAndTitle = (req, res) => {
+exports.findByIdAndTitle = (req, res) => {
   const uid = req.params.uid;
   const titrelist = req.params.titrelist;
 
-  var condition = uid && titrelist
-    ? { uid: uid, titrelist: titrelist }
-    : {};
+  var condition = uid && titrelist ? { uid: uid, titrelist: titrelist } : {};
 
-  allListDB.find(condition)
+  allListDB
+    .find(condition)
     .then((data) => {
       if (!data)
         res.status(404).send({ message: "Liste de films non trouvée " + uid });
@@ -91,11 +91,10 @@ exports.isSharedList = (req, res) => {
   const uid = req.params.uid;
   const titrelist = req.params.titrelist;
 
-  var condition = uid && titrelist
-    ? { uid: uid, titrelist: titrelist }
-    : {};
+  var condition = uid && titrelist ? { uid: uid, titrelist: titrelist } : {};
 
-  allListDB.find(condition)
+  allListDB
+    .find(condition)
     .then((data) => {
       if (!data)
         res.status(404).send({ message: "Liste de films non trouvée " + uid });
@@ -118,11 +117,17 @@ exports.findMovieFromOneList = (req, res) => {
   const titrelist = req.params.titrelist;
   const omdbID = req.params.omdbID;
 
-  var condition = uid && titrelist
-    ? { uid: uid, titrelist: titrelist, movies: { $elemMatch: { omdbID: omdbID } } }
-    : {};
+  var condition =
+    uid && titrelist
+      ? {
+          uid: uid,
+          titrelist: titrelist,
+          movies: { $elemMatch: { omdbID: omdbID } },
+        }
+      : {};
 
-  allListDB.find(condition)
+  allListDB
+    .find(condition)
     .then((data) => {
       if (!data)
         res.status(404).send({ message: "Liste de films non trouvée " + uid });
@@ -130,7 +135,6 @@ exports.findMovieFromOneList = (req, res) => {
         const movie = data[0].movies.find((m) => m.omdbID === omdbID);
         res.send(movie);
       }
-        
     })
     .catch((err) => {
       res
@@ -144,15 +148,15 @@ exports.findMovieFromOneList = (req, res) => {
  * @param req donne accès à tous les paramètres
  * @param res revoie le status des requêtes
  */
- exports.findById = (req, res) => {
+exports.findById = (req, res) => {
   const uid = req.params.uid;
-  
 
-  var condition = uid 
+  var condition = uid
     ? { uid: { $regex: new RegExp(uid), $options: "i" } }
     : {};
 
-  allListDB.find(condition)
+  allListDB
+    .find(condition)
     .then((data) => {
       if (!data)
         res.status(404).send({ message: "Liste de films non trouvée " + uid });
@@ -211,14 +215,15 @@ exports.update = (req, res) => {
  * @param req donne accès à tous les paramètres
  * @param res revoie le status des requêtes
  */
- exports.findAll = (req, res) => {
+exports.findAll = (req, res) => {
   const uid = req.params.uid;
-  
+
   var condition = uid
     ? { uid: { $regex: new RegExp(uid), $options: "i" } }
     : {};
 
-  allListDB.find(condition)
+  allListDB
+    .find(condition)
     .then((data) => {
       res.send(data);
     })
@@ -232,7 +237,8 @@ exports.update = (req, res) => {
 exports.deleteOne = (req, res) => {
   const idListe = req.params.idListe;
 
-  allListDB.findByIdAndRemove(idListe)
+  allListDB
+    .findByIdAndRemove(idListe)
     .then((data) => {
       if (!data) {
         res.status(404).send({
@@ -255,83 +261,89 @@ exports.addFilmToAList = (req, res) => {
   const uid = req.params.uid;
   const titrelist = req.params.titrelist;
 
-  allListDB.collection.updateOne(
-    
-    { "uid" : uid, "titrelist": titrelist },
-    {$push: {"movies" : req.body.movies}}
-  ).then((data) => {
-    if (!data) {
-      res.status(404).send({
-        message: `Impossible d'ajouter le film à la liste ${titrelist}. Elle n'existe peut être pas`,
+  allListDB.collection
+    .updateOne(
+      { uid: uid, titrelist: titrelist },
+      { $push: { movies: req.body.movies } }
+    )
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible d'ajouter le film à la liste ${titrelist}. Elle n'existe peut être pas`,
+        });
+      } else {
+        res.send({
+          message: "le film a été ajouté",
+          titrelist: titrelist,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `le film n'a pas pu être ajouté`,
       });
-    } else {
-      res.send({
-        message: "le film a été ajouté",
-        titrelist: titrelist,
-      });
-    }
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message: `le film n'a pas pu être ajouté`,
     });
-  });
-}
+};
 
 exports.deleteMovieFromList = (req, res) => {
   const uid = req.params.uid;
   const titrelist = req.params.titrelist;
   const omdbID = req.params.omdbID;
 
-  allListDB.collection.updateOne(
-    { "uid": uid, "titrelist": titrelist},
-    { $pull: {"movies": {"omdbID": omdbID}}}
-  ).then((data) => {
-    if (!data) {
-      res.status(404).send({
-        message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+  allListDB.collection
+    .updateOne(
+      { uid: uid, titrelist: titrelist },
+      { $pull: { movies: { omdbID: omdbID } } }
+    )
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+        });
+      } else {
+        res.send({
+          message: "Le film a été supprimé",
+          titrelist: titrelist,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Le film ${omdbID} n'a pas pu être supprimé`,
       });
-    } else {
-      res.send({
-        message: "Le film a été supprimé",
-        titrelist: titrelist,
-      });
-    }
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message: `Le film ${omdbID} n'a pas pu être supprimé`,
     });
-  });
-}
+};
 
 exports.deleteMovieFromAllLists = (req, res) => {
   const uid = req.params.uid;
   const omdbID = req.params.omdbID;
 
-  allListDB.collection.updateMany(
-    { "uid": uid, shared: false },
-    { $pull: {"movies": {"omdbID": omdbID}}}
-  ).then((data) => {
-    if (!data) {
-      res.status(404).send({
-        message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+  allListDB.collection
+    .updateMany(
+      { uid: uid, shared: false },
+      { $pull: { movies: { omdbID: omdbID } } }
+    )
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible de supprimer le film ${omdbID}. il n'existe peut être pas`,
+        });
+      } else {
+        res.send({
+          message: "Le film a été supprimé",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Le film ${omdbID} n'a pas pu être supprimé`,
       });
-    } else {
-      res.send({
-        message: "Le film a été supprimé",
-      });
-    }
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message: `Le film ${omdbID} n'a pas pu être supprimé`,
     });
-  });
-}
+};
 
 exports.deleteAll = (req, res) => {
-  allListDB.deleteMany({})
+  allListDB
+    .deleteMany({})
     .then((data) => {
       res.send({
         message: `${data.deletedCount} listes ont été supprimés`,
@@ -340,8 +352,7 @@ exports.deleteAll = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message ||
-          "Erreur pendant la suppression de toutes les listes",
+          err.message || "Erreur pendant la suppression de toutes les listes",
       });
     });
 };

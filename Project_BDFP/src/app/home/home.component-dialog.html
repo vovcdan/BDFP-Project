@@ -37,7 +37,7 @@
           <ng-container *ngIf="!omdbSelected">
             <mat-option *ngFor="let movie of filteredMoviesTMDB" [value]="movie">
               <!-- ({{movie.original_title}}) -->
-              <span><b>{{movie.title}}</b> ({{movie.titleFR}}) ({{movie.release_date}})</span>
+              <span><b>{{movie.titleFR}}</b> {{movie.title}} ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
         </ng-container>
