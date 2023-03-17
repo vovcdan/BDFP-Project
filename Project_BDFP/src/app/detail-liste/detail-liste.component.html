@@ -1,5 +1,12 @@
 <div id="entier">
-    <div class="form-group">
+    <div id="aide" *ngIf="showAide">
+        <h1 id="p1">Cliquez sur le bouton </h1>
+        <button mat-icon-button disabled >
+          <mat-icon>add</mat-icon>
+        </button>
+        <h1 id="p2">pour ajouter votre premier film</h1>
+      </div>
+    <div *ngIf="!showAide" class="form-group">
         <mat-form-field appearance="fill">
           <mat-icon matSuffix>search</mat-icon>
           <input matInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Rechercher par titre de film">
