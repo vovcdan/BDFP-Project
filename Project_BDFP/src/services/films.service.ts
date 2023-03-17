@@ -728,6 +728,20 @@ export class FilmsService {
     }
   }
 
+  // getOneListAsync pour la destinaire
+  async getOneListAsyncDestinaire(titrelist: string, uid: string) {
+    try {
+      const moviesList = await fetch(
+        'http://localhost:8080/api/allLists/' + uid + '/' + titrelist +" partagee par " + this.utilService.getUserName()
+      );
+      const moviesList_jsoned = await moviesList.json();
+      console.log(moviesList_jsoned[0])
+      return moviesList_jsoned[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async shareListAsync(dest_id: string, list: ListFilm){
     const uid = this.utilService.getUserId()
 
@@ -756,8 +770,6 @@ export class FilmsService {
       console.error("Error ", error)
     })
   }
-
-
 
   updateMovieInfo(movie: Film) {
     const uid = this.utilService.getUserId();

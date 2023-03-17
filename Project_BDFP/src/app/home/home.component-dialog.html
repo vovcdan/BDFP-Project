@@ -36,7 +36,8 @@
 
           <ng-container *ngIf="!omdbSelected">
             <mat-option *ngFor="let movie of filteredMoviesTMDB" [value]="movie">
-              <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
+              <!-- ({{movie.original_title}}) -->
+              <span><b>{{movie.titleFR}}</b> {{movie.title}} ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
         </ng-container>
@@ -48,7 +49,7 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="cine">Titre en français</mat-label>
-      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder="Le diner de cons">
+      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder={{titleFrench}} value="{{ titleFrench }}">
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
