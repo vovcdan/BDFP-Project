@@ -70,7 +70,32 @@ export class SuppDialogComponent implements OnInit {
       .deleteMovieFromListAsync(this.currentFilm.key, this.curList.titrelist)
       .then(() => {
         this.openSnackBar(movie.value.title + ' à été supprimé');
-        this.closeFenetre()
+        this.closeFenetre();
+        this.router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this.router.navigateByUrl('/favs/' + this.curList.titrelist);
+          });
+      })
+      .catch((error) => {
+        console.error(
+          `Erreur lors de la suppression du film ${movie.value.title}`,
+          error
+        );
+      });
+  }
+
+  deleteMovieFromCommonList() {
+    let movie = this.currentFilm;
+
+    this.filmService
+      .deleteMovieFromCommonListAsync(
+        this.currentFilm.key,
+        this.curList.titrelist
+      )
+      .then(() => {
+        this.openSnackBar(movie.value.title + ' a été supprimé');
+        this.closeFenetre();
         this.router
           .navigateByUrl('/', { skipLocationChange: true })
           .then(() => {
@@ -120,6 +145,14 @@ export class SuppDialogComponent implements OnInit {
     });
   }
 
+  deleteCommonList(){
+    let list = this.utilService.getCurrentListe()
+    this.filmService.deleteListFromCommonListAsync(list.titrelist).then(() => {
+      this.openSnackBar('Liste ' + list.titrelist + ' a été supprimé');
+      this.loc.back();
+    })
+  }
+
   choixDelete() {
     this.switch = this.utilService.getListeOuGlobalSupp();
     if (this.switch == 1) {
@@ -128,6 +161,10 @@ export class SuppDialogComponent implements OnInit {
       this.deleteMovieGlob();
     } else if (this.switch == 3) {
       this.deleteListe();
+    } else if (this.switch == 4) {
+      this.deleteMovieFromCommonList();
+    } else if (this.switch == 5){
+      this.deleteCommonList()
     }
   }
 }

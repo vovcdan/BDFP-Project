@@ -35,6 +35,8 @@ export class UtilsService {
 
   isListShared!: boolean;
 
+  isListCommon!: boolean;
+
   constructor() { }
 
   connect() {
@@ -61,11 +63,11 @@ export class UtilsService {
     return(this.nameU);
   }
 
-  setCurrentListe(laliste: ListFilm) {
+  setCurrentListe(laliste: any) {
     this.currentListe = laliste;
   }
 
-  getCurrentListe(): ListFilm {
+  getCurrentListe(): any {
     return this.currentListe;
   }
 
@@ -157,6 +159,14 @@ export class UtilsService {
 
   getIsListShared() {
     return this.isListShared;
+  }
+
+  setIsListCommon(isCommon: boolean){
+    this.isListCommon = isCommon
+  }
+
+  getIsListCommon(){
+    return this.isListCommon
   }
 
   // getResultatRecherche() {

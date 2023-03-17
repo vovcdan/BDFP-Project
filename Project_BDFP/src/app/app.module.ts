@@ -8,16 +8,16 @@ import { NavComponent } from './nav/nav.component';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { HomeComponent  } from './home/home.component';
 import { NgImageSliderModule } from 'ng-image-slider';
-import { DialogOverviewExampleDialog, ListesComponent } from './listes/listes.component';
+import { DialogOverviewExampleDialog, ListesComponent, CreateCommonListDialog } from './listes/listes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatTableModule} from '@angular/material/table';
-import { ListeCompComponent } from './lis/liste-comp.component';
+import { ListeCompComponent, } from './lis/liste-comp.component';
 import {MatIconModule} from '@angular/material/icon';
-import { SingleListeComponent, ajouterUnFilm, partagerListe } from './single-liste/single-liste.component';
+import { SingleListeComponent, ajouterUnFilm, partagerListe, addUser } from './single-liste/single-liste.component';
 import { AuthService } from 'services/auth.service';
 import {MatSelectModule} from '@angular/material/select';
 import { AffichageFilmsComponent } from './affichage-films/affichage-films.component';
@@ -55,6 +55,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AffichageRechercheComponent,
     MovieCardComponent,
     CritiqueDialogComponent,
+    addUser,
+    CreateCommonListDialog,
   ],
   imports: [
     BrowserModule,

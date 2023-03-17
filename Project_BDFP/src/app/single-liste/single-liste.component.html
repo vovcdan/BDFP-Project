@@ -17,6 +17,15 @@
             </button>
         </div>
 
+        <div class="bt" *ngIf="isListCommon">
+            <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <button class="bt" mat-fab matTooltip="Ajouter un membre" mat-fab (click)="openAddNewUserDialog()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
         <div class="bt">
             <button class="bt" mat-fab matTooltip="Supprimer la liste" (click)="suppDialog()">
                 <mat-icon>delete</mat-icon>

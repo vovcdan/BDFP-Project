@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Ajouter une personne</h1>
+<div>
+  <p>Entrez un pseudo</p>
+
+  <mat-form-field class="field" appearance="fill" style="width: auto; text-align: center;">
+    <mat-label for="mail">Pseudo</mat-label>
+    <input matInput [(ngModel)]="data.email" type="mail" placeholder="Martin">
+  </mat-form-field>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Retour</button>
+  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial (click)="addUserToCommonList()">Ok</button>
+</div>
