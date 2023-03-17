@@ -270,7 +270,7 @@ export class SingleFilmComponent implements OnInit {
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlever les accents
       .replace(/'/g, '-') // remplacer les apostrophes par des tirets
       .replace(/ \(film\)/gi, '') // enlever la chaîne " (film)" s'il existe
-      .replace(/[^a-zA-Z0-9\s-]/g, '') // enlever les caractères spéciaux (sauf les tirets et les espaces)
+      .replace(/[^a-zA-Z0-9\s-_]/g, '') // enlever les caractères spéciaux (sauf les tirets et les espaces)
       .replace(/\s+/g, '-') // remplacer les espaces par des tirets
       .toLowerCase(); // mettre en minuscules
 
