@@ -12,6 +12,7 @@
           <input matInput type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Rechercher par titre de film">
         </mat-form-field>
     </div>
+    <div id="spinner" *ngIf="loading"><mat-spinner [ngStyle]="spinnerStyle"></mat-spinner></div>
     <div id="film" *ngFor="let infoMovies of movies | keyvalue | filter: searchText">
         <div id="leposter" *ngIf="infoMovies">
             <img src={{infoMovies.value.poster}} id="img">

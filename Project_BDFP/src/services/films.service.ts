@@ -7,6 +7,7 @@ import { CryptService } from './crypt.service';
 import { Observable } from 'rxjs';
 import { UtilsService } from 'services/utils.service';
 import { ApiServiceService } from './api-service.service';
+import { notEqual } from 'assert';
 
 @Injectable({
   providedIn: 'root',
@@ -1227,6 +1228,36 @@ export class FilmsService {
       .catch((error) => {
         console.error('Error updating data:', error);
       });
+  }
+
+  async getMembersIDFromCommonList(titrelist: string){
+    const uid = this.utilService.getUserId()
+
+    try {
+      const members = await fetch(`http://localhost:8080/api/commonList/members/${uid}/${titrelist}`)
+      const members_jsoned = await members.json();
+      const names = await this.getMembersNamesByUids(members_jsoned)
+      return names;
+    } catch(error) {
+      console.error(error)
+      return [];
+    }
+  }
+
+  async getMembersNamesByUids(uids: [string]){
+    try {
+      let names: Array<string> = new Array;
+      for(let i = 0; i< uids.length; i++){
+        const uid = uids[i]
+        const name = await fetch(`http://localhost:8080/api/users/members/${uid}`)
+        const name_jsoned:string = await name.json()
+        names.push(name_jsoned)
+      }
+      return names;
+    } catch(error) {
+      console.error(error)
+      return [];
+    }
   }
 
 }
