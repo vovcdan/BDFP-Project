@@ -15,6 +15,8 @@ module.exports = (app) => {
 
     router.get("/:uid/:titrelist", commonList.findOne)
 
+    router.get("/members/:uid/:titrelist", commonList.findMembers)
+
     router.delete("/:uid/:titrelist", commonList.deleteListFromCommonList);
 
     router.delete("/:uid/:titrelist/:omdbID", commonList.deleteMovieFromCommonList)

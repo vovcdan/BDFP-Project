@@ -18,6 +18,8 @@ module.exports = (app) => {
 
   router.get("/mail/:userMail", users.findByMail);
 
+  router.get("/members/:uid", users.findMembersNames)
+
   router.put("/:id", users.modifyMail);
 
   router.delete("/:id", users.delete);

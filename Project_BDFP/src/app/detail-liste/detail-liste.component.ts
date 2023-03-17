@@ -31,6 +31,8 @@ export class DetailListeComponent implements OnInit {
 
   showAide: boolean = false;
 
+  loading!: boolean
+
   constructor(
     private filmService: FilmsService,
     private init: InitService,
@@ -46,13 +48,14 @@ export class DetailListeComponent implements OnInit {
   }
 
   async initialisation() {
+    this.loading = true;
     this.movies = await this.init.initDetailListe();
     if (this.movies.size == 0) {
       this.showAide = true
     } else {
       this.showAide = false
     }
-    
+
 
     for (const [key, value] of this.movies) {
       let movieFromOMDB_Data = await this.api.getMovieByIdAsync(key);
@@ -65,7 +68,10 @@ export class DetailListeComponent implements OnInit {
         this.movies.get(key).isInDB = result;
       });
     }
+    this.loading = false;
   }
+
+  get spinnerStyle() { return {color: 'Orange'} }
 
   openSnackBar(message: string) {
     this.snack.open(message, '', {

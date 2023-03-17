@@ -37,6 +37,8 @@ export class SingleFilmComponent implements OnInit {
 
   isListShared!: boolean
 
+  isListCommon!: boolean
+
   formUpdateMovie!: FormGroup
 
   test: boolean = false
@@ -80,6 +82,8 @@ export class SingleFilmComponent implements OnInit {
     const movie_imdb_id = this.currentFilm.key;
 
     this.isListShared = this.utilService.getIsListShared();
+
+    this.isListCommon = this.utilService.getIsListCommon();
 
     if (this.isListShared) {
       this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
@@ -240,7 +244,7 @@ export class SingleFilmComponent implements OnInit {
   async getMovieTranslations(movieId: any) {
     try {
       let translations = await this.api.getMovieTranslations(movieId);
-      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) =>
       translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
       return titleFrench;
     } catch (error) {
@@ -256,7 +260,7 @@ export class SingleFilmComponent implements OnInit {
     this.test = true;
 
     try {
-      
+
       try{
         this.titreFR = await this.getMovieTranslations(tmdbid);
         if(this.titreFR === ''){
@@ -290,7 +294,6 @@ export class SingleFilmComponent implements OnInit {
       if (str.charAt(str.length - 1) === '-') {
         str = str.slice(0, -1);
       }
-      
 
       this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 
