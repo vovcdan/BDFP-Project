@@ -270,7 +270,7 @@ export class AffichageRechercheComponent implements OnInit {
         (this.formRecherche.value.acteurControl != undefined &&
           this.formRecherche.value.acteurControl != '')) &&
       this.moviesInDBByAPI != undefined &&
-      this.moviesInDB!.size != 0
+      this.moviesInDB != undefined
     ) {
       this.moviesInDB = this.intersectMaps(
         this.moviesInDB!,
