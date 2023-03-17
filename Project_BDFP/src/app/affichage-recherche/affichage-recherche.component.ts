@@ -225,8 +225,6 @@ export class AffichageRechercheComponent implements OnInit {
       }
     }
 
-    console.log(this.switch_number);
-
     switch (this.switch_number) {
       case 1:
         await this.getFilmsByYearAndActorsAndRealisator(
@@ -264,9 +262,6 @@ export class AffichageRechercheComponent implements OnInit {
         break;
     }
 
-    console.log(this.moviesInDBByAPI);
-    console.log(this.moviesInDB);
-
     if (
       ((this.formRecherche.value.anneeSortieControl != undefined &&
         this.formRecherche.value.anneeSortieControl != '') ||
@@ -277,30 +272,22 @@ export class AffichageRechercheComponent implements OnInit {
       this.moviesInDBByAPI != undefined &&
       this.moviesInDB!.size != 0
     ) {
-      console.log(this.moviesInDB)
       this.moviesInDB = this.intersectMaps(
         this.moviesInDB!,
         this.moviesInDBByAPI!
       );
     } else if (this.moviesInDBByAPI != undefined) {
-      console.log("lili")
       this.moviesInDB = this.moviesInDBByAPI;
     }
 
-    console.log(this.moviesInDB);
-    console.log(this.moviesInDBByAPI);
-
     this.noResult = false;
     this.finalMovieResults = await this.init.initDetailListe2(this.moviesInDB!);
-    console.log(this.finalMovieResults);
 
     if (this.finalMovieResults.size == 0) {
       this.noResult = true;
       this.finalMovieResults =
         "Vous n'avez pas de résultats qui correspondent à cette recherche";
     }
-
-    console.log(this.finalMovieResults);
 
     this.finished = true;
     this.spinner = false;
