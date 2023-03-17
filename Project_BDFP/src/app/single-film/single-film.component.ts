@@ -52,6 +52,9 @@ export class SingleFilmComponent implements OnInit {
 
   titreFR: any;
 
+  cinemaFieldHistory!: [string];
+  accompagnateursFieldHistory!: [string];
+
   constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -60,7 +63,7 @@ export class SingleFilmComponent implements OnInit {
     this.formUpdateMovie = new FormGroup({
       noteControl: new FormControl('', Validators.pattern('^[0-5]$')),
       cinemaControl: new FormControl(),
-      dateVisionControl: new FormControl('', Validators.pattern('^(0[1-9]|1[0-9]|2[0-9]|3[01])(0[1-9]|1[0-2])[0-9]{4}$')),
+      dateVisionControl: new FormControl('', Validators.pattern('^19[0-9]{2}|2[0-9]{3}$')),
       accompagnateursControl: new FormControl(),
       avisControl: new FormControl(),
     });
@@ -95,7 +98,7 @@ export class SingleFilmComponent implements OnInit {
     this.currentFilmInfos['Director'] = movieFromOMDB.Director
     this.currentFilmInfos['Plot'] = movieFromOMDB.Plot
 
-    this.scrapeCritiques(this.currentFilm.value.title)
+    this.scrapeCritiques(this.currentFilm.value.title, this.currentFilm.value.tmdbid)
   }
 
   back() {
@@ -165,8 +168,35 @@ export class SingleFilmComponent implements OnInit {
     });
   }
 
-  showFormUpdateNovie() {
+  async getCinemaHistory() {
+    let cinemaHistory = await this.filmService.getCinemaHistory();
+    return cinemaHistory;
+  }
+
+  async getAccompagnateursHistory() {
+    let accompagnateursHistory = await this.filmService.getAccompagnateursHistory();
+    return accompagnateursHistory;
+  }
+
+  async deleteCinemaHistory(event: MouseEvent, cinema: string) {
+    event.stopPropagation();
+    let cinemaField = await this.filmService.deleteCinemaHistory(cinema);
+    this.cinemaFieldHistory = cinemaField;
+  }
+
+  async deleteAccompagnateurHistory(event: MouseEvent, accompagnateur: string) {
+    event.stopPropagation();
+    let accompagnateursHistory = await this.filmService.deleteAccompagnateursHistory(accompagnateur);
+    this.accompagnateursFieldHistory = accompagnateursHistory;
+  }
+
+  async showFormUpdateNovie() {
     this.updating = !this.updating
+
+    if (this.updating) {
+      this.accompagnateursFieldHistory = await this.getAccompagnateursHistory();
+      this.cinemaFieldHistory = await this.getCinemaHistory();
+    }
 
     this.formUpdateMovie.patchValue({
       noteControl: this.currentFilmInfos.note,
@@ -186,20 +216,39 @@ export class SingleFilmComponent implements OnInit {
     filmModifie.accompagnateurs = this.formUpdateMovie.get('accompagnateursControl')!.value
     filmModifie.avis = this.formUpdateMovie.get('avisControl')!.value
     this.filmService.updateMovieInfo(filmModifie)
+
+    if (filmModifie.accompagnateurs != null && filmModifie.accompagnateurs != undefined && filmModifie.accompagnateurs != '') {
+      this.filmService.addAccompagnateursHistory(filmModifie.accompagnateurs);
+    }
+
+    if (filmModifie.cinema != null && filmModifie.cinema != undefined && filmModifie.cinema != '') {
+      this.filmService.addCinemaHistory(filmModifie.cinema);
+    }
     this.updating = !this.updating
   }
 
-  async translateTitle(title: string) {
+  // async translateTitle(title: string) {
+  //   try {
+  //     let doc = await wtf.fetch(title, { lang: 'fr' });
+  //     let text = (doc as any).title()
+  //     return text;
+  //   } catch (error) {
+  //     throw new Error("Tranduction du titre du film impossible");
+  //   }
+  // }
+
+  async getMovieTranslations(movieId: any) {
     try {
-      let doc = await wtf.fetch(title, { lang: 'fr' });
-      let text = (doc as any).title()
-      return text;
+      let translations = await this.api.getMovieTranslations(movieId);
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
+      return titleFrench;
     } catch (error) {
-      throw new Error("Tranduction du titre du film impossible");
+      console.error(error);
     }
   }
 
-  async scrapeCritiques(titreFilm: string) {
+  async scrapeCritiques(titreFilm: string, tmdbid: string) {
     this.spinner = true
     if (this.test) {
       return;
@@ -207,17 +256,23 @@ export class SingleFilmComponent implements OnInit {
     this.test = true;
 
     try {
+      
       try{
-        this.titreFR = await this.translateTitle(titreFilm);
+        this.titreFR = await this.getMovieTranslations(tmdbid);
+        if(this.titreFR === ''){
+          this.titreFR = titreFilm
+        }
       }catch(error){
         this.titreFR = titreFilm
-      }
+      }  
       
-
-      // FAUT QUE LES LETTRES AVEC LES ACCENTS SOIENT TRANSFORMéS EN LETTRES SANS ACCENTS
-      // FAUT QUE LES APOSTROPHES SOIENT CHANGéS EN TIRéS
-      // FAUT VERIFIER SI LE TITRE CONTIENT LA CHAINE " (film)" ET L'ENLEVER SI ELLE EXISTE
-      const str = this.titreFR.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').toLowerCase();
+      const str = this.titreFR
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // enlever les accents
+      .replace(/'/g, '-') // remplacer les apostrophes par des tirets
+      .replace(/ \(film\)/gi, '') // enlever la chaîne " (film)" s'il existe
+      .replace(/[^a-zA-Z0-9\s-]/g, '') // enlever les caractères spéciaux (sauf les tirets et les espaces)
+      .replace(/\s+/g, '-') // remplacer les espaces par des tirets
+      .toLowerCase(); // mettre en minuscules
 
       this.lienCritique = "https://www.critikat.com/actualite-cine/critique/" + str
 

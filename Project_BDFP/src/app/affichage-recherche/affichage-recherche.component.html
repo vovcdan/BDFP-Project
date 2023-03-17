@@ -7,8 +7,8 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Realisateur</mat-label>
-            <input matInput [formControl]="searchControlCaracReal" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlCaracReal.invalid && (searchControlCaracReal.dirty || searchControlCaracReal.touched)">
+            <input matInput formControlName="realisateurControl" placeholder="Rechercher">
+            <mat-error *ngIf="formRecherche.get('realisateurControl')?.invalid && (formRecherche.get('realisateurControl')?.dirty || formRecherche.get('realisateurControl')?.touched)">
               forme : prenom nom  ou forme : prenom nom, prenom nom
             </mat-error>
           </mat-form-field>
@@ -20,23 +20,23 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Acteurs</mat-label>
-            <input matInput [formControl]="searchControlCaracActors" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlCaracActors.invalid && (searchControlCaracActors.dirty || searchControlCaracActors.touched)">
+            <input matInput formControlName="acteurControl" placeholder="Rechercher">
+            <mat-error *ngIf="formRecherche.get('acteurControl')?.invalid && (formRecherche.get('acteurControl')?.dirty || formRecherche.get('acteurControl')?.touched)">
               forme : prenom nom  ou forme : prenom nom, prenom nom
             </mat-error>
           </mat-form-field>
         </div>
       </div>
-      <div id="ligne" *ngIf="(this.searchControlCaracActors.value != undefined &&
-      this.searchControlCaracActors.value != '') ||
-      (this.searchControlCaracReal.value != undefined &&
-      this.searchControlCaracReal.value != '')">
+      <div id="ligne" *ngIf="(this.formRecherche.get('acteurControl')?.value != undefined &&
+      this.formRecherche.get('acteurControl')?.value != '') ||
+      (this.formRecherche.get('realisateurControl')?.value != undefined &&
+      this.formRecherche.get('realisateurControl')?.value != '')">
         <mat-icon class="icone" aria-hidden="false" matTooltip="Entrez l'année en numérique" fontIcon="help_outline"></mat-icon>
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Annee de sortie</mat-label>
-            <input matInput [formControl]="searchControlAnnee" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlAnnee.invalid && (searchControlAnnee.dirty || searchControlAnnee.touched)">
+            <input matInput formControlName="anneeSortieControl" placeholder="Rechercher">
+            <mat-error *ngIf="formRecherche.get('anneeSortieControl')?.invalid && (formRecherche.get('anneeSortieControl')?.dirty || formRecherche.get('anneeSortieControl')?.touched)">
               Le champ de recherche doit contenir exactement 4 chiffres.
             </mat-error>
           </mat-form-field>
@@ -47,8 +47,8 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Date de visionnage</mat-label>
-            <input matInput [formControl]="searchControlDate" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
+            <input matInput formControlName="dateVisionControl" placeholder="Rechercher">
+            <mat-error *ngIf="formRecherche.get('dateVisionControl')?.invalid && (formRecherche.get('dateVisionControl')?.dirty || formRecherche.get('dateVisionControl')?.touched)">
               forme : jjmmaaaa ex: 2022
             </mat-error>
           </mat-form-field>
@@ -59,7 +59,12 @@
           <div class="form-group">
               <mat-form-field appearance="fill" class="field">
                   <mat-label class="lab">Lieu de visionnage</mat-label>
-                  <input matInput formControlName="locationControl">
+                  <input matInput formControlName="locationControl" [matAutocomplete]="cinemaAutoR">
+                  <mat-autocomplete #cinemaAutoR="matAutocomplete">
+                    <mat-option *ngFor="let cinema of cinemaFieldHistory" [value]="cinema">
+                      {{cinema}}
+                    </mat-option>
+                  </mat-autocomplete>
               </mat-form-field>
           </div>
       </div>
@@ -68,8 +73,8 @@
         <div class="form-group">
           <mat-form-field appearance="fill" class="field">
             <mat-label class="lab">Note</mat-label>
-            <input matInput [formControl]="searchControlNote" placeholder="Rechercher">
-            <mat-error *ngIf="searchControlNote.invalid && (searchControlNote.dirty || searchControlNote.touched)">
+            <input matInput formControlName="noteControl" placeholder="Rechercher">
+            <mat-error *ngIf="formRecherche.get('noteControl')?.invalid && (formRecherche.get('noteControl')?.dirty || formRecherche.get('noteControl')?.touched)">
               Entrez un nombre de 0 à 5
             </mat-error>
           </mat-form-field>
@@ -80,7 +85,12 @@
           <div class="form-group">
               <mat-form-field appearance="fill" class="field">
                 <mat-label class="lab">Accompagnateurs</mat-label>
-                <input matInput formControlName="accompagnateursControl">
+                <input matInput formControlName="accompagnateursControl" [matAutocomplete]="accompagnateursAutoR">
+                <mat-autocomplete #accompagnateursAutoR="matAutocomplete">
+                  <mat-option *ngFor="let accompagnateurs of accompagnateursFieldHistory" [value]="accompagnateurs">
+                    {{accompagnateurs}}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
           </div>
         </div>
@@ -95,7 +105,7 @@
       </div>
 
       <div class="action-buttons">
-          <button class="buttonR" mat-raised-button [disabled]="!searchControlNote.valid || !searchControlCaracReal.valid || !searchControlCaracActors.valid || !searchControlDate.valid || !searchControlAnnee.valid" (click)="rechercherFilm()">Recherche</button>
+          <button class="buttonR" mat-raised-button [disabled]="!formRecherche.get('noteControl')?.valid || !formRecherche.get('realisateurControl')?.valid || !formRecherche.get('acteurControl')?.valid || !formRecherche.get('dateVisionControl')?.valid || !formRecherche.get('anneeSortieControl')?.valid" (click)="rechercherFilm()">Recherche</button>
       </div>
   </form>
 </div>
@@ -104,7 +114,7 @@
 
 <!-- Resultats de la recherche  -->
 <h2>Résultats de la recherche :</h2>
-<div id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
+<div #myDiv id="spinner" *ngIf="spinner"><mat-spinner color="#FF0000"></mat-spinner></div>
 <div *ngIf="finished">
   <section *ngIf="noResult"><p id="noResult">{{finalMovieResults}}</p></section>
   <section id="reponse" *ngFor="let movie of finalMovieResults | keyvalue">

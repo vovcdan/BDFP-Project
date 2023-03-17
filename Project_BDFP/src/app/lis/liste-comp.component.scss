@@ -6,6 +6,8 @@ li {
     font-weight: 100; 
     line-height: 5px; 
     padding: 30px;
+    line-height: 1; /* Notez que j'ai changé la valeur de "line-height" */
+    word-break: break-all;
 }
 
 #comp-liste {
@@ -18,7 +20,6 @@ li {
     0 0 6px rgb(208, 181, 131),
     0 0 10px rgb(65, 61, 57);
     color: white;
- 
 }
 
 .form-group {
@@ -32,10 +33,6 @@ li {
   .lab {
     color: white;
     display: inline;
-  }
-
-  .mat-icon {
-    color : orange;
   }
 
   
@@ -69,6 +66,7 @@ li {
   }
 
   #butGerer {
+    transform: scale(0.8);
     color: white; 
     transition: 0.4s;
     background-color: rgb(39,39,39);
@@ -78,9 +76,9 @@ li {
 }
 
 .add {
+  color: white; 
   transition: 0.4s;
   background-color: rgb(39,39,39);
-  color: white;
   &:hover {
       color: orange;
   }
@@ -88,18 +86,65 @@ li {
 
 #ajout {
   display: inline-block;
-  margin: 10px auto auto 10px;
+  margin: 0px auto auto 0px;
+  color: white; 
   transition: 0.4s;
   background-color: rgb(39,39,39);
-  color: white;
   &:hover {
       color: orange;
   }
 }
 
+#aide {
+  margin-top : 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  position: relative;
+
+}
+
+#aide h1 {
+  position : absolute;
+  font-size: small;
+  color : white;
+
+}
+
+#p1 {
+  margin-right: 170px;
+}
+
+#p2 {
+  margin-left : 220px
+}
+
+#aide button {
+  margin-right: 10px;
+  margin-top: 20px;
+  transform: scale(0.8);
+  position: absolute;
+  top: 0px;
+  color: white; 
+  cursor:default
+}
+
 h2 {
+  margin-top : 20px;
   text-align: center;
   color: orange;
 }
 
+#chips {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+mat-chip.selected {
+  background-color: orange !important;
+  color: white !important;
+}
   

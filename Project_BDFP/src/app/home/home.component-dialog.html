@@ -36,7 +36,8 @@
 
           <ng-container *ngIf="!omdbSelected">
             <mat-option *ngFor="let movie of filteredMoviesTMDB" [value]="movie">
-              <span><b>{{movie.title}}</b> ({{movie.release_date}})</span>
+              <!-- ({{movie.original_title}}) -->
+              <span><b>{{movie.titleFR}}</b> {{movie.title}} ({{movie.release_date}})</span>
             </mat-option>
           </ng-container>
         </ng-container>
@@ -48,11 +49,11 @@
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="cine">Titre en français</mat-label>
-      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder="Le diner de cons">
+      <input matInput [(ngModel)]="data.french_title" type="cine" placeholder={{titleFrench}} value="{{ titleFrench }}">
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
-      <mat-label for="dat">Date de visionnage</mat-label>
+      <mat-label for="dat">Année de visionnage</mat-label>
       <input matInput [(ngModel)]="data.dateVision" type="dat" [formControl]="searchControlDate"  placeholder="2022">
       <mat-error *ngIf="searchControlDate.invalid && (searchControlDate.dirty || searchControlDate.touched)">
         forme : aaaa ex: 2022
@@ -60,13 +61,29 @@
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
-      <mat-label for="cine">Lieu</mat-label>
-      <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson">
+      <mat-label for="cine">Cinéma</mat-label>
+      <input matInput [(ngModel)]="data.cinema" type="cine" placeholder="Gaumont Wilson" [matAutocomplete]="cinemaAuto">
+      <mat-autocomplete #cinemaAuto="matAutocomplete">
+        <mat-option *ngFor="let cinema of cinemaFieldHistory" [value]="cinema">
+          {{cinema}}
+          <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteCinemaHistory($event, cinema)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">
       <mat-label for="accomp">Accompagnateurs</mat-label>
-      <input matInput [(ngModel)]="data.accompagnateurs" type="accomp" placeholder="Julien, Martine, Benjamin">
+      <input matInput [(ngModel)]="data.accompagnateurs" type="accomp" placeholder="Julien, Martine, Benjamin" [matAutocomplete]="accompagnateursAuto">
+      <mat-autocomplete #accompagnateursAuto="matAutocomplete">
+        <mat-option *ngFor="let accompagnateurs of accompagnateursFieldHistory" [value]="accompagnateurs">
+          {{accompagnateurs}}
+          <button mat-icon-button matSuffix aria-label="Remove" (click)="deleteAccompagnateurHistory($event, accompagnateurs)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field class="field" appearance="fill">

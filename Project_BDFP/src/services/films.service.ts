@@ -39,6 +39,33 @@ export class FilmsService {
       .subscribe();
   }
 
+  createHistoryForUser(userID: string) {
+
+    const url = `http://localhost:8080/api/historyField/`;
+
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uid: userID
+      })
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then((data) => {
+        console.log('Data added successfully.');
+      })
+      .catch((error) => {
+        console.error('Error updating data:', error);
+      });
+  }
+
   async createListFilmForuserAsync(){
     const uid = this.utilService.getUserId()
 
@@ -162,6 +189,7 @@ export class FilmsService {
     }).then(data => {
       if(data) {
         this.createListFilmForUser(data._id);
+        this.createHistoryForUser(data._id);
         this.utilService.connect();
         this.utilService.setUserName(data.email);
         this.utilService.setUserId(data._id);
@@ -712,6 +740,20 @@ export class FilmsService {
     }
   }
 
+  // getOneListAsync pour la destinaire
+  async getOneListAsyncDestinaire(titrelist: string, uid: string) {
+    try {
+      const moviesList = await fetch(
+        'http://localhost:8080/api/allLists/' + uid + '/' + titrelist +" partagee par " + this.utilService.getUserName()
+      );
+      const moviesList_jsoned = await moviesList.json();
+      console.log(moviesList_jsoned[0])
+      return moviesList_jsoned[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async shareListAsync(dest_id: string, list: ListFilm){
     const uid = this.utilService.getUserId()
 
@@ -740,8 +782,6 @@ export class FilmsService {
       console.error("Error ", error)
     })
   }
-
-
 
   updateMovieInfo(movie: Film) {
     const uid = this.utilService.getUserId();
@@ -909,6 +949,158 @@ export class FilmsService {
 
 
   }
+  addCinemaHistory(cinema: string) {
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cinema: cinema
+      })
+    };
+
+    const url = `http://localhost:8080/api/historyField/add/cinema/${uid}`;
+
+    fetch(url, options).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log('Data added successfully.');
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error);
+    });
+  }
+
+  addAccompagnateursHistory(accompagnateurs: string) {
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        accompagnateurs: accompagnateurs
+      })
+    };
+
+    const url = `http://localhost:8080/api/historyField/add/accompagnateurs/${uid}`;
+
+    fetch(url, options).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+    })
+    .then((data) => {
+      console.log('Data added successfully.');
+    })
+    .catch((error) => {
+      console.error('Error updating data:', error);
+    });
+  }
+
+  async getCinemaHistory() {
+    const uid = this.utilService.getUserId()
+
+    const url = `http://localhost:8080/api/historyField/get/cinema/${uid}`;
+
+    try {
+      let data = await fetch(url);
+      let data_json = await data.json();
+      return data_json;
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return [];
+    }
+  }
+
+  async getAccompagnateursHistory() {
+    const uid = this.utilService.getUserId()
+
+    const url = `http://localhost:8080/api/historyField/get/accompagnateurs/${uid}`;
+
+    try {
+      let data = await fetch(url);
+      let data_json = await data.json();
+      return data_json;
+    } catch (error: any) {
+      if (error.status === 404) {
+        this.errorMessage = "La ressource demandée n'a pas été trouvée";
+      } else {
+        this.errorMessage = 'Une erreur inattendue est survenue';
+      }
+      return [];
+    }
+  }
+
+  async deleteAccompagnateursHistory(accompagnateurs: string) {
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        accompagnateurs: accompagnateurs
+      })
+    };
+
+    const url = `http://localhost:8080/api/historyField/delete/accompagnateurs/${uid}`;
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Data deleted successfully.');
+      return data;
+    } catch (error) {
+      console.error('Error updating data:', error);
+      throw error;
+    }
+  }
+
+  async deleteCinemaHistory(cinema: string) {
+    const uid = this.utilService.getUserId()
+
+    const options = {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        cinema: cinema
+      })
+    };
+
+    const url = `http://localhost:8080/api/historyField/delete/cinema/${uid}`;
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Data deleted successfully.');
+      return data;
+    } catch (error) {
+      console.error('Error updating data:', error);
+      throw error;
+    }
+  }
+
 
   async createCommonList(titrelist: string){
     const uid = this.utilService.getUserId()

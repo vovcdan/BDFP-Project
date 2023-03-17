@@ -27,6 +27,10 @@ export class DetailListeComponent implements OnInit {
 
   searchText!: any;
 
+  nbrFilms!: number;
+
+  showAide: boolean = false;
+
   constructor(
     private filmService: FilmsService,
     private init: InitService,
@@ -43,6 +47,12 @@ export class DetailListeComponent implements OnInit {
 
   async initialisation() {
     this.movies = await this.init.initDetailListe();
+    if (this.movies.size == 0) {
+      this.showAide = true
+    } else {
+      this.showAide = false
+    }
+    
 
     for (const [key, value] of this.movies) {
       let movieFromOMDB_Data = await this.api.getMovieByIdAsync(key);

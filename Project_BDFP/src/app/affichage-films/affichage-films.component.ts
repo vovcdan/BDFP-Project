@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Film } from 'app/models/film.model';
 import { InitService } from 'services/init.service';
 import { UtilsService } from 'services/utils.service';
+import {FilmsService} from 'services/films.service';
 
 @Component({
   selector: 'app-affichage-films',
@@ -21,11 +22,13 @@ export class AffichageFilmsComponent implements OnInit {
   fromTMDB: boolean = true;
   searchText!: any;
   spinner : boolean = false
+  noMovies!: any;
 
 
 
   constructor(
     private init: InitService,
+    private filmService: FilmsService,
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +38,7 @@ export class AffichageFilmsComponent implements OnInit {
   async initialisation(){
     this.spinner = true
     this.movies = await this.init.initAffichageFilms()
+    this.noMovies = this.movies.size == 0 ? true: false
     this.spinner = false
   }
 

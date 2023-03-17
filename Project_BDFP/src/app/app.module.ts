@@ -33,6 +33,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { AffichageRechercheComponent } from './affichage-recherche/affichage-recherche.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatChipsModule} from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     Ng2SearchPipeModule,
     MatTooltipModule,
     FormsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatOptionModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

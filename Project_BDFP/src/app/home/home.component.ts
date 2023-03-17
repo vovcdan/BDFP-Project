@@ -50,14 +50,15 @@ export class HomeComponent implements OnInit {
   films: Film[] = [];
   list: any;
   numberOfFilms!: Observable<number>;
+  noMovies!: any
   showFormRecherche: boolean = false;
   formRecherche!: FormGroup;
   resList!: Map<string, number>;
   movieExist: any[] = [];
   switch_number = -1;
   error_message = '';
-  // showResultatRecherche = this.utilService.getResultatRecherche()
   showResultatRecherche = true;
+
   constructor(
     private filmService: FilmsService,
     public diag: MatDialog,
@@ -148,6 +149,9 @@ export class ajouterFilm implements OnInit {
   val: boolean = false;
   omdbSelected: boolean = false;
   messError: boolean = false;
+  cinemaFieldHistory!: [string];
+  accompagnateursFieldHistory!: [string];
+  titleFrench : string | undefined;
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
@@ -164,8 +168,10 @@ export class ajouterFilm implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogAjoutFilm
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.TMDBInit();
+    this.cinemaFieldHistory = await this.getCinemaHistory();
+    this.accompagnateursFieldHistory = await this.getAccompagnateursHistory();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -191,6 +197,28 @@ export class ajouterFilm implements OnInit {
     } else {
       this.ajoutFilmFromTMDB();
     }
+  }
+
+  async getCinemaHistory() {
+    let cinemaHistory = await this.filmService.getCinemaHistory();
+    return cinemaHistory;
+  }
+
+  async getAccompagnateursHistory() {
+    let accompagnateursHistory = await this.filmService.getAccompagnateursHistory();
+    return accompagnateursHistory;
+  }
+
+  async deleteCinemaHistory(event: MouseEvent, cinema: string) {
+    event.stopPropagation();
+    let cinemaField = await this.filmService.deleteCinemaHistory(cinema);
+    this.cinemaFieldHistory = cinemaField;
+  }
+
+  async deleteAccompagnateurHistory(event: MouseEvent, accompagnateur: string) {
+    event.stopPropagation();
+    let accompagnateursHistory = await this.filmService.deleteAccompagnateursHistory(accompagnateur);
+    this.accompagnateursFieldHistory = accompagnateursHistory;
   }
 
   //OMDB
@@ -259,6 +287,10 @@ export class ajouterFilm implements OnInit {
         } else {
           this.messError = false;
           this.filteredMoviesTMDB = data['results'];
+          this.filteredMoviesTMDB.forEach(async (element: any) => {
+            let titleFR = await this.getMovieTranslations(element.id);
+            element.titleFR = titleFR;
+          });
         }
       });
     this.messError = false;
@@ -266,6 +298,7 @@ export class ajouterFilm implements OnInit {
 
   onSelected() {
     this.selectedMovie = this.selectedMovie;
+    this.titleFrench = this.selectedMovie.titleFR;
   }
 
   displayWith(value: any) {
@@ -324,6 +357,13 @@ export class ajouterFilm implements OnInit {
               this.dialogRef.close();
             });
         });
+        if (this.data.accompagnateurs != null && this.data.accompagnateurs != undefined && this.data.accompagnateurs != '') {
+          this.filmService.addAccompagnateursHistory(this.data.accompagnateurs);
+        }
+
+        if (this.data.cinema != null && this.data.cinema != undefined && this.data.cinema != '') {
+          this.filmService.addCinemaHistory(this.data.cinema);
+        }
     } else if (await this.checkIfFilmExistsInList(IMDBid)) {
       this.errorMsgFilmExists = true;
     } else {
@@ -345,7 +385,12 @@ export class ajouterFilm implements OnInit {
         this.selectedMovie.title &&
         !(await this.checkIfFilmExistsInList(imdb_id))
       ) {
-        const title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title
+        let title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title;
+
+        if (title == undefined) {
+          title = this.selectedMovie.titleFR
+        }
+
         this.filmService
           .addFilmToList(
             title,
@@ -369,6 +414,13 @@ export class ajouterFilm implements OnInit {
                 this.dialogRef.close();
               });
           });
+          if (this.data.accompagnateurs != null && this.data.accompagnateurs != undefined && this.data.accompagnateurs != '') {
+            this.filmService.addAccompagnateursHistory(this.data.accompagnateurs);
+          }
+
+          if (this.data.cinema != null && this.data.cinema != undefined && this.data.cinema != '') {
+            this.filmService.addCinemaHistory(this.data.cinema);
+          }
       } else if (await this.checkIfFilmExistsInList(imdb_id)) {
         this.errorMsgFilmExists = true;
       } else {
@@ -384,4 +436,17 @@ export class ajouterFilm implements OnInit {
     );
     return bool;
   }
+
+  async getMovieTranslations(movieId: string) {
+    try {
+      let translations = await this.api.getMovieTranslations(movieId);
+      const titleFrench = translations['translations'].find((translation: { [x: string]: string; }) => 
+      translation['iso_3166_1'] === 'FR' && translation['iso_639_1'] === 'fr')?.data?.title || '';
+      return titleFrench;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
 }
