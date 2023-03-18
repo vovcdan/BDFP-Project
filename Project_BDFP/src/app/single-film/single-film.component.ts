@@ -87,6 +87,8 @@ export class SingleFilmComponent implements OnInit {
 
     if (this.isListShared) {
       this.currentFilmInfos = await this.filmService.getMovieFromOneList(movie_imdb_id);
+    } else if(this.isListCommon){
+      this.currentFilmInfos = await this.filmService.getMovieFromOneCommonList(this.utilService.getListName(), movie_imdb_id)
     } else {
       let movieFromDB_data = await this.filmService.getFilmByOmdbIDAsync(user_id, movie_imdb_id);
       this.currentFilmInfos = await movieFromDB_data!.json();

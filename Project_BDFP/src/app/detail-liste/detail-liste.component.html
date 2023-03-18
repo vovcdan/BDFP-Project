@@ -26,10 +26,15 @@
                 <p><span class="bold">Durée du film:</span> {{infoMovies.value.Runtime}}</p>
                 <p><span class="bold">Synopsys:</span> {{infoMovies.value.Plot}}</p>
             </div>
-            <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
+            <ng-container *ngIf="(!infoMovies.value.isInDB && containsPartageePar) || infoMovies.value.isInDB">
+                <button id="supp" mat-button (click)="afficherFilm(infoMovies.key)">Details</button>
+            </ng-container>
             <button id="supp" mat-raised-button (click)="deleteFromListOrDeleteFromCommonList(infoMovies.key, infoMovies.value.title)">Supprimer le film</button>
             <ng-container *ngIf="!infoMovies.value.isInDB">
                 <button id="supp" mat-raised-button (click)="addMovieFromSharedListToUser(infoMovies.key, infoMovies.value.tmdbID, infoMovies.value.title)">Ajouter ce film</button>
+            </ng-container>
+            <ng-container *ngIf="!infoMovies.value.isInDB && !containsPartageePar">
+                <p class="aide">Pour accéder aux détails de ce film, vous devez cliquer sur le bouton ajouter ce film</p>
             </ng-container>
         </div>
     </div>

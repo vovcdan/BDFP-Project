@@ -1,7 +1,6 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ListFilm } from 'app/models/listFilm.models';
-import { ExportService } from 'services/export.service';
 import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 
@@ -11,7 +10,8 @@ import { UtilsService } from 'services/utils.service';
   templateUrl: './liste-comp.component.html',
   styleUrls: ['./liste-comp.component.scss'],
 })
-export class ListeCompComponent implements OnInit {
+export class ListeCompComponent implements OnInit  {
+
   listofFilms: any[] = [];
   commonList: any[] = []
   showListofFilms: any[] = [];
@@ -27,7 +27,7 @@ export class ListeCompComponent implements OnInit {
   constructor(
     private filmsService: FilmsService,
     private router: Router,
-    private utilService: UtilsService
+    private utilService: UtilsService,
   ) {}
 
   ngOnInit(): void {
@@ -37,9 +37,6 @@ export class ListeCompComponent implements OnInit {
       .getAllListFromUser(this.utilService.getUserId())
       .subscribe((listofFilms) => {
         this.listofFilms = listofFilms;
-        if (this.listofFilms.length == 0){
-          this.aucuneListe = true
-        }
         // appeler la méthode après avoir initialisé la variable
         this.onClickChip('all');
       });
@@ -54,7 +51,9 @@ export class ListeCompComponent implements OnInit {
     for(let i = 0; i < this.commonList.length; i++){
       this.listofFilms.push(this.commonList[i])  
     } 
-    console.log(this.listofFilms)
+    if (this.listofFilms.length == 0){
+      this.aucuneListe = true
+    }
   }
 
   onClickChip(chipValue: string) {
@@ -62,7 +61,6 @@ export class ListeCompComponent implements OnInit {
     for(let i = 0; i < this.listofFilms.length; i++){
       if (this.selectedChip == "all") {
         this.showListofFilms = this.listofFilms
-        this.commonList
       }
       else if (this.selectedChip == "mine") {
         this.showListofFilms = this.listofFilms.filter(film => !film.shared);
@@ -121,11 +119,5 @@ export class ListeCompComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigateByUrl('/favs');
     });
-
-    //await this.filmsService.addFilmToAllListsAsync(list_title, list.movies[0].titre, list.movies[0].omdbID, list.movies[0].dateVision, list.movies[0].cinema, list.movies[0].accompagnateurs, list.movies[0].avis, list.movies[0].note)
-
-    // list.movies.forEach(movie => {
-    //   this.filmsService.addFilmToAllListsAsync(list_title, movie.titre, movie.omdbID, movie.dateVision, movie.cinema, movie.accompagnateurs, movie.avis, movie.note)
-    // });
   }
 }

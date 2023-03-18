@@ -735,6 +735,7 @@ export class FilmsService {
     try{
       const commonlist = await fetch(`http://localhost:8080/api/commonList/${uid}/${titrelist}`)
       const commonlist_jsoned = await commonlist.json()
+      console.log(commonlist_jsoned)
       return commonlist_jsoned[0]
     } catch(error) {
       console.error(error)
@@ -947,9 +948,9 @@ export class FilmsService {
       }
       return null;
     }
-
-
   }
+
+
   addCinemaHistory(cinema: string) {
     const uid = this.utilService.getUserId()
 
@@ -1194,6 +1195,17 @@ export class FilmsService {
     })
   }
 
+  async getMovieFromOneCommonList(titrelist: string, omdbID: string){
+    const uid = this.utilService.getUserId()
+    try {
+      const movies = await fetch(`http://localhost:8080/api/commonList/${uid}/${titrelist}/${omdbID}`);
+      const movies_jsoned = await movies.json();
+      return movies_jsoned[0];
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async deleteMovieFromCommonListAsync(omdbID: string, titrelist: string) {
     const uid = this.utilService.getUserId();
 
@@ -1232,11 +1244,15 @@ export class FilmsService {
 
   async getMembersIDFromCommonList(titrelist: string){
     const uid = this.utilService.getUserId()
-
+    const titreliste = this.utilService.getListName()
+    const url = `http://localhost:8080/api/commonList/${uid}/${titreliste}`
+    console.log(url)
     try {
-      const members = await fetch(`http://localhost:8080/api/commonList/members/${uid}/${titrelist}`)
+      const members = await fetch(url)
       const members_jsoned = await members.json();
-      const names = await this.getMembersNamesByUids(members_jsoned)
+      console.log(members_jsoned[0].uids)
+      const names = await this.getMembersNamesByUids(members_jsoned[0].uids)
+      console.log(names)
       return names;
     } catch(error) {
       console.error(error)
