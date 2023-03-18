@@ -91,6 +91,7 @@ export class DetailListeComponent implements OnInit {
       }
     }
     this.utilService.setMovie(movie);
+    this.utilService.setIsListCommon(false)
     this.router.navigateByUrl('/home/' + movie?.value.title);
   }
 

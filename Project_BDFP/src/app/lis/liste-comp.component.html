@@ -20,8 +20,8 @@
         <mat-chip-list #chipList aria-label="Choix types de listes">
           <mat-chip [ngClass]="{'selected': selectedChip === 'all'}" (click)="onClickChip('all')" value="all">Toutes les listes</mat-chip>
           <mat-chip [ngClass]="{'selected': selectedChip === 'mine'}" (click)="onClickChip('mine')" value="mine">Mes listes</mat-chip>
-          <mat-chip [ngClass]="{'selected': selectedChip === 'shared'}" (click)="onClickChip('shared')" value="shared">Listes Partagées</mat-chip>
-          <mat-chip [ngClass]="{'selected': selectedChip === 'common'}" (click)="onClickChip('common')" value="common">Listes communes</mat-chip>
+          <mat-chip [ngClass]="{'selected': selectedChip === 'shared'}" (click)="onClickChip('shared')" value="shared">Listes partagées</mat-chip>
+          <mat-chip [ngClass]="{'selected': selectedChip === 'common'}" (click)="onClickChip('common')" value="common">Listes collaboratives</mat-chip>
         </mat-chip-list>
       </div>
 

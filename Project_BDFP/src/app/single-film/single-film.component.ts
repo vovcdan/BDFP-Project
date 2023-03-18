@@ -10,6 +10,7 @@ import { FilmsService } from 'services/films.service';
 import { UtilsService } from 'services/utils.service';
 import { HttpClient } from '@angular/common/http';
 import wtf from 'wtf_wikipedia';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -57,7 +58,7 @@ export class SingleFilmComponent implements OnInit {
   cinemaFieldHistory!: [string];
   accompagnateursFieldHistory!: [string];
 
-  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient) { }
+  constructor(private filmService: FilmsService, private loc: Location, private utilService: UtilsService, private snack: MatSnackBar, private api: ApiServiceService, public dialog: MatDialog, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     this.init();
@@ -108,7 +109,7 @@ export class SingleFilmComponent implements OnInit {
   }
 
   back() {
-    this.loc.back();
+    this.router.navigateByUrl("home")
   }
 
   get spinnerStyle() { return { color: 'Orange' } }
