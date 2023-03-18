@@ -40,7 +40,7 @@
             </button>
         </div>
 
-        <div class="bt">
+        <div *ngIf="!isListCommon" class="bt">
             <button class="bt" mat-fab matTooltip="Exporter la liste" mat-fab (click)="export()">
                 <mat-icon> vertical_align_bottom</mat-icon>
             </button>
