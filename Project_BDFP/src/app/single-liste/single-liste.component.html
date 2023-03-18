@@ -1,6 +1,10 @@
 <div id="entier">
     <div id="titrelist">
         {{currentListe.titrelist}}
+        <br />
+        <div *ngIf="isListCommon" class="members">
+            Collaborateur : {{members}}
+        </div>
     </div>
     <div id="retour">
         <div class="back">
@@ -12,28 +16,15 @@
 
     <div id="bout">
 
-      <div id="members" *ngFor="let member of members">
-        {{member}}
-      </div>
-
         <div class="bt" *ngIf="!isListShared">
-        <div id="ajout" class="bt" *ngIf="isListCommon">
-            <p>Ajouter un film </p>
-
             <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
                 <mat-icon>add</mat-icon>
             </button>
-            <p> | </p>
+        </div>
+
+        <div class="bt" *ngIf="isListCommon">
             <button class="bt" mat-fab matTooltip="Ajouter un membre" mat-fab (click)="openAddNewUserDialog()">
                 <mat-icon>person_add</mat-icon>
-            </button>
-            <p>Ajouter un collaborateur </p>
-        </div>
-    <div id="bout">
-
-        <div class="bt" *ngIf="!isListShared">
-            <button class="bt" mat-fab matTooltip="Ajouter un film" mat-fab (click)="openDialog()">
-                <mat-icon>add</mat-icon>
             </button>
         </div>
 

@@ -6,9 +6,10 @@
     <mat-label for="mail">Email</mat-label>
     <input matInput [(ngModel)]="data.email" type="mail" placeholder="email">
   </mat-form-field>
+  <mat-error *ngIf="error_message">{{ error_message }}</mat-error>
 
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Retour</button>
-  <button mat-button [mat-dialog-close]="data.email" cdkFocusInitial (click)="partagerListe()">Ok</button>
+  <button mat-button cdkFocusInitial (click)="partagerListe()">Ok</button>
 </div>

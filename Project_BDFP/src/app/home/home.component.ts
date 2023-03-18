@@ -152,7 +152,7 @@ export class ajouterFilm implements OnInit {
   messError: boolean = false;
   cinemaFieldHistory!: [string];
   accompagnateursFieldHistory!: [string];
-  titleFrench : string | undefined;
+  titleFrench!: string;
   searchControlNote = new FormControl('', Validators.pattern('^[0-5]$'));
   searchControlDate = new FormControl(
     '',
@@ -300,6 +300,9 @@ export class ajouterFilm implements OnInit {
   onSelected() {
     this.selectedMovie = this.selectedMovie;
     this.titleFrench = this.selectedMovie.titleFR;
+    if(this.titleFrench){
+      this.data.french_title = this.titleFrench;
+    }
   }
 
   displayWith(value: any) {
@@ -386,11 +389,12 @@ export class ajouterFilm implements OnInit {
         this.selectedMovie.title &&
         !(await this.checkIfFilmExistsInList(imdb_id))
       ) {
-        let title = this.data.french_title != undefined ? this.data.french_title : this.selectedMovie.Title;
+        let title = this.data.french_title != undefined && this.data.french_title.trim() != "" ? this.data.french_title : this.selectedMovie.title;
+        console.log(title)
 
-        if (title == undefined) {
-          title = this.selectedMovie.titleFR
-        }
+        // if (title == undefined) {
+        //   title = this.selectedMovie.titleFR
+        // }
 
         this.filmService
           .addFilmToList(

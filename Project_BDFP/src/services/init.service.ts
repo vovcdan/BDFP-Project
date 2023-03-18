@@ -33,14 +33,12 @@ export class InitService {
     let isListCommon = this.utilService.getIsListCommon()
     let omdbIDS = [];
     let listName = this.utilService.getListName();
-    console.log(listName)
     let list = undefined
     if(isListCommon){
       list = await this.filmService.getOneCommonList(listName);
     } else {
       list = await this.filmService.getOneListAsync(listName);
     }
-    console.log(list)
     if (list.movies) {
       for (let movie of list.movies) {
         omdbIDS.push([movie.omdbID, movie.titre]);

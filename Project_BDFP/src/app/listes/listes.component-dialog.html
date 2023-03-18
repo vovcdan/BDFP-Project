@@ -5,8 +5,9 @@
     <mat-label>Entrez le nom de la liste</mat-label>
     <input matInput [(ngModel)]="data.title" maxlength="80">
   </mat-form-field>
+  <mat-error *ngIf="error_message">{{error_message}}</mat-error>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Retour</button>
-  <button mat-button [disabled]="onDisable" cdkFocusInitial (click)="ajoutListe()">Ok</button>
+  <button mat-button cdkFocusInitial (click)="ajoutListe()">Ok</button>
 </div>

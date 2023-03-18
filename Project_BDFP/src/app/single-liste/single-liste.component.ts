@@ -53,31 +53,28 @@ export class SingleListeComponent implements OnInit {
     public diag: MatDialog, private utilService: UtilsService, private snack: MatSnackBar
     ,private exportService: ExportService) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.currentListe = this.utilService.getCurrentListe();
-    this.isSharedList();
+    console.log(this.currentListe)
+    this.isListShared = this.utilService.getIsListShared();
     this.isListCommon = this.utilService.getIsListCommon();
-    if (this.isListCommon) {
-      this.members = await this.filmService.getMembersIDFromCommonList(this.utilService.getListName())
-    }
-    console.log(this.members);
-
+    this.getMembers()
   }
 
   back() {
     this.loc.back();
   }
 
-  async isSharedList() {
-    let isShared = await this.filmService.isListShared(this.currentListe.titrelist);
-    this.isListShared = await isShared!.json();
-    this.utilService.setisListShared(this.isListShared);
-  }
-
   openSnackBar(message: string) {
     this.snack.open(message,"", {
       duration: 3000,
     });
+  }
+
+  async getMembers(){
+    if (this.isListCommon) {
+      this.members = await this.filmService.getMembersIDFromCommonList(this.utilService.getListName())
+    }
   }
 
   deleteListe() {
@@ -291,7 +288,6 @@ export class ajouterUnFilm implements OnInit {
   async addMovieToCommonList(){
 
     let list = await this.film.getOneCommonList(this.utilService.getListName())
-    console.log(list)
     if(!this.checkIfFilmExistsInList(this.filmChoisi.omdbID, list)){
       this.film.addMovieToCommonList(list.titrelist, this.filmChoisi.titre, this.filmChoisi.omdbID, this.filmChoisi.tmdbID).then(res => {
         this.openSnackBar(this.filmChoisi.titre + " a été ajouté à la liste " + list.titrelist );
@@ -302,14 +298,12 @@ export class ajouterUnFilm implements OnInit {
       })
     } else if (this.checkIfFilmExistsInList(this.filmChoisi.omdbID, list)) {
       this.openSnackBar(this.filmChoisi.titre + " appartient déjà à la liste " + this.utilService.getListName());
-
-  } else {
-      this.openSnackBar(this.filmChoisi + " n'appartient pas dans votre répertoire");
-  }
+    } else {
+        this.openSnackBar(this.filmChoisi + " n'appartient pas dans votre répertoire");
+    }
   }
 
   checkIfFilmExistsInList(movieID: any, liste: any):boolean {
-    console.log(liste)
     if(liste.movies.length == 0) {
       return false;
     }
@@ -366,7 +360,9 @@ export class partagerListe implements OnInit {
 
   async partagerListe() {
     const dest = await this.film.getUserByMailAsync(this.data.email)
-    if(dest[0] == undefined){
+    if(this.data.email == undefined) {
+      this.error_message = `Vous devez entrer le pseudo d'une personne`
+    } else if(dest[0] == undefined){
       this.error_message = `Le destinataire ${this.data.email} n'existe pas`
     } else {
       let list_title = this.utilService.getCurrentListeName()
@@ -380,9 +376,11 @@ export class partagerListe implements OnInit {
       if (list_destinaire) {
         this.film.deleteListOfAllLists(list_destinaire._id)
         await this.film.shareListAsync(dest[0]._id, list)
+        this.onNoClick()
         this.openSnackBar("La liste " + list.titrelist + " a été partagée à " + this.data.email)
       } else {
         await this.film.shareListAsync(dest[0]._id, list)
+        this.onNoClick()
         this.openSnackBar("La liste " + list.titrelist + " a été partagée à " + this.data.email)
       }
     }
@@ -398,20 +396,28 @@ export class partagerListe implements OnInit {
 
 export class addUser {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: dialogShare, public dialogRef: MatDialogRef<addUser>, private filmsService: FilmsService, private utilService: UtilsService) {}
+  error_message!: string
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: dialogShare, public dialogRef: MatDialogRef<addUser>, private filmsService: FilmsService, private utilService: UtilsService, private snack: MatSnackBar) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  openSnackBar(message: string) {
+    this.snack.open(message,"", {
+      duration: 3000,
+    });
+  }
 
   async addUserToCommonList(){
     let newUser = await this.filmsService.getUserByMailAsync(this.data.email)
     if(newUser[0] == undefined){
-      console.log("Cet utilisateur n'existe pas")
+      this.error_message = `L'utilisateur ${this.data.email} n'existe pas`
     } else {
       this.filmsService.addUserToCommonList(newUser[0]._id, this.utilService.getCurrentListeName())
-      console.log(newUser[0]._id)
+      this.onNoClick()
+      this.openSnackBar("L'utilisateur " + this.data.email + " a été ajoutée")
     }
   }
 

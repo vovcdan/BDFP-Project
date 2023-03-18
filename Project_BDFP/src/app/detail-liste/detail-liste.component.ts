@@ -33,6 +33,8 @@ export class DetailListeComponent implements OnInit {
 
   loading!: boolean
 
+  containsPartageePar!: boolean
+
   constructor(
     private filmService: FilmsService,
     private init: InitService,
@@ -45,6 +47,7 @@ export class DetailListeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initialisation();
+    this.isTitleContainsPartageePar()
   }
 
   async initialisation() {
@@ -83,7 +86,6 @@ export class DetailListeComponent implements OnInit {
     let movie;
     for (const [key, value] of this.movies) {
       if (key == imdbID) {
-        console.log(value)
         movie = { key: key, value: value };
         break;
       }
@@ -142,6 +144,11 @@ export class DetailListeComponent implements OnInit {
   async isMovieInDB(omdbID: string){ //Promise<boolean>
     const data = await this.filmService.isMovieInDatabase(this.utilService.getUserId(), omdbID);
     return data;
+  }
+
+  isTitleContainsPartageePar(){
+    this.containsPartageePar = this.utilService.getListName().includes("partagee par")
+    console.log(this.containsPartageePar)
   }
 
   async addMovieFromSharedListToUser(
