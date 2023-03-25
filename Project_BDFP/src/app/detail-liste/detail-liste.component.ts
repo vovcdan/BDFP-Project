@@ -92,7 +92,9 @@ export class DetailListeComponent implements OnInit {
     }
     this.utilService.setMovie(movie);
     this.utilService.setIsListCommon(false)
-    this.router.navigateByUrl('/home/' + movie?.value.title);
+    const encodedTitle = encodeURIComponent(movie?.value.title);
+    this.router.navigateByUrl('/home/' + encodedTitle);
+
   }
 
   deleteFromListOrDeleteFromCommonList(omdbID: string, title: string){
@@ -168,7 +170,8 @@ export class DetailListeComponent implements OnInit {
       } else {
         this.router.navigateByUrl('/', { skipLocationChange: true })
         .then(() => {
-          this.router.navigateByUrl('/favs/' + this.utilService.getCurrentListeName());
+          const encodedTitle = encodeURIComponent(this.utilService.getCurrentListeName());
+          this.router.navigateByUrl('/favs/' + encodedTitle);
         });
       }
     });

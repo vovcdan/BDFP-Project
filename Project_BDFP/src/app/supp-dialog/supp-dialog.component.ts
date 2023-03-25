@@ -74,7 +74,8 @@ export class SuppDialogComponent implements OnInit {
         this.router
           .navigateByUrl('/', { skipLocationChange: true })
           .then(() => {
-            this.router.navigateByUrl('/favs/' + this.curList.titrelist);
+            const encodedTitle = encodeURIComponent(this.curList.titrelist);
+            this.router.navigateByUrl('/favs/' + encodedTitle);
           });
       })
       .catch((error) => {
@@ -99,7 +100,8 @@ export class SuppDialogComponent implements OnInit {
         this.router
           .navigateByUrl('/', { skipLocationChange: true })
           .then(() => {
-            this.router.navigateByUrl('/favs/' + this.curList.titrelist);
+            const encodedTitle = encodeURIComponent(this.curList.titrelist);
+            this.router.navigateByUrl('/favs/' + encodedTitle);
           });
       })
       .catch((error) => {

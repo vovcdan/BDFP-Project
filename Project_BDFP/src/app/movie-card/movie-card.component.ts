@@ -14,7 +14,8 @@ export class MovieCardComponent {
 
   clickFilm() {
     this.utilService.setMovie(this.movieData)
-    this.router.navigateByUrl('/home/' + this.movieData.value.title);
+    const encodedTitle = encodeURIComponent(this.movieData.value.title);
+    this.router.navigateByUrl('/home/' + encodedTitle);
   }
 
 }

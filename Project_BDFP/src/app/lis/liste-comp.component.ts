@@ -49,8 +49,8 @@ export class ListeCompComponent implements OnInit  {
   async getCommonList(){
     this.commonList = await this.filmsService.getAllCommonListOfUser()
     for(let i = 0; i < this.commonList.length; i++){
-      this.listofFilms.push(this.commonList[i])  
-    } 
+      this.listofFilms.push(this.commonList[i])
+    }
     if (this.listofFilms.length == 0){
       this.aucuneListe = true
     }
@@ -84,7 +84,8 @@ export class ListeCompComponent implements OnInit  {
   }
 
   gererListe(laliste: any) {
-    this.router.navigateByUrl('/favs/' + laliste.titrelist);
+    const encodedTitle = encodeURIComponent(laliste.titrelist);
+    this.router.navigateByUrl('/favs/' + encodedTitle);
     this.utilService.setListName(laliste.titrelist);
     this.utilService.setCurrentListe(laliste);
     if(laliste.shared != undefined){

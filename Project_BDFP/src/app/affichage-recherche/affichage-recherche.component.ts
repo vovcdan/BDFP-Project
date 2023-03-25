@@ -98,6 +98,7 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
   async rechercherFilm() {
+    const startTime = new Date().getTime();
     this.finished = false;
     this.spinner = true;
 
@@ -293,6 +294,9 @@ export class AffichageRechercheComponent implements OnInit {
     this.finished = true;
     this.spinner = false;
     this.myDiv.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    const endTime = new Date().getTime();
+    const elapsedTime = (endTime - startTime) / 1000;
+    console.log(`Elapsed time: ${elapsedTime} seconds`);
   }
 
   // parti du formulaire de recherche
@@ -557,7 +561,8 @@ export class AffichageRechercheComponent implements OnInit {
   }
 
   clickFilm(titre: any) {
-    this.router.navigateByUrl('/home/' + titre);
+    const encodedTitle = encodeURIComponent(titre);
+    this.router.navigateByUrl('/home/' + encodedTitle);
   }
 
   intersectMaps(map1: Map<number, string>, map2: Map<number, string>) {

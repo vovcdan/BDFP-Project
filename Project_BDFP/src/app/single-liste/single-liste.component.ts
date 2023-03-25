@@ -322,8 +322,9 @@ export class ajouterUnFilm implements OnInit {
               this.router
                 .navigateByUrl('/', { skipLocationChange: true })
                 .then(() => {
+                  const encodedTitle = encodeURIComponent(this.curListeRefreshed[0].titrelist);
                   this.router.navigateByUrl(
-                    '/favs/' + this.curListeRefreshed[0].titrelist
+                    '/favs/' + encodedTitle
                   );
                   this.dialogRef.close();
                 });
@@ -364,7 +365,8 @@ export class ajouterUnFilm implements OnInit {
           this.router
             .navigateByUrl('/', { skipLocationChange: true })
             .then(() => {
-              this.router.navigateByUrl('/favs/' + list.titrelist);
+              const encodedTitle = encodeURIComponent(list.titrelist);
+              this.router.navigateByUrl('/favs/' + encodedTitle);
               this.dialogRef.close();
             });
         });
@@ -502,7 +504,8 @@ export class addUser {
       );
       this.onNoClick();
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigateByUrl('/favs/' + this.utilService.getListName());
+        const encodedTitle = encodeURIComponent(this.utilService.getListName());
+        this.router.navigateByUrl('/favs/' + encodedTitle);
       });
       this.openSnackBar("L'utilisateur " + this.data.email + ' a été ajoutée');
     }
