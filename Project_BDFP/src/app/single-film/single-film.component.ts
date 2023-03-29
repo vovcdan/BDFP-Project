@@ -271,28 +271,28 @@ export class SingleFilmComponent implements OnInit {
         }
       }catch(error){
         this.titreFR = titreFilm
-      }  
+      }
 
       let str = this.titreFR;
 
       // Remplacer les apostrophes par des tirets
       str = str.replace(/'/g, '-');
-      
+
       // Enlever la chaîne " (film)" s'il existe
       str = str.replace(/ \(film\)/gi, '');
-      
+
       // Enlever les caractères spéciaux (sauf les tirets, les underscores et les espaces)
-      str = str.replace(/[^a-zA-Z0-9\s-_àáâäçèéêëîïôöùûü]/g, '');
-      
+      str = str.replace(/[^a-zA-Z0-9\s-_àáâäçèéêëîïôöùûüÀÁÂÄÇÈÉÊËÎÏÔÖÙÛÜ]/g, '');
+
       // Remplacer les espaces et les underscores par des tirets
       str = str.replace(/[\s_]+/g, '-');
-      
+
       // Mettre en minuscules
       str = str.toLowerCase();
-      
+
       // Enlever les accents (sauf ceux sur les lettres "àáâäçèéêëîïôöùûü")
       str = str.normalize("NFD").replace(/[\u0300-\u0302\u0307\u0308\u0327]/g, "");
-      
+
       // Supprimer le tiret en fin de chaîne, s'il y en a un
       if (str.charAt(str.length - 1) === '-') {
         str = str.slice(0, -1);

@@ -20,7 +20,7 @@
     <mat-form-field class="field" appearance="fill">
       <mat-label for="title">Titre</mat-label>
       <input matInput [(ngModel)]="selectedMovie" [matAutocomplete]="auto"
-        [formControl]="searchMoviesCtrl" placeholder="Titanic" cdkFocusInitial>
+        [formControl]="searchMoviesCtrl" placeholder="Titanic" cdkFocusInitial (change)="removeError()">
       <button *ngIf="selectedMovie" matSuffix mat-icon-button aria-label="Clear" (click)="clearSelection()">
         <mat-icon>close</mat-icon>
       </button>

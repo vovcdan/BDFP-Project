@@ -222,6 +222,11 @@ export class ajouterFilm implements OnInit {
     this.accompagnateursFieldHistory = accompagnateursHistory;
   }
 
+  removeError() {
+    this.errorMsgFilmExists = false;
+    this.filmError = false;
+  }
+
   //OMDB
   OMDBInit() {
     this.omdbSelected = true;
